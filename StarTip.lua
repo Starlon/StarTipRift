@@ -140,8 +140,10 @@ end
 local function update()
 	if not tooltipMain:Shown() then return end
 	local mouse = Inspect.Mouse()
+	local width = frame:GetWidth()
+	local height = frame:GetHeight()
 	frame:ClearAll()
-	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - frame:GetWidth() / 2, mouse.y - frame:GetHeight())
+	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - width / 2, mouse.y - height)
 	tooltipMain:Reshape()
 end
 
