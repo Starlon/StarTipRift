@@ -74,7 +74,7 @@ do
 		end
 
 		wipe(widgetsToDraw)
-		--StarTip.tooltipMain:Show()
+		StarTip.tooltipMain:Show()
     end
 end
 

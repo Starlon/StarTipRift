@@ -10,6 +10,9 @@ local core = LibCore:New(environment, "StarTip", 2)
 local context = UI.CreateContext("StarTip")
 local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
 frame:SetBackgroundColor(0, 0, 0, .8)
+frame:SetHeight(500)
+frame:SetWidth(600)
+frame:SetPoint("CENTER", UIParent, "CENTER")
 
 local tremove, tinsert = table.remove, table.insert
 
@@ -84,23 +87,19 @@ end
 
 tooltipMain.Reshape = function(self)
 	local height, width = 0, 0
-	frame:ClearAll()
 	for k, line in ipairs(self.lines) do
-		--line[1]:ResizeToText()
+		line[1]:ResizeToText()
 		height = height + line[1]:GetHeight()
 		local w = line[1]:GetWidth()
 		if line[2] then 
-			--line[2]:ResizeToText() 
+			line[2]:ResizeToText() 
 			w = w + line[2]:GetWidth()
 		end
 		if w > width then 
 			width = w
 		end
 	end
-	print(width, height)
-	frame:ClearWidth()
-	frame:ClearHeight()
-	frame:SetWidth(width + 100)
+	frame:SetWidth(width)
 	frame:SetHeight(height)
 end
 
@@ -121,12 +120,18 @@ tooltipMain.Hide = function(self)
 	frame:SetVisible(false)
 end
 
+tooltipMain.Shown = function(self)
+	return frame:GetVisible()
+end
+
 local hidden = true
 
 local function update()
+	if hidden then return end
 	local mouse = Inspect.Mouse()
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - frame:GetWidth() / 2, mouse.y - frame:GetHeight())
+	tooltipMain:Show()
 end
 
 local function startup()
@@ -141,12 +146,14 @@ end
 
 local function add(units)
 	tooltipMain:Hide()
+	hidden = true
 	for k, mod in pairs(StarTip.modules) do
 		if mod.OnHide then mod:OnHide() end
 	end
 	for id, unit in pairs(units) do
 		if unit == "mouseover" then
 			tooltipMain:Show()
+			hidden = false
 			for k, mod in pairs(StarTip.modules) do
 				if mod.SetUnit then mod:SetUnit() end
 			end
