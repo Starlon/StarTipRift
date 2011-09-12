@@ -34,21 +34,68 @@ return UnitName(unit)
 ]],
         right = nil,
         enabled = true,
-		leftUpdating = false,
-		update = 500
     },
 	[2] = {
 		name = "Target",
 		left = "return 'Target:'",
-		right = "return UnitName(unit..'.target')",
+		right = "return UnitName(unit..'.target') or 'None'",
+		rightUpdating = true,
+		update = 500,
+		alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true,
 	},
 	[3] = {
+		name = "Level",
+		left = "return 'Level:'",
+		right = "return UnitLevel(unit)",
+		alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true
+	},
+	[4] = {
 		name = "Calling",
 		left = "return 'Calling:'",
 		right = "return UnitCalling(unit)",
+		alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true
+	},
+	[5] = {
+		name = "Relation",
+		left = "return 'Relation:'",
+		right = "return UnitRelation(unit)",
+		alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true	
+	},
+	[6] = {
+		name = "Health",
+		left = "return 'Health:'",
+		right = [[
+if not UnitHealth(unit) then return end
+return UnitHealth(unit) .. '/' .. UnitHealthMax(unit)
+]],
+		alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true
+	},
+	[7] = {
+		name = "Mana",
+		left = "return 'Mana:'",
+		right = [[
+if not UnitMana(unit) then return end
+return UnitMana(unit) .. '/' .. UnitManaMax(unit)
+]],
+		alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true
+	},
+	[8] = {
+		name = "Power",
+		left = "return 'Power:'",
+		right = [[
+return UnitPower(unit)
+]],
+		alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	}
+	
+
 }
 }
 
@@ -70,17 +117,16 @@ do
 			if widget.cell then
 				widget.cell:SetText(widget.buffer)
 			end
---[[
+
 			if type(widget.config.color) == "string" and (widget.config.color == " " or widget.config.color ~= "") and widget.color.is_valid then
 				widget.color:Eval()
 				local r, g, b, a = widget.color:P2N()
 				widget.cell:SetFontColor(r, g, b)
 			end
-]]
 		end
 
 		wipe(widgetsToDraw)
-		StarTip.tooltipMain:Show()
+		StarTip.tooltipMain:Reshape()
     end
 end
 
@@ -97,8 +143,12 @@ function mod:StopLines()
 end
 
 function mod:ClearLines()
-    self:StopLines()
-    wipe(lines)
+	self:StopLines()
+	StarTip.tooltipMain:Clear()
+	for k, v in ipairs(lines) do
+		v:Del()
+	end
+	wipe(lines)
 end
 
 local tbl
@@ -111,7 +161,7 @@ function mod:CreateLines()
             j = j + 1
             llines[j] = copy(v)
             llines[j].config = copy(v)
-
+			v.align = v.alignLeft
             v.value = v.left
             v.outlined = v.leftOutlined
             v.color = v.colorL
@@ -123,6 +173,7 @@ function mod:CreateLines()
             mod.core.environment.unit = "mouseover"
             llines[j].leftObj = v.left and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 
+			v.align = v.alignRight
             v.value = v.right
             v.outlined = v.rightOutlined
             v.update = 0
@@ -141,9 +192,11 @@ function mod:CreateLines()
             for i, v in ipairs(self) do
                 if v.leftObj then
                     v.leftObj.cell = nil
+					v.leftObj.buffer = false
                 end
                 if v.rightObj then
                     v.rightObj.cell = nil
+					v.rightObj.buffer = false
                 end
                 local left, right = '', ''
                 mod.core.environment.unit = "mouseover"
@@ -170,11 +223,11 @@ function mod:CreateLines()
                 if type(left) == "string" and type(right) == "string" then
                     lineNum = lineNum + 1
                     if v.right and v.right ~= "" then
-                        local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('', '')
+                        local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('-', '-')
 						v.leftObj.cell = cell1
 						v.rightObj.cell = cell2
                     else
-                        local cell = StarTip.tooltipMain:AddLine('')
+                        local cell = StarTip.tooltipMain:AddLine('-')
 						v.leftObj.cell = cell
                     end
                     if v.rightObj then
@@ -200,6 +253,9 @@ function mod:OnHide()
 end
 
 function mod:SetUnit()
+	StarTip.tooltipMain:Hide()
 	self:StopLines()
 	lines()
+	StarTip.tooltipMain:Show()
+	StarTip.tooltipMain:Reshape()
 end

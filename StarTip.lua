@@ -9,7 +9,7 @@ local core = LibCore:New(environment, "StarTip", 2)
 
 local context = UI.CreateContext("StarTip")
 local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
-frame:SetBackgroundColor(0, 0, 0, .8)
+frame:SetBackgroundColor(0, 0, 0, .5)
 frame:SetHeight(500)
 frame:SetWidth(600)
 frame:SetPoint("CENTER", UIParent, "CENTER")
@@ -35,26 +35,31 @@ end
 
 local pool = {}
 local function newCell()
-	local cell = UI.CreateFrame("Text", "StarTipText" .. random() * 1000, frame)	
+	local cell = UI.CreateFrame("Text", "StarTipText" .. random() * 1000, frame)
+	cell:ClearAll()
+	cell:SetText(" ")
 	return cell
 end
 
 local function delCell(cell)
 	cell:ClearAll()
 	cell:SetVisible(false)
+	cell:SetText("")
 	tinsert(pool, cell)
 end
 
 tooltipMain.AddLine = function(self, txt)
 	local lineNum = self:NumLines() + 1
 	local cell = newCell()
-	cell:SetText(txt)
 	if lineNum == 1 then
 		cell:SetPoint("TOPLEFT", frame, "TOPLEFT")
+		cell:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 	else
 		cell:SetPoint("TOPLEFT", self.lines[lineNum - 1][1], "BOTTOMLEFT")
+		cell:SetPoint("TOPRIGHT", self.lines[lineNum - 1][1], "BOTTOMRIGHT")
 	end
 	tinsert(self.lines, new(cell))
+	cell:SetText(txt)
 	return cell
 end
 
@@ -62,15 +67,20 @@ tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 	local lineNum = self:NumLines() + 1
 	local cell1 = newCell()
 	local cell2 = newCell()
-	cell1:SetText(txt1)
-	cell2:SetText(txt2)
 	if lineNum == 1 then
 		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT")
 	else
 		cell1:SetPoint("TOPLEFT", self.lines[lineNum - 1][1], "BOTTOMLEFT")
 	end
 	cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
+	if self.lines[lineNum - 1][2] then
+		cell2:SetPoint("TOPRIGHT", self.lines[lineNum - 1][2], "BOTTOMRIGHT")
+	else
+		cell2:SetPoint("TOPRIGHT", self.lines[lineNum - 1][1], "BOTTOMRIGHT")
+	end
 	tinsert(self.lines, new(cell1, cell2))
+	cell1:SetText(txt1)
+	cell2:SetText(txt2)	
 	return cell1, cell2
 end
 
@@ -113,25 +123,26 @@ tooltipMain.Show = function(self)
 		v[1]:SetVisible(true)
 		if v[2] then v[2]:SetVisible(true) end
 	end
-	self:Reshape()
 end
 
 tooltipMain.Hide = function(self)
 	frame:SetVisible(false)
+	for k, v in ipairs(self.lines) do
+		v[1]:SetVisible(false)
+		if v[2] then v[2]:SetVisible(false) end	
+	end
 end
 
 tooltipMain.Shown = function(self)
 	return frame:GetVisible()
 end
 
-local hidden = true
-
 local function update()
-	if hidden then return end
+	if not tooltipMain:Shown() then return end
 	local mouse = Inspect.Mouse()
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - frame:GetWidth() / 2, mouse.y - frame:GetHeight())
-	tooltipMain:Show()
+	tooltipMain:Reshape()
 end
 
 local function startup()
@@ -144,18 +155,18 @@ local function startup()
 end
 
 local function unitChanged(id)
+	tooltipMain:Clear()
 	if id then
-		tooltipMain:Show()
 		for k, mod in pairs(StarTip.modules) do
 			if mod.SetUnit then mod:SetUnit() end
 		end
-		hidden = false
+		tooltipMain:Show()
+		tooltipMain:Reshape()
 	else
 		tooltipMain:Hide()
 		for k, mod in pairs(StarTip.modules) do
 			if mod.OnHide then mod:OnHide() end
 		end
-		hidden = true
 	end
 end
 
