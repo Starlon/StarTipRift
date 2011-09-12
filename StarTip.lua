@@ -135,7 +135,6 @@ local function update()
 end
 
 local function startup()
-	tooltipMain:AddLine("Test")
 	tooltipMain:Hide()
 	for k, mod in pairs(StarTip.modules) do
 		if mod.OnEnable then
@@ -144,20 +143,19 @@ local function startup()
 	end
 end
 
-local function add(units)
-	tooltipMain:Hide()
-	hidden = true
-	for k, mod in pairs(StarTip.modules) do
-		if mod.OnHide then mod:OnHide() end
-	end
-	for id, unit in pairs(units) do
-		if unit == "mouseover" then
-			tooltipMain:Show()
-			hidden = false
-			for k, mod in pairs(StarTip.modules) do
-				if mod.SetUnit then mod:SetUnit() end
-			end
+local function unitChanged(id)
+	if id then
+		tooltipMain:Show()
+		for k, mod in pairs(StarTip.modules) do
+			if mod.SetUnit then mod:SetUnit() end
 		end
+		hidden = false
+	else
+		tooltipMain:Hide()
+		for k, mod in pairs(StarTip.modules) do
+			if mod.OnHide then mod:OnHide() end
+		end
+		hidden = true
 	end
 end
 
@@ -165,10 +163,10 @@ table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
 
 table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 
-table.insert(Event.Unit.Add, {add, "StarTip", "refresh"})
-
 function StarTip:NewModule(name)
 	local mod = {name=name, core=core, evaluator=LibEvaluator}
 	table.insert(StarTip.modules, mod)
 	return mod
 end
+
+table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip", "refresh"})

@@ -20,6 +20,7 @@ RunOnStartup = {
 Embed = {
   ["Libs/LibStub"] = true,
   ["Libs/CallbackHandler-1.0"] = true,
+  ["Libs/LibUnitChange"] = true
 }
 
 -- This line would set up dependencies with several other addons.

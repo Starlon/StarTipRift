@@ -40,7 +40,7 @@ return UnitName(unit)
 	[2] = {
 		name = "Target",
 		left = "return 'Target:'",
-		right = "return 'blah'",
+		right = "return UnitName(unit..'.target')",
 		enabled = true,
 	}
 }
@@ -114,7 +114,7 @@ function mod:CreateLines()
             local update = v.update or 0
             v.update = 0
             if v.left and v.leftUpdating then v.update = update end
-            mod.core.environment.unit = StarTip.unit or "player"
+            mod.core.environment.unit = "mouseover"
             llines[j].leftObj = v.left and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 
             v.value = v.right
@@ -124,6 +124,7 @@ function mod:CreateLines()
             v.color = v.colorR
             v.maxWidth = v.maxWidthR
             v.minWidth = v.minWidthR
+			mod.core.environment.unit = "mouseover"
             llines[j].rightObj = v.right and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
         end
     end
@@ -139,22 +140,22 @@ function mod:CreateLines()
                     v.rightObj.cell = nil
                 end
                 local left, right = '', ''
-                environment.unit = v.leftObj and v.leftObj.unitOverride or StarTip.unit or "mouseover"
+                mod.core.environment.unit = "mouseover"
                 if v.right then
                     if v.rightObj then
-                        environment.self = v.rightObj
-                        right = mod.evaluator.ExecuteCode(environment, v.name .. " right", v.right)
+                        mod.core.environment.self = v.rightObj
+                        right = mod.evaluator.ExecuteCode(mod.core.environment, v.name .. " right", v.right)
                         if type(right) == "number" then right = right .. "" end
                     end
                     if v.leftObj then
-                        environment.self = v.leftObj
-                        left = mod.evaluator.ExecuteCode(environment, v.name .. " left", v.left)
+                        mod.core.environment.self = v.leftObj
+                        left = mod.evaluator.ExecuteCode(mod.core.environment, v.name .. " left", v.left)
                         if type(left) == "number" then left = left .. "" end
                     end
                 else
                     if v.leftObj then
-                        environment.self = v.leftObj
-                        left = mod.evaluator.ExecuteCode(environment, v.name .. " left", v.left)
+                        mod.core.environment.self = v.leftObj
+                        left = mod.evaluator.ExecuteCode(mod.core.environment, v.name .. " left", v.left)
                         if type(left) == "number" then left = left .. "" end
                     end
                     right = ''
@@ -172,11 +173,11 @@ function mod:CreateLines()
                     end
                     if v.rightObj then
 						v.rightObj.buffer = false
-                        v.rightObj:Start()
+                        v.rightObj:Start("mouseover")
                     end
                     if v.leftObj then
 						v.leftObj.buffer = false
-                        v.leftObj:Start()
+                        v.leftObj:Start("mouseover")
                     end
                     v.lineNum = lineNum
                 end
