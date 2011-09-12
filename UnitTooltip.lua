@@ -42,6 +42,12 @@ return UnitName(unit)
 		left = "return 'Target:'",
 		right = "return UnitName(unit..'.target')",
 		enabled = true,
+	},
+	[3] = {
+		name = "Calling",
+		left = "return 'Calling:'",
+		right = "return UnitCalling(unit)",
+		enabled = true
 	}
 }
 }
