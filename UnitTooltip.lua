@@ -1,41 +1,47 @@
+local StarTip = _G.StarTip
+local mod = StarTip:NewModule("UnitTooltip")
 local WidgetText = LibStub("LibScriptableWidgetText-1.0", true)
 assert(WidgetText, "Text module requires LibScriptableWidgetText-1.0")
-local LCDText = LibStub("LibScriptableLCDText-1.0", true)
-assert(LCDText, mod.name .. " requires LibScriptableLCDText-1.0")
-local LibCore = LibStub("LibScriptableLCDCore-1.0", true)
-assert(LibCore, mod.name .. " requires LibScriptableLCDCore-1.0")
-local LibTimer = LibStub("LibScriptableUtilsTimer-1.0", true)
-assert(LibTimer, mod.name .. " requires LibScriptableUtilsTimer-1.0")
-local LibEvaluator = LibStub("LibScriptableUtilsEvaluator-1.0", true)
-assert(LibEvaluator, mod.name .. " requires LibScriptableUtilsEvaluator-1.0")
-local mod = {}
+--local LCDText = LibStub("LibScriptableLCDText-1.0", true)
+--assert(LCDText, mod.name .. " requires LibScriptableLCDText-1.0")
+--local LibCore = LibStub("LibScriptableLCDCore-1.0", true)
+--assert(LibCore, mod.name .. " requires LibScriptableLCDCore-1.0")
+--local LibTimer = LibStub("LibScriptableUtilsTimer-1.0", true)
+--assert(LibTimer, mod.name .. " requires LibScriptableUtilsTimer-1.0")
+
 local tinsert = table.insert
 local tremove = table.remove
 
+local function copy(src, dst)
+    if type(src) ~= "table" then return nil end
+    if type(dst) ~= "table" then dst = {} end
+    for k, v in pairs(src) do
+        if type(v) == "table" then
+            v = copy(v)
+        end
+        dst[k] = v
+    end
+    return dst
+end
+
+local lines = {}
 local config = {
-unit = {
+lines = {
     [1] = {
         name = "UnitName",
         left = [[
 return UnitName(unit)
 ]],
         right = nil,
-        bold = true,
         enabled = true,
-        cols = 80,
-        leftOutlined = 3,
-		leftUpdating = true,
+		leftUpdating = false,
 		update = 500
     },
 	[2] = {
 		name = "Target",
 		left = "return 'Target:'",
-		right = [[
-return UnitName(unit..".target")	
-]],
+		right = "return 'blah'",
 		enabled = true,
-		rightUpdating = true,
-		update = 500,
 	}
 }
 }
@@ -55,31 +61,21 @@ do
     end
     function draw()
         for i, widget in ipairs(widgetsToDraw) do
-                
-				StarTip.tooltipMain:SetCell(widget.y, widget.x, widget.buffer, widget.fontObj, justification, colSpan, nil, 0, 0, nil, nil, 40)
-
+			if widget.cell then
+				widget.cell:SetText(widget.buffer)
+			end
+--[[
 			if type(widget.config.color) == "string" and (widget.config.color == " " or widget.config.color ~= "") and widget.color.is_valid then
 				widget.color:Eval()
 				local r, g, b, a = widget.color:P2N()
-				StarTip.tooltipMain:SetCellColor(widget.y, widget.x, r or 0, g or 0, b or 0, a or 1)
+				widget.cell:SetFontColor(r, g, b)
 			end
+]]
 		end
-		wipe(widgetsToDraw)
-    end
-end
 
-function mod:AppendTrunk()
-	for i, v in ipairs(StarTip.trunk) do
-		if #v == 2 then
-			local y = StarTip.tooltipMain:AddLine('', '')
-			StarTip.tooltipMain:SetCell(y, 1, v[1])
-			StarTip.tooltipMain:SetCell(y, 2, v[2])
-		else
-			local y = StarTip.tooltipMain:AddLine('')
-			StarTip.tooltipMain:SetCell(y, 1, v[1], nil, "LEFT", 2)
-		end
-	end
-	StarTip:TrunkClear()
+		wipe(widgetsToDraw)
+		--StarTip.tooltipMain:Show()
+    end
 end
 
 function mod:StopLines()
@@ -119,7 +115,7 @@ function mod:CreateLines()
             v.update = 0
             if v.left and v.leftUpdating then v.update = update end
             mod.core.environment.unit = StarTip.unit or "player"
-            llines[j].leftObj = v.left and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, errorLevel, widgetUpdate)
+            llines[j].leftObj = v.left and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 
             v.value = v.right
             v.outlined = v.rightOutlined
@@ -128,30 +124,19 @@ function mod:CreateLines()
             v.color = v.colorR
             v.maxWidth = v.maxWidthR
             v.minWidth = v.minWidthR
-            llines[j].rightObj = v.right and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.db.profile.errorLevel, widgetUpdate)
---[[
-           if v.left then
-               llines[j].leftObj.fontObj = _G[v.name .. "Left"] or CreateFont(v.name .. "Left")
-           end
-           if v.right then
-               llines[j].rightObj.fontObj = _G[v.name .. "Right"] or CreateFont(v.name .. "Right")
-           end
-]]
+            llines[j].rightObj = v.right and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
         end
     end
     self:ClearLines()
     lines = setmetatable(llines, {__call=function(self)
             local lineNum = 0
             StarTip.tooltipMain:Clear()
-            --GameTooltip:ClearLines()
             for i, v in ipairs(self) do
                 if v.leftObj then
-                    v.leftObj.x = nil
-                    v.leftObj.y = nil
+                    v.leftObj.cell = nil
                 end
                 if v.rightObj then
-                    v.rightObj.x = nil
-                    v.rightObj.y = nil
+                    v.rightObj.cell = nil
                 end
                 local left, right = '', ''
                 environment.unit = v.leftObj and v.leftObj.unitOverride or StarTip.unit or "mouseover"
@@ -178,33 +163,36 @@ function mod:CreateLines()
                 if type(left) == "string" and type(right) == "string" then
                     lineNum = lineNum + 1
                     if v.right and v.right ~= "" then
-                        --GameTooltip:AddDoubleLine(' ', ' ', mod.db.profile.color.r, mod.db.profile.color.g, mod.db.profile.color.b, mod.db.profile.color.r, mod.db.profile.color.g, mod.db.profile.color.b)
-                        local y, x = StarTip.tooltipMain:AddLine('', '')
-                        --v.leftObj.fontString = mod.leftLines[lineNum]
-                        --v.rightObj.fontString = mod.rightLines[lineNum]
-			--v.leftObj.fontString = StarTip.qtipLines[y][1]
-			--v.rightObj.fontString = StarTip.qtipLines[y][2]
-			v.leftObj.y = y
-			v.leftObj.x = 1
-			v.rightObj.y = y
-			v.rightObj.x = 2
+                        local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('', '')
+						v.leftObj.cell = cell1
+						v.rightObj.cell = cell2
                     else
-                        local y, x = StarTip.tooltipMain:AddLine('')
-                        v.leftObj.y = y
-                        v.leftObj.x = 1
-                        --GameTooltip:AddLine(' ', mod.db.profile.color.r, mod.db.profile.color.g, mod.db.profile.color.b, v.wordwrap)
-                        --v.leftObj.fontString = mod.leftLines[lineNum]
+                        local cell = StarTip.tooltipMain:AddLine('')
+						v.leftObj.cell = cell
                     end
                     if v.rightObj then
-			v.rightObj.buffer = false
+						v.rightObj.buffer = false
                         v.rightObj:Start()
                     end
                     if v.leftObj then
-			v.leftObj.buffer = false
+						v.leftObj.buffer = false
                         v.leftObj:Start()
                     end
                     v.lineNum = lineNum
                 end
             end
     end})
+end
+
+function mod:OnEnable()
+	self:CreateLines()
+end
+
+function mod:OnHide()
+	self:StopLines()
+end
+
+function mod:SetUnit()
+	self:StopLines()
+	lines()
 end
