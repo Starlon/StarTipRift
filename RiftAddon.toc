@@ -1,0 +1,33 @@
+Identifier = "StarTip"
+
+Name = "StarTip"
+
+Description = "Tooltips from Outerspace"
+
+Author = "Scott Sibley (Starlon)"
+Website = ""
+Email = "sisibley@gmail.com"
+
+Version = "1.0"
+
+Environment = "1.3"
+
+RunOnStartup = {
+  "StarTip.lua",
+}
+
+Embed = {
+  ["Libs/LibStub"] = true,
+  ["Libs/CallbackHandler-1.0"] = true,
+}
+
+-- This line would set up dependencies with several other addons.
+Dependencies = {
+  LibStub = {"optional", "before"}, 
+  LibCallbackHandler = {"optional", "before"}, 
+  LibScriptableWidgetText_1_0 = {"optional", "before"}
+}
+
+SavedVariables = {
+  StarTip_SavedVariables = "account",
+}
