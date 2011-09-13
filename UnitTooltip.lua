@@ -220,12 +220,12 @@ do
 			if widget.color.is_valid then
 				widget.color:Eval()
 				local r, g, b, a = widget.color:P2N()
-				widget.cell:SetFontColor(r, g, b, a or 1)
+				widget.cell:SetFontColor(r or 0, g or 0, b or 0, a or 1)
 			end
 		end
 
 		wipe(widgetsToDraw)
-		StarTip.tooltipMain:Reshape(12, 12)
+		StarTip.tooltipMain:Reshape()
     end
 end
 
