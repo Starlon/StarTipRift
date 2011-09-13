@@ -57,6 +57,7 @@ tooltipMain.AddLine = function(self, txt)
 	else
 		cell:SetPoint("TOPLEFT", self.lines[lineNum - 1][1], "BOTTOMLEFT")
 		cell:SetPoint("TOPRIGHT", self.lines[lineNum - 1][1], "BOTTOMRIGHT")
+		cell:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	end
 	tinsert(self.lines, new(cell))
 	cell:SetText(txt)
@@ -65,18 +66,23 @@ end
 
 tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 	local lineNum = self:NumLines() + 1
+	local line = self.lines[lineNum - 1]
 	local cell1 = newCell()
 	local cell2 = newCell()
 	if lineNum == 1 then
 		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT")
 	else
-		cell1:SetPoint("TOPLEFT", self.lines[lineNum - 1][1], "BOTTOMLEFT")
+		cell1:SetPoint("TOPLEFT", line[1], "BOTTOMLEFT")
 	end
 	cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
-	if self.lines[lineNum - 1][2] then
-		cell2:SetPoint("TOPRIGHT", self.lines[lineNum - 1][2], "BOTTOMRIGHT")
+	if line[2] then
+		cell2:SetPoint("TOPRIGHT", line[2], "BOTTOMRIGHT")
+		--line[2]:ClearPoint("BOTTOMRIGHT")
+		--cell2:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	else
-		cell2:SetPoint("TOPRIGHT", self.lines[lineNum - 1][1], "BOTTOMRIGHT")
+		cell2:SetPoint("TOPRIGHT", line[1], "BOTTOMRIGHT")
+		--line[1]:ClearPoint("BOTTOMRIGHT")
+		--cell2:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	end
 	tinsert(self.lines, new(cell1, cell2))
 	cell1:SetText(txt1)
@@ -98,12 +104,15 @@ end
 tooltipMain.Reshape = function(self)
 	local height, width = 0, 0
 	for k, line in ipairs(self.lines) do
-		line[1]:ResizeToText()
-		height = height + line[1]:GetHeight()
-		local w = line[1]:GetWidth()
-		if line[2] then 
-			line[2]:ResizeToText() 
-			w = w + line[2]:GetWidth()
+		local left = line[1];
+		local right = line[2];
+		left:ResizeToText()
+		local h = left:GetHeight()
+		height = height + left:GetHeight()
+		local w = left:GetWidth()
+		if right then 
+			right:ResizeToText()
+			w = w + right:GetWidth()
 		end
 		if w > width then 
 			width = w
@@ -137,13 +146,21 @@ tooltipMain.Shown = function(self)
 	return frame:GetVisible()
 end
 
+function StarTip:NewModule(name)
+	local mod = {name=name, core=core, evaluator=LibEvaluator, tooltipMain=tooltipMain}
+	table.insert(StarTip.modules, mod)
+	return mod
+end
+
 local function update()
 	if not tooltipMain:Shown() then return end
 	local mouse = Inspect.Mouse()
 	local width = frame:GetWidth()
 	local height = frame:GetHeight()
+	local x, y = mouse.x - width / 2, mouse.y - height
+	
 	frame:ClearAll()
-	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - width / 2, mouse.y - height)
+	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()
 end
 
@@ -163,7 +180,6 @@ local function unitChanged(id)
 			if mod.SetUnit then mod:SetUnit() end
 		end
 		tooltipMain:Show()
-		tooltipMain:Reshape()
 	else
 		tooltipMain:Hide()
 		for k, mod in pairs(StarTip.modules) do
@@ -175,11 +191,5 @@ end
 table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
 
 table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
-
-function StarTip:NewModule(name)
-	local mod = {name=name, core=core, evaluator=LibEvaluator}
-	table.insert(StarTip.modules, mod)
-	return mod
-end
 
 table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip", "refresh"})

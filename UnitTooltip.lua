@@ -30,7 +30,7 @@ lines = {
     [1] = {
         name = "UnitName",
         left = [[
-return UnitName(unit)
+return UnitName(unit) .. ((not UnitPlayer(unit)) and " (NPC)" or "")
 ]],
         right = nil,
         enabled = true,
@@ -39,7 +39,7 @@ return UnitName(unit)
 		name = "Target",
 		left = "return 'Target:'",
 		right = "return UnitName(unit..'.target') or 'None'",
-		rightUpdating = true,
+		--rightUpdating = true,
 		update = 500,
 		alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true,
@@ -126,7 +126,7 @@ do
 		end
 
 		wipe(widgetsToDraw)
-		StarTip.tooltipMain:Reshape()
+		StarTip.tooltipMain:Reshape(12, 12)
     end
 end
 
@@ -257,5 +257,4 @@ function mod:SetUnit()
 	self:StopLines()
 	lines()
 	StarTip.tooltipMain:Show()
-	StarTip.tooltipMain:Reshape()
 end
