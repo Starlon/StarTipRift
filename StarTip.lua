@@ -8,13 +8,27 @@ local environment = {}
 local core = LibCore:New(environment, "StarTip", 2)
 
 local context = UI.CreateContext("StarTip")
+tooltipMain.context = context
 local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
+tooltipMain.frame = frame
 frame:SetBackgroundColor(0, 0, 0, .5)
 frame:SetHeight(500)
 frame:SetWidth(600)
 frame:SetPoint("CENTER", UIParent, "CENTER")
 
 local tremove, tinsert = table.remove, table.insert
+
+function StarTip.copy(src, dst)
+    if type(src) ~= "table" then return nil end
+    if type(dst) ~= "table" then dst = {} end
+    for k, v in pairs(src) do
+        if type(v) == "table" then
+            v = StarTip.copy(v)
+        end
+        dst[k] = v
+    end
+    return dst
+end
 
 local pool = {}
 local function new(...)
@@ -147,7 +161,7 @@ tooltipMain.Shown = function(self)
 end
 
 function StarTip:NewModule(name)
-	local mod = {name=name, core=core, evaluator=LibEvaluator, tooltipMain=tooltipMain}
+	local mod = {name=name, core=core, evaluator=LibEvaluator, tooltipMain=tooltipMain, context=context}
 	table.insert(StarTip.modules, mod)
 	return mod
 end
