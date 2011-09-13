@@ -1,5 +1,4 @@
 local StarTip = _G.StarTip
-do return end
 local mod = StarTip:NewModule("Bars")
 local WidgetBar = LibStub("LibScriptableWidgetBar-1.0", true)
 assert(WidgetBar, "Text module requires LibScriptableWidgetBar-1.0")
@@ -37,19 +36,24 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 		name = "Mana Bar",
 		type = "bar",
 		expression = [[
-self.lastHealthBar = UnitMana(unit) or UnitPower(unit)
-return self.lastHealthBar
+if not UnitMana(unit) and not UnitPower(unit) and not UnitEnergy(unit) then return 0, 0, 0 end
+return UnitMana(unit) or UnitPower(unit) or UnitEnergy(unit) or 0
 ]],
 		min = "return 0",
 		max = [[
-self.lastHealthBarMax = UnitManaMax(unit) or 100
-return self.lastHealthBarMax
+if not UnitMana(unit) and not UnitPower(unit) and not UnitEnergy(unit) then return 0, 0, 0 end
+local mana = UnitManaMax(unit)
+local power = UnitPower(unit)
+local energy = UnitEnergy(unit)
+if (energy or 0) > 100 then return 120 end
+local max = mana or (power and 100) or (energy and 100)
+return max
 ]],
 		color1 = [[
-if not UnitMana(unit) and not UnitPower(unit) then return 0, 0, 0 end
-local mana = UnitMana(unit) or UnitPower(unit) or 0
-local max = UnitManaMax(unit) or 100
-return GradientMana(mana / max)
+if not UnitMana(unit) and not UnitPower(unit) and not UnitEnergy(unit) then return 0, 0, 0 end
+local mana = UnitMana(unit) or UnitPower(unit) or UnitEnergy(unit) or 0
+local max = UnitManaMax(unit) or (UnitPower(unit) and 100) or (UnitEnergy(unit) and 100)
+return Gradient(mana / max, unit)
 ]],
 		height = 6,
 		length = 0,
@@ -90,7 +94,7 @@ function createBars()
 		bar.solid:SetVisible(true)
 		bar.solid:SetLayer(-1)
 		bar:SetLayer(1)
-		bar.solid:SetBackgroundColor(0, 0, 0)
+		bar.solid:SetBackgroundColor(0, 0, 0, .5)
 		bar:SetBackgroundColor(0, 0, 0)
 		-- Set the solid bar to fill the entire buff bar.
 		bar.solid:SetPoint("TOPLEFT", bar, "TOPLEFT")
