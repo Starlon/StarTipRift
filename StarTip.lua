@@ -49,7 +49,7 @@ end
 
 local pool = {}
 local function newCell()
-	local cell = UI.CreateFrame("Text", "StarTipText" .. random() * 1000, frame)
+	local cell = UI.CreateFrame("Text", "StarTipText" .. math.random() * 1000, frame)
 	cell:ClearAll()
 	cell:SetText(" ")
 	return cell
@@ -71,7 +71,6 @@ tooltipMain.AddLine = function(self, txt)
 	else
 		cell:SetPoint("TOPLEFT", self.lines[lineNum - 1][1], "BOTTOMLEFT")
 		cell:SetPoint("TOPRIGHT", self.lines[lineNum - 1][1], "BOTTOMRIGHT")
-		cell:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	end
 	tinsert(self.lines, new(cell))
 	cell:SetText(txt)
@@ -89,15 +88,13 @@ tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 		cell1:SetPoint("TOPLEFT", line[1], "BOTTOMLEFT")
 	end
 	cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
+	--[[
 	if line[2] then
 		cell2:SetPoint("TOPRIGHT", line[2], "BOTTOMRIGHT")
-		--line[2]:ClearPoint("BOTTOMRIGHT")
-		--cell2:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	else
 		cell2:SetPoint("TOPRIGHT", line[1], "BOTTOMRIGHT")
-		--line[1]:ClearPoint("BOTTOMRIGHT")
-		--cell2:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	end
+	]]
 	tinsert(self.lines, new(cell1, cell2))
 	cell1:SetText(txt1)
 	cell2:SetText(txt2)	

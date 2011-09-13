@@ -22,11 +22,12 @@ return self.lastHealthBarMax or 0
 ]],
 		color1 = [[
 if not UnitHealth(unit) then return 1, 1, 1 end
-return Gradient(UnitHealth(unit) / UnitHealthMax(unit))
+return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 ]],
 		height = 6,
 		length = 0,
 		enabled = true,
+		update = 1,
 		layer = 1, 
 		level = 100,
 		points = {{"BOTTOMLEFT", "TOPLEFT"}, {"BOTTOMRIGHT", "TOPRIGHT"}}
@@ -47,13 +48,12 @@ return self.lastHealthBarMax
 if not UnitMana(unit) and not UnitPower(unit) then return 0, 0, 0 end
 local mana = UnitMana(unit) or UnitPower(unit) or 0
 local max = UnitManaMax(unit) or 100
-local color = gradient[101 - floor(mana / max * 100)]
-if not color then return 0, 0, 0 end
-return color[1], color[2], color[3]
+return GradientMana(mana / max)
 ]],
 		height = 6,
 		length = 0,
 		enabled = true,
+		update = 1,
 		layer = 1, 
 		level = 100,
 		points = {{"TOPLEFT", "BOTTOMLEFT"}, {"TOPRIGHT", "BOTTOMRIGHT"}}

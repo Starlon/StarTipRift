@@ -28,73 +28,171 @@ local lines = {}
 local config = {
 lines = {
     [1] = {
+		id = "unitname",
         name = "UnitName",
         left = [[
-return UnitName(unit) .. ((not UnitPlayer(unit)) and " (NPC)" or "")
+return "- " .. UnitName(unit) .. " -"
 ]],
         right = nil,
         enabled = true,
+		fontSize = 15
     },
 	[2] = {
+		id = "target",
 		name = "Target",
 		left = "return 'Target:'",
-		right = "return UnitName(unit..'.target') or 'None'",
-		--rightUpdating = true,
+		right = [[
+local pvp = UnitPVP(unit .. ".target") and " (PVP)" or ""
+local name = UnitName(unit..".target")
+return  name and (name .. pvp) or "None"
+]],
+		rightUpdating = true,
 		update = 500,
-		alignRight = WidgetText.ALIGN_RIGHT,
+		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true,
 	},
 	[3] = {
+		id = "level",
 		name = "Level",
 		left = "return 'Level:'",
 		right = "return UnitLevel(unit)",
-		alignRight = WidgetText.ALIGN_RIGHT,
+		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	},
 	[4] = {
-		name = "Calling",
-		left = "return 'Calling:'",
-		right = "return UnitCalling(unit)",
-		alignRight = WidgetText.ALIGN_RIGHT,
+		id = "flags",
+		name = "Flags",
+		left = "return 'Flags:'",
+		right = [[
+local afk = UnitAFK(unit) and Angle('AFK') or ""
+local offline = UnitOffline(unit) and Angle('Offline') or ""
+local pvp = UnitPVP(unit) and Angle('PVP') or ""
+local npc = (not UnitPlayer(unit)) and Angle('NPC') or ""
+local ret = (afk or offline or pvp or npc) and (afk .. offline .. pvp .. npc)
+return ret ~= "" and ret
+]],
 		enabled = true
 	},
 	[5] = {
+		id = "guild",
+		name = "Guild",
+		left = "return 'Guild:'",
+		right = [[
+local guild = UnitGuild(unit)
+local guild2 = UnitNameSecondary(unit)
+guild2 = guild2 and Angle(guild2)
+return guild or guild2
+]],
+		enabled = true
+	},
+	[6] = {
+		id = "calling",
+		name = "Calling",
+		left = "return 'Calling:'",
+		right = "return UnitCalling(unit)",
+		--alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true
+	},
+	[7] = {
+		id = "role",
+		name = "Role",
+		left = "return 'Role:'",
+		right = "return UnitRole(unit)",
+		enabled = true
+	},
+	[7] = {
+		id = "relation",
 		name = "Relation",
 		left = "return 'Relation:'",
 		right = "return UnitRelation(unit)",
-		alignRight = WidgetText.ALIGN_RIGHT,
+		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true	
 	},
-	[6] = {
+	[8] = {
+		id = "health",
 		name = "Health",
 		left = "return 'Health:'",
 		right = [[
 if not UnitHealth(unit) then return end
-return UnitHealth(unit) .. '/' .. UnitHealthMax(unit)
+return Short(UnitHealth(unit), true) .. '/' .. Short(UnitHealthMax(unit), true)
 ]],
-		alignRight = WidgetText.ALIGN_RIGHT,
+		colorRight = [[
+if not UnitHealth(unit) then return end
+return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))	
+]],
+		rightUpdating = true,
+		update = 200,
+		cols = 15,
 		enabled = true
 	},
-	[7] = {
+	[9] = {
+		id = "mana",
 		name = "Mana",
 		left = "return 'Mana:'",
 		right = [[
 if not UnitMana(unit) then return end
-return UnitMana(unit) .. '/' .. UnitManaMax(unit)
+return Short(UnitMana(unit), true) .. '/' .. Short(UnitManaMax(unit), true)
 ]],
-		alignRight = WidgetText.ALIGN_RIGHT,
+		colorRight = [[
+if not UnitMana(unit) then return end
+return GradientMana(UnitMana(unit) / UnitManaMax(unit))
+]],
+		rightUpdate = true,
+		update = 200,
+		cols = 15,
 		enabled = true
 	},
-	[8] = {
+	[10] = {
+		id = "power",
 		name = "Power",
 		left = "return 'Power:'",
 		right = [[
 return UnitPower(unit)
 ]],
-		alignRight = WidgetText.ALIGN_RIGHT,
+		colorRight = [[
+if not UnitPower(unit) then return end
+return GradientMana(UnitPower(unit) / 100)
+]],
+		cols = 15,
 		enabled = true
-	}
-	
+	},
+	[11] = {
+		id = "energy",
+		name = "Energy",
+		left = "return 'Energy:'",
+		right = [[
+return UnitEnergy(unit)
+]],
+		colorRight = [[
+if not UnitEnergy(unit) then return end
+return GradientMana(UnitEnergy(unit) / 100)
+]],
+		cols = 15,
+		enabled = true
+	},	
+	[12] = {
+		id = "guaranteedloot",
+		name = "Guaranteed Loot",
+		left = "return UnitGuaranteedLoot(unit) and Angle('This NPC is guaranteed to drop loot.')",
+		enabled = true
+	},	
+	[13] = {
+		id = "loot",
+		name = "Loot",
+		left = "return 'Loot:'",
+		right = [[
+local loot = UnitLoot(unit)
+if loot then return UnitName(loot) end
+]],
+		enabled = true
+	},
+	[14] = {
+		id = "mark",
+		name = "Mark",
+		left = "return 'Mark:'",
+		right = "return UnitMark(unit)",
+		enabled = true
+	},
 
 }
 }
@@ -116,12 +214,13 @@ do
         for i, widget in ipairs(widgetsToDraw) do
 			if widget.cell then
 				widget.cell:SetText(widget.buffer)
+				widget.cell:SetFontSize(widget.fontSize or 12)
 			end
 
-			if type(widget.config.color) == "string" and (widget.config.color == " " or widget.config.color ~= "") and widget.color.is_valid then
+			if widget.color.is_valid then
 				widget.color:Eval()
 				local r, g, b, a = widget.color:P2N()
-				widget.cell:SetFontColor(r, g, b)
+				widget.cell:SetFontColor(r, g, b, a or 1)
 			end
 		end
 
@@ -161,10 +260,11 @@ function mod:CreateLines()
             j = j + 1
             llines[j] = copy(v)
             llines[j].config = copy(v)
+			
 			v.align = v.alignLeft
             v.value = v.left
             v.outlined = v.leftOutlined
-            v.color = v.colorL
+            v.color = v.colorLeft
             v.maxWidth = v.maxWidthL
             v.minWidth = v.minWidthL
             local update = v.update or 0
@@ -178,11 +278,12 @@ function mod:CreateLines()
             v.outlined = v.rightOutlined
             v.update = 0
             if v.right and v.rightUpdating then v.update = update end
-            v.color = v.colorR
+            v.color = v.colorRight
             v.maxWidth = v.maxWidthR
             v.minWidth = v.minWidthR
 			mod.core.environment.unit = "mouseover"
             llines[j].rightObj = v.right and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
+			
         end
     end
     self:ClearLines()
