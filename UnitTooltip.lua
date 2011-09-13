@@ -100,7 +100,7 @@ return guild or guild2
 		right = "return UnitRole(unit)",
 		enabled = true
 	},
-	[7] = {
+	[8] = {
 		id = "relation",
 		name = "Relation",
 		left = "return 'Relation:'",
@@ -108,7 +108,7 @@ return guild or guild2
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true	
 	},
-	[8] = {
+	[9] = {
 		id = "health",
 		name = "Health",
 		left = "return 'Health:'",
@@ -125,7 +125,7 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 		cols = 15,
 		enabled = true
 	},
-	[9] = {
+	[10] = {
 		id = "mana",
 		name = "Mana",
 		left = "return 'Mana:'",
@@ -142,7 +142,7 @@ return GradientMana(UnitMana(unit) / UnitManaMax(unit))
 		cols = 15,
 		enabled = true
 	},
-	[10] = {
+	[11] = {
 		id = "power",
 		name = "Power",
 		left = "return 'Power:'",
@@ -156,7 +156,7 @@ return GradientMana(UnitPower(unit) / 100)
 		cols = 15,
 		enabled = true
 	},
-	[11] = {
+	[12] = {
 		id = "energy",
 		name = "Energy",
 		left = "return 'Energy:'",
@@ -170,13 +170,13 @@ return GradientMana(UnitEnergy(unit) / 100)
 		cols = 15,
 		enabled = true
 	},	
-	[12] = {
+	[13] = {
 		id = "guaranteedloot",
 		name = "Guaranteed Loot",
 		left = "return UnitGuaranteedLoot(unit) and Angle('This NPC is guaranteed to drop loot.')",
 		enabled = true
 	},	
-	[13] = {
+	[14] = {
 		id = "loot",
 		name = "Loot",
 		left = "return 'Loot:'",
@@ -186,7 +186,7 @@ if loot then return UnitName(loot) end
 ]],
 		enabled = true
 	},
-	[14] = {
+	[15] = {
 		id = "mark",
 		name = "Mark",
 		left = "return 'Mark:'",
