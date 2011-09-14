@@ -370,8 +370,6 @@ end
 
 function mod:SetUnit()
 	if not self.core.environment.UnitName("mouseover") then return end
-	StarTip.tooltipMain:Hide()
 	self:StopLines()
 	lines()
-	StarTip.tooltipMain:Show()
 end

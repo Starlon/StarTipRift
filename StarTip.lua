@@ -3,6 +3,7 @@ local tooltipMain = _G.StarTip.tooltipMain
 
 local LibCore = LibStub("LibScriptableLCDCoreLite-1.0")
 local LibEvaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
+local LibFlash = LibStub("LibFlash")
 
 local environment = {}
 local core = LibCore:New(environment, "StarTip", 2)
@@ -10,6 +11,7 @@ local core = LibCore:New(environment, "StarTip", 2)
 local context = UI.CreateContext("StarTip")
 tooltipMain.context = context
 local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
+frame.flash = LibFlash:New(frame)
 tooltipMain.frame = frame
 frame:SetBackgroundColor(0, 0, 0, .5)
 frame:SetHeight(500)
@@ -138,19 +140,19 @@ tooltipMain.NumLines = function(self)
 end
 
 tooltipMain.Show = function(self)
+	frame.flash:Stop()
+	if frame.alpha then frame:SetAlpha(frame.alpha) end
 	frame:SetVisible(true)
-	for k, v in ipairs(self.lines) do
-		v[1]:SetVisible(true)
-		if v[2] then v[2]:SetVisible(true) end
-	end
+end
+
+local function realHide()
+	frame:SetVisible(false)
+	frame:SetAlpha(frame.alpha)
 end
 
 tooltipMain.Hide = function(self)
-	frame:SetVisible(false)
-	for k, v in ipairs(self.lines) do
-		v[1]:SetVisible(false)
-		if v[2] then v[2]:SetVisible(false) end	
-	end
+	frame.alpha = frame:GetAlpha()
+	frame.flash:Fade(1, frame.alpha, 0, realHide)
 end
 
 tooltipMain.Shown = function(self)
@@ -198,7 +200,6 @@ local function startup()
 end
 
 local function unitChanged(id)
-	tooltipMain:Clear()
 	if id then
 		for k, mod in pairs(StarTip.modules) do
 			if mod.SetUnit then mod:SetUnit() end

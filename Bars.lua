@@ -68,6 +68,8 @@ return Gradient(mana / max, unit)
 }
 
 function updateBar(widget)
+	if not mod.core.environment.UnitName("mouseover") then return end
+	
 	local bar = widget.bar
 	
 	bar.solid:SetPoint("RIGHT", bar, widget.val1, nil)
