@@ -137,7 +137,7 @@ return Short(UnitMana(unit), true) .. '/' .. Short(UnitManaMax(unit), true)
 if not UnitMana(unit) then return end
 return GradientMana(UnitMana(unit) / UnitManaMax(unit))
 ]],
-		rightUpdate = true,
+		rightUpdating = true,
 		update = 200,
 		cols = 15,
 		enabled = true
@@ -153,6 +153,8 @@ return UnitPower(unit)
 if not UnitPower(unit) then return end
 return GradientMana(UnitPower(unit) / 100)
 ]],
+		rightUpdating = true,
+		update = 200,
 		cols = 15,
 		enabled = true
 	},
@@ -167,6 +169,8 @@ return UnitEnergy(unit)
 if not UnitEnergy(unit) then return end
 return GradientMana(UnitEnergy(unit) / 100)
 ]],
+		rightUpdating = true,
+		update = 200,
 		cols = 15,
 		enabled = true
 	},	
