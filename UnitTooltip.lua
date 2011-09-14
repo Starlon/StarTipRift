@@ -31,7 +31,10 @@ lines = {
 		id = "unitname",
         name = "UnitName",
         left = [[
-return "- " .. UnitName(unit) .. " -"
+local name = UnitName(unit)
+if name then
+	return "- " .. name .. " -"
+end
 ]],
         colorLeft = [[
 return UnitRelationColor(unit)
