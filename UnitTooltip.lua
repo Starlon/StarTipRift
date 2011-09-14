@@ -33,7 +33,13 @@ lines = {
         left = [[
 return "- " .. UnitName(unit) .. " -"
 ]],
-        right = nil,
+        colorLeft = [[
+if UnitPlayer(unit) then
+	return 123 / 255, 171 / 255, 252 / 255
+else
+	return 0, 1, 0
+end
+]],
         enabled = true,
 		fontSize = 15
     },
