@@ -34,11 +34,7 @@ lines = {
 return "- " .. UnitName(unit) .. " -"
 ]],
         colorLeft = [[
-if UnitPlayer(unit) then
-	return 123 / 255, 171 / 255, 252 / 255
-else
-	return 0, 1, 0
-end
+return UnitRelationColor(unit)
 ]],
         enabled = true,
 		fontSize = 15
@@ -48,9 +44,13 @@ end
 		name = "Target",
 		left = "return 'Target:'",
 		right = [[
-local pvp = UnitPVP(unit .. ".target") and " (PVP)" or ""
+local pvp = UnitPVP(unit .. ".target") and "++" or ""
 local name = UnitName(unit..".target")
 return  name and (name .. pvp) or "None"
+]],
+		colorRight = [[
+if not UnitName(unit..".target") then return 1, 1, 1, 1 end
+return UnitRelationColor(unit..'.target')
 ]],
 		rightUpdating = true,
 		update = 500,
@@ -70,24 +70,26 @@ return  name and (name .. pvp) or "None"
 		name = "Flags",
 		left = "return 'Flags:'",
 		right = [[
+if not UnitPlayer(unit) then return end
 local afk = UnitAFK(unit) and Angle('AFK') or ""
 local offline = UnitOffline(unit) and Angle('Offline') or ""
 local pvp = UnitPVP(unit) and Angle('PVP') or ""
-local npc = (not UnitPlayer(unit)) and Angle('NPC') or ""
-local ret = (afk or offline or pvp or npc) and (afk .. offline .. pvp .. npc)
+local ret = (afk or offline or pvp) and (afk .. offline .. pvp)
 return ret ~= "" and ret
 ]],
 		enabled = true
 	},
 	[5] = {
 		id = "guild",
-		name = "Guild",
-		left = "return 'Guild:'",
+		name = "Guild/Title",
+		left = "return UnitPlayer(unit) and 'Guild:' or 'Title:'",
 		right = [[
-local guild = UnitGuild(unit)
-local guild2 = UnitNameSecondary(unit)
-guild2 = guild2 and Angle(guild2)
-return guild or guild2
+if UnitPlayer(unit) then
+	return UnitGuild(unit)
+else
+	local title = UnitNameSecondary(unit)
+	return title and Angle(title)
+end
 ]],
 		enabled = true
 	},
@@ -110,7 +112,7 @@ return guild or guild2
 		id = "relation",
 		name = "Relation",
 		left = "return 'Relation:'",
-		right = "return UnitRelation(unit)",
+		right = "return nil -- UnitRelation(unit)",
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true	
 	},
