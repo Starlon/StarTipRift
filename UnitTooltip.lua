@@ -315,7 +315,7 @@ function mod:CreateLines()
 					v.rightObj.buffer = false
                 end
                 local left, right = '', ''
-                mod.core.environment.unit = "player"
+                mod.core.environment.unit = "mouseover"
                 if v.right then
                     if v.rightObj then
                         mod.core.environment.self = v.rightObj
