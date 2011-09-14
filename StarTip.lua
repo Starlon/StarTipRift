@@ -218,3 +218,19 @@ table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
 table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 
 table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip", "refresh"})
+
+table.insert(Command.Slash.Register("startip"), {function (commands)	
+	if commands == "cpu" then
+		StarTip:CPU()
+	end
+end, "StarTip", "Slash command"})
+
+function StarTip:CPU()
+	local cpu = Inspect.Addon.Cpu()
+	if cpu.StarTip then
+		print("-------- StarTip CPU Usage --------")
+		for k, v in pairs(cpu.StarTip) do
+			print(k, ":", v)
+		end
+	end
+end
