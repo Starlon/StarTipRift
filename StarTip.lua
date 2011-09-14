@@ -163,6 +163,7 @@ function StarTip:NewModule(name)
 	return mod
 end
 
+local abs = math.abs
 local function update()
 	if not tooltipMain:Shown() then return end
 	local mouse = Inspect.Mouse()
@@ -170,6 +171,18 @@ local function update()
 	local height = frame:GetHeight()
 	local x, y = mouse.x - width / 2, mouse.y - height
 	
+	frame:ClearAll()
+	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
+	local top = frame:GetTop() - 6
+	local bottom = frame:GetBottom() + 6
+	local left = frame:GetLeft()
+	local right = frame:GetRight()
+	local uiw = UIParent:GetWidth()
+	local uih = UIParent:GetHeight()
+	if top < 0 then y = y + abs(top) end
+	if left < 0 then x = x + abs(left) end
+	if bottom > uih then y = y - (bottom - uih) end
+	if right > uiw then x = x - (right - uiw) end
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()
