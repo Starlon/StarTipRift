@@ -1,15 +1,15 @@
 local mod = StarTip:NewModule("Background")
 
 mod.bgColor = { -- Default colors from CowTip
-			guild = {0, 0.15, 0, .5},
-			hostilePC = {0.25, 0, 0, .5},
-			hostileNPC = {0.15, 0, 0, .5},
-			neutralNPC = {0.15, 0.15, 0, .5},
-			friendlyPC = {0, 0, 0.25, .5},
-			friendlyNPC = {0, 0, 0.15, .5},
-			other = {0, 0, 0, .5},
-			dead = {0.15, 0.15, 0.15, .5},
-			tapped = {0.25, 0.25, 0.25, .5},
+			guild = {0, 0.15, 0, .6},
+			hostilePC = {0.25, 0, 0, .6},
+			hostileNPC = {0.15, 0, 0, .6},
+			neutralNPC = {0.15, 0.15, 0, .6},
+			friendlyPC = {0, 0, 0.25, .6},
+			friendlyNPC = {0, 0, 0.15, .6},
+			other = {0, 0, 0, .6},
+			dead = {0.15, 0.15, 0.15, .6},
+			tapped = {0.25, 0.25, 0.25, .6},
 		}
 local bgColor = mod.bgColor
 
