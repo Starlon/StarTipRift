@@ -31,7 +31,6 @@ Embed = {
 Dependencies = {
   LibStub = {"optional", "before"}, 
   LibCallbackHandler = {"optional", "before"}, 
-  LibScriptableWidgetText_1_0 = {"optional", "before"}
 }
 
 SavedVariables = {
