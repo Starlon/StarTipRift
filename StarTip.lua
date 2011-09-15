@@ -19,6 +19,7 @@ frame:SetWidth(600)
 frame:SetPoint("CENTER", UIParent, "CENTER")
 
 local tremove, tinsert = table.remove, table.insert
+local select = select
 
 function StarTip.copy(src, dst)
     if type(src) ~= "table" then return nil end
@@ -51,7 +52,7 @@ end
 
 local pool = {}
 local function newCell()
-	local cell = UI.CreateFrame("Text", "StarTipText" .. math.random() * 1000, frame)
+	local cell = select(2, tremove(pool)) or UI.CreateFrame("Text", "StarTipText" .. math.random() * 1000, frame)
 	cell:ClearAll()
 	cell:SetText(" ")
 	return cell
@@ -90,13 +91,6 @@ tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 		cell1:SetPoint("TOPLEFT", line[1], "BOTTOMLEFT")
 	end
 	cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
-	--[[
-	if line[2] then
-		cell2:SetPoint("TOPRIGHT", line[2], "BOTTOMRIGHT")
-	else
-		cell2:SetPoint("TOPRIGHT", line[1], "BOTTOMRIGHT")
-	end
-	]]
 	tinsert(self.lines, new(cell1, cell2))
 	cell1:SetText(txt1)
 	cell2:SetText(txt2)	

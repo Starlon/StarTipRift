@@ -31,7 +31,9 @@ lines = {
 		id = "unitname",
         name = "UnitName",
         left = [[
-local name = UnitName(unit) .. (UnitPVP(unit) and "<PVP>" or "")
+local name = UnitName(unit)
+if not name then return end
+name = name .. (UnitPVP(unit) and "<PVP>" or "")
 local afk = UnitAFK(unit)
 local afk_time = UnitAFKTime(unit)
 local afk_fmt = afk and (afk_time and Angle('AFK: ' .. FormatDuration(afk_time)) or Angle('AFK')) or ''
