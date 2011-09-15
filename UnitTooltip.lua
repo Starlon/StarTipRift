@@ -31,15 +31,23 @@ lines = {
 		id = "unitname",
         name = "UnitName",
         left = [[
-local name = UnitName(unit)
+local name = UnitName(unit) .. (UnitPVP(unit) and "<PVP>" or "")
+local afk = UnitAFK(unit)
+local afk_time = UnitAFKTime(unit)
+local afk_fmt = afk and (afk_time and Angle('AFK: ' .. FormatDuration(afk_time)) or Angle('AFK')) or ''
+local offline = UnitOffline(unit)
+local offline_time = UnitOfflineTime(unit)
+local offline_fmt = offline and (offline_time and Angle('Offline: ' .. FormatDuration(offline_time)) or Angle('Offline')) or ""
 if name then
-	return "- " .. name .. " -"
+	return name .. afk_fmt .. offline_fmt
 end
 ]],
         colorLeft = [[
 return UnitRelationColor(unit)
 ]],
         enabled = true,
+		update = 1000,
+		leftUpdating = true,
 		fontSize = 15
     },
 	[2] = {
@@ -70,20 +78,6 @@ return UnitRelationColor(unit..'.target')
 		enabled = true
 	},
 	[4] = {
-		id = "flags",
-		name = "Flags",
-		left = "return 'Flags:'",
-		right = [[
-if not UnitPlayer(unit) then return end
-local afk = UnitAFK(unit) and Angle('AFK') or ""
-local offline = UnitOffline(unit) and Angle('Offline') or ""
-local pvp = UnitPVP(unit) and Angle('PVP') or ""
-local ret = (afk or offline or pvp) and (afk .. offline .. pvp)
-return ret ~= "" and ret
-]],
-		enabled = true
-	},
-	[5] = {
 		id = "guild",
 		name = "Guild/Title",
 		left = "return UnitPlayer(unit) and 'Guild:' or 'Title:'",
@@ -98,7 +92,7 @@ end
 ]],
 		enabled = true
 	},
-	[6] = {
+	[5] = {
 		id = "calling",
 		name = "Calling",
 		left = "return 'Calling:'",
@@ -106,14 +100,14 @@ end
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	},
-	[7] = {
+	[6] = {
 		id = "role",
 		name = "Role",
 		left = "return 'Role:'",
 		right = "return UnitRole(unit)",
 		enabled = true
 	},
-	[8] = {
+	[7] = {
 		id = "relation",
 		name = "Relation",
 		left = "return 'Relation:'",
@@ -121,7 +115,7 @@ end
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true	
 	},
-	[9] = {
+	[8] = {
 		id = "health",
 		name = "Health",
 		left = "return 'Health:'",
@@ -138,7 +132,7 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 		cols = 15,
 		enabled = true
 	},
-	[10] = {
+	[9] = {
 		id = "mana",
 		name = "Mana",
 		left = "return 'Mana:'",
@@ -155,7 +149,7 @@ return GradientMana(UnitMana(unit) / UnitManaMax(unit))
 		cols = 15,
 		enabled = true
 	},
-	[11] = {
+	[10] = {
 		id = "power",
 		name = "Power",
 		left = "return 'Power:'",
@@ -171,7 +165,7 @@ return GradientMana(UnitPower(unit) / 100)
 		cols = 15,
 		enabled = true
 	},
-	[12] = {
+	[11] = {
 		id = "energy",
 		name = "Energy",
 		left = "return 'Energy:'",
@@ -187,13 +181,13 @@ return GradientMana(UnitEnergy(unit) / 100)
 		cols = 15,
 		enabled = true
 	},	
-	[13] = {
+	[12] = {
 		id = "guaranteedloot",
 		name = "Guaranteed Loot",
 		left = "return UnitGuaranteedLoot(unit) and Angle('This NPC is guaranteed to drop loot.')",
 		enabled = true
 	},	
-	[14] = {
+	[13] = {
 		id = "loot",
 		name = "Loot",
 		left = "return 'Loot:'",
@@ -203,7 +197,7 @@ if loot then return UnitName(loot) end
 ]],
 		enabled = true
 	},
-	[15] = {
+	[14] = {
 		id = "mark",
 		name = "Mark",
 		left = "return 'Mark:'",
@@ -230,8 +224,8 @@ do
     function draw()
         for i, widget in ipairs(widgetsToDraw) do
 			if widget.cell then
-				widget.cell:SetText(widget.buffer)
 				widget.cell:SetFontSize(widget.fontSize or 12)
+				widget.cell:SetText(widget.buffer)
 			end
 
 			if widget.color.is_valid then

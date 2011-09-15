@@ -120,12 +120,11 @@ tooltipMain.Reshape = function(self)
 		local left = line[1];
 		local right = line[2];
 		left:ResizeToText()
-		local h = left:GetHeight()
-		height = height + left:GetHeight()
-		local w = left:GetWidth()
+		height = height + left:GetFullHeight()
+		local w = left:GetFullWidth()
 		if right then 
 			right:ResizeToText()
-			w = w + right:GetWidth()
+			w = w + right:GetFullWidth()
 		end
 		if w > width then 
 			width = w
@@ -191,7 +190,6 @@ local function update()
 end
 
 local function startup()
-	tooltipMain:Hide()
 	for k, mod in pairs(StarTip.modules) do
 		if mod.OnEnable then
 			mod:OnEnable()
