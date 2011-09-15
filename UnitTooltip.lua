@@ -89,7 +89,8 @@ return ret ~= "" and ret
 		left = "return UnitPlayer(unit) and 'Guild:' or 'Title:'",
 		right = [[
 if UnitPlayer(unit) then
-	return UnitGuild(unit)
+	local guild = UnitGuild(unit)
+	return guild and Angle(guild)
 else
 	local title = UnitNameSecondary(unit)
 	return title and Angle(title)
