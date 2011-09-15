@@ -65,6 +65,7 @@ return UnitRelationColor(unit..'.target')
 		name = "Level",
 		left = "return 'Level:'",
 		right = "return UnitLevel(unit)",
+		colorRight = "return DifficultyColor(unit)",
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	},
