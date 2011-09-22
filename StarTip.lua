@@ -7,6 +7,7 @@ local LibFlash = LibStub("LibFlash")
 
 local environment = {}
 local core = LibCore:New(environment, "StarTip", 2)
+_G.StarTip.core = core
 
 local context = UI.CreateContext("StarTip")
 tooltipMain.context = context

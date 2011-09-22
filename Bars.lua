@@ -63,7 +63,27 @@ return Gradient(mana / max, unit)
 		level = 100,
 		points = {{"TOPLEFT", "BOTTOMLEFT"}, {"TOPRIGHT", "BOTTOMRIGHT"}}
 	},
-	
+	[3] = {
+		name = "Cast Bar",
+		type = "bar",
+		expression = [[
+self.castText = UnitCastName(unit)
+local perc = 1 - (UnitCastPercent(unit) or 1)
+if perc <= 0.00001 then self.castText = false end
+return perc
+]],
+		max = "return 1",
+		min = "return 0",
+		color1 = "return 1, 0, 1",
+		height = 6,
+		length = 0,
+		alpha = 0,
+		enabled = true,
+		update = 1,
+		layer = 1,
+		level = 100,
+		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -10}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -10}}
+	}
 	}
 }
 
@@ -82,8 +102,13 @@ function updateBar(widget)
 
 	if type(r) == "number" then
 		bar.solid:SetBackgroundColor(r, g, b)
+	end
+	
+	if type(widget.castText) == "string" then
+		bar.text:SetText(widget.castText)
+		bar.text:SetWidth(bar:GetWidth())
 	else
-		--bar:Hide()
+		bar.text:SetText("")
 	end
 	
 end
@@ -97,16 +122,19 @@ function createBars()
 		bar.solid:SetLayer(-1)
 		bar:SetLayer(1)
 		bar.solid:SetBackgroundColor(0, 0, 0, .5)
-		bar:SetBackgroundColor(0, 0, 0)
+		bar:SetBackgroundColor(0, 0, 0, v.alpha or 0.3)
 		-- Set the solid bar to fill the entire buff bar.
 		bar.solid:SetPoint("TOPLEFT", bar, "TOPLEFT")
 		bar.solid:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+		
+		bar.text = UI.CreateFrame("Text", "Text", bar)
+		bar.text:SetPoint("CENTER", bar, "CENTER")
     
 		-- This is hardcoded, but in a full fleshed-out addon, it would be set by the user.
 		-- This could be done now with slash commands, but couldn't be saved yet.
 
-		bar:SetPoint(v.points[1][1], mod.tooltipMain.frame, v.points[1][2])
-		bar:SetPoint(v.points[2][1], mod.tooltipMain.frame, v.points[2][2])
+		bar:SetPoint(v.points[1][1], mod.tooltipMain.frame, v.points[1][2], v.points[1][3] or 0, v.points[1][4] or 0)
+		bar:SetPoint(v.points[2][1], mod.tooltipMain.frame, v.points[2][2], v.points[2][3] or 0, v.points[1][4] or 0)
 		
 		bar:SetHeight(v.height)
 		
@@ -114,6 +142,7 @@ function createBars()
 		widget.bar = bar
 		table.insert(widgets, widget)
 	end
+	
 end
 
 function startBars()
@@ -129,4 +158,5 @@ end
 function mod:SetUnit()
 	startBars()
 end
+
 
