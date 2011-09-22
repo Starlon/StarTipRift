@@ -1,13 +1,7 @@
 local StarTip = _G.StarTip
 local mod = StarTip:NewModule("UnitTooltip")
-local WidgetText = LibStub("LibScriptableWidgetText-1.0", true)
-assert(WidgetText, "Text module requires LibScriptableWidgetText-1.0")
---local LCDText = LibStub("LibScriptableLCDText-1.0", true)
---assert(LCDText, mod.name .. " requires LibScriptableLCDText-1.0")
---local LibCore = LibStub("LibScriptableLCDCore-1.0", true)
---assert(LibCore, mod.name .. " requires LibScriptableLCDCore-1.0")
---local LibTimer = LibStub("LibScriptableUtilsTimer-1.0", true)
---assert(LibTimer, mod.name .. " requires LibScriptableUtilsTimer-1.0")
+local WidgetText = LibStub("LibScriptableWidgetText-1.0")
+local Evaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
 
 local tinsert = table.insert
 local tremove = table.remove
@@ -26,6 +20,13 @@ end
 
 local lines = {}
 local config = {
+
+onMouseover = {
+	code = [[
+ResetDPS(unit)
+]]
+},
+
 lines = {
     [1] = {
 		id = "unitname",
@@ -206,6 +207,15 @@ if loot then return UnitName(loot) end
 		right = "return UnitMark(unit)",
 		enabled = true
 	},
+	[15] = {
+		id = "dps",
+		name = "DPS",
+		left = "return 'DPS:'",
+		right = "return UnitDPS(unit) or '---'",
+		enabled = true,
+		rightUpdating = true,
+		update = 200
+	}
 
 }
 }
@@ -368,6 +378,7 @@ end
 
 function mod:SetUnit()
 	if not self.core.environment.UnitName("mouseover") then return end
+	Evaluator.Evaluate(self.core.environment, "onMouseover", config.onMouseover.code, "mouseover")
 	self:StopLines()
 	lines()
 end
