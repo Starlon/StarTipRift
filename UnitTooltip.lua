@@ -177,7 +177,7 @@ return UnitEnergy(unit)
 ]],
 		colorRight = [[
 if not UnitEnergy(unit) then return end
-return GradientMana(UnitEnergy(unit) / 100)
+return GradientMana(UnitEnergy(unit) / UnitEnergyMax(unit))
 ]],
 		rightUpdating = true,
 		update = 200,

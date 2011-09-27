@@ -44,15 +44,14 @@ return UnitMana(unit) or UnitPower(unit) or UnitEnergy(unit) or 0
 if not UnitMana(unit) and not UnitPower(unit) and not UnitEnergy(unit) then return 0, 0, 0 end
 local mana = UnitManaMax(unit)
 local power = UnitPower(unit)
-local energy = UnitEnergy(unit)
-if (energy or 0) > 100 then return 120 end
-local max = mana or (power and 100) or (energy and 100)
+local energy = UnitEnergyMax(unit)
+local max = mana or (power and 100) or energy
 return max
 ]],
 		color1 = [[
 if not UnitMana(unit) and not UnitPower(unit) and not UnitEnergy(unit) then return 0, 0, 0 end
 local mana = UnitMana(unit) or UnitPower(unit) or UnitEnergy(unit) or 0
-local max = UnitManaMax(unit) or (UnitPower(unit) and 100) or (UnitEnergy(unit) and 100)
+local max = UnitManaMax(unit) or (UnitPower(unit) and 100) or (UnitEnergyMax(unit))
 return Gradient(mana / max, unit)
 ]],
 		height = 6,
