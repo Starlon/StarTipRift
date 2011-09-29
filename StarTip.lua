@@ -139,14 +139,18 @@ tooltipMain.Show = function(self)
 	frame:SetVisible(true)
 end
 
-local function realHide()
+local function realHide() 
 	frame:SetVisible(false)
 	frame:SetAlpha(frame.alpha)
 end
 
-tooltipMain.Hide = function(self)
+tooltipMain.FadeOut = function(self)
 	frame.alpha = frame:GetAlpha()
 	frame.flash:Fade(1, frame.alpha, 0, realHide)
+end
+
+tooltipMain.Hide = function(self)
+	frame:SetVisible(false)
 end
 
 tooltipMain.Shown = function(self)
@@ -199,7 +203,7 @@ local function unitChanged(id)
 		end
 		tooltipMain:Show()
 	else
-		tooltipMain:Hide()
+		tooltipMain:FadeOut()
 		for k, mod in pairs(StarTip.modules) do
 			if mod.OnHide then mod:OnHide() end
 		end
