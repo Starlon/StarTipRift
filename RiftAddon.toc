@@ -16,7 +16,8 @@ RunOnStartup = {
   "StarTip.lua",
   "UnitTooltip.lua",
   "Bars.lua",
-  "Background.lua"
+  "Background.lua",
+  
 }
 
 Embed = {
@@ -24,13 +25,15 @@ Embed = {
   ["Libs/CallbackHandler-1.0"] = true,
   ["Libs/LibUnitChange"] = true,
   ["Libs/LibScriptable-1.0"] = true,
-  ["Libs/LibFlash"] = true
+  ["Libs/LibFlash"] = true,
+  ["Libs/Dongle"] = true
 }
 
 -- This line would set up dependencies with several other addons.
 Dependencies = {
   LibStub = {"optional", "before"}, 
   LibCallbackHandler = {"optional", "before"}, 
+  Dongle = {"optional", "before"}
 }
 
 SavedVariables = {

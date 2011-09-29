@@ -1,0 +1,15 @@
+Identifier = "Dongle"
+
+Name = "Dongle"
+
+Description = "UI element flash and fade library."
+
+Author = "Scott Sibley (Starlon)"
+Website = ""
+Email = "sisibley@gmail.com"
+
+Environment = "1.3"
+
+RunOnStartup = {
+	"Dongle.lua"
+}

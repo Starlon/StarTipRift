@@ -1,5 +1,7 @@
+local Dongle = DongleStub("Dongle-1.2"):New("StarTip")
 _G.StarTip = {tooltipMain = {lines={}}, modules={}, unit="mouseover", errorLevel=2}
-local tooltipMain = _G.StarTip.tooltipMain
+
+local tooltipMain = StarTip.tooltipMain
 
 local LibCore = LibStub("LibScriptableLCDCoreLite-1.0")
 local LibEvaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
@@ -7,29 +9,21 @@ local LibFlash = LibStub("LibFlash")
 
 local environment = {}
 local core = LibCore:New(environment, "StarTip", 2)
-_G.StarTip.core = core
+StarTip.core = core
 
-local config = {
-	mouse = true,
-	x = 10,
-	y = 10
+local defaults = {
+	profile = {
+		mouse = true,
+		x = 10,
+		y = 10
+	}
 }
-
-StarTip_SavedVariables = config
+local config
 
 local function svsave()
-	StarTip_SavedVariables = StarTip_SavedVariables or {}
-	for k, v in pairs(config) do
-		StarTip_SavedVariables[k] = v
-	end
 end
 
 local function svload()
-	if StarTip_SavedVariables then
-		for k, v in pairs(StarTip_SavedVariables) do
-			config[k] = v
-		end
-	end
 end
 
 table.insert(Event.Addon.SavedVariables.Save.Begin, {function () svsave() end, "StarTip", "Save variables"})
@@ -272,10 +266,8 @@ mouseLabel:SetPoint("TOPLEFT", close, "BOTTOMLEFT", 0, 15)
 local mouse = UI.CreateFrame("RiftCheckbox", "Move mouse", configDialog)
 mouse:ResizeToDefault()
 mouse:SetPoint("TOPLEFT", mouseLabel, "TOPRIGHT", 10, 0)
-mouse:SetChecked(config.mouse)
 
 local startPositionMouse = UI.CreateFrame("RiftButton", "Start position mouse", configDialog)
-startPositionMouse:SetVisible(not config.mouse)
 startPositionMouse:SetText("Position Mouse")
 startPositionMouse:ResizeToDefault()
 startPositionMouse:SetPoint("TOPLEFT", mouse, "TOPRIGHT", 10, -10)
@@ -362,11 +354,34 @@ local function startup()
 			mod:OnEnable()
 		end
 	end
-	if config.mouse then
-		table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
-	else
-		frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
-	end	
+	
 end
 
 table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
+
+local function playerLoaded(units)
+	for k, v in pairs(units) do
+		if v == "player" then
+			config = Dongle:InitializeDB(StarTip_SavedVariables, defaults)
+			config = config.profile
+
+			if not config then return end
+			
+			if config.mouse then
+				table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
+			else
+				frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
+			end	
+			mouse:SetChecked(config.mouse)
+			startPositionMouse:SetVisible(not config.mouse)
+			
+			for i = #Event.Unit.Available, 1, -1 do
+				if Event.Unit.Available[i][1] == playerLoaded then
+					table.remove(Event.Unit.Available, i)
+				end
+			end
+		end
+	end
+end
+
+table.insert(Event.Unit.Available, {playerLoaded, "StarTip", "player loaded"})
