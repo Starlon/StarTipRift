@@ -9,7 +9,15 @@ local environment = {}
 local core = LibCore:New(environment, "StarTip", 2)
 _G.StarTip.core = core
 
+local config = {
+	mouse = true,
+	x = 10,
+	y = 10
+}
+_G.StarTip.config = config
+
 local context = UI.CreateContext("StarTip")
+
 tooltipMain.context = context
 local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
 frame.flash = LibFlash:New(frame)
@@ -17,7 +25,6 @@ tooltipMain.frame = frame
 frame:SetBackgroundColor(0, 0, 0, .5)
 frame:SetHeight(500)
 frame:SetWidth(600)
-frame:SetPoint("CENTER", UIParent, "CENTER")
 
 local tremove, tinsert = table.remove, table.insert
 local select = select
@@ -194,6 +201,9 @@ local function startup()
 			mod:OnEnable()
 		end
 	end
+	if not config.mouse then
+		frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10 )
+	end
 end
 
 local function unitChanged(id)
@@ -210,7 +220,11 @@ local function unitChanged(id)
 	end
 end
 
-table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
+if config.mouse then
+	table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
+else
+	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
+end
 
 table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 
@@ -219,6 +233,8 @@ table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip
 table.insert(Command.Slash.Register("startip"), {function (commands)	
 	if commands == "cpu" then
 		StarTip:CPU()
+	elseif commands:match("config") then
+		StarTip:OpenConfig()
 	end
 end, "StarTip", "Slash command"})
 
@@ -230,4 +246,115 @@ function StarTip:CPU()
 			print(k, ":", v)
 		end
 	end
+end
+
+local configDialog = UI.CreateFrame("RiftWindow", "Configuration", context)
+configDialog:SetPoint("CENTER", UIParent, "CENTER")
+configDialog:SetWidth(420)
+configDialog:SetHeight(500)
+configDialog:SetVisible(true)
+
+local close = UI.CreateFrame("RiftButton", "Exit Button", configDialog)
+close:SetPoint("TOPLEFT", configDialog, "TOPLEFT", 20, 50)
+close:ResizeToDefault()
+close:SetText("Close")
+close.Event.LeftPress = function()
+	configDialog:SetVisible(false)
+end
+
+local mouseLabel = UI.CreateFrame("Text", "Mouse label", configDialog)
+mouseLabel:SetText("Position with Mouse")
+mouseLabel:ResizeToText()
+mouseLabel:SetPoint("TOPLEFT", close, "BOTTOMLEFT", 0, 15)
+
+local mouse = UI.CreateFrame("RiftCheckbox", "Move mouse", configDialog)
+mouse:ResizeToDefault()
+mouse:SetPoint("TOPLEFT", mouseLabel, "TOPRIGHT", 10, 0)
+mouse:SetChecked(config.mouse)
+
+local startPositionMouse = UI.CreateFrame("RiftButton", "Start position mouse", configDialog)
+startPositionMouse:SetVisible(not config.mouse)
+startPositionMouse:SetText("Position Mouse")
+startPositionMouse:ResizeToDefault()
+startPositionMouse:SetPoint("TOPLEFT", mouse, "TOPRIGHT", 10, -10)
+
+local closePositionMouse = UI.CreateFrame("RiftButton", "Move mouse close button", context)
+closePositionMouse:SetPoint("CENTER", UIParent, "CENTER", 0, -200)
+closePositionMouse:SetVisible(false)
+closePositionMouse:SetText("Close")
+
+local moveMouseFrame = UI.CreateFrame("Frame", "Position tooltip here", closePositionMouse)
+moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)
+moveMouseFrame:SetBackgroundColor(0, 0, 0, .8)
+moveMouseFrame:SetWidth(80)
+moveMouseFrame:SetHeight(100)
+moveMouseFrame:SetMouseMasking("full")
+
+local repositionNow
+local moveTbl = {function()
+	local mouse = Inspect.Mouse()
+	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - 80/2, mouse.y - 100/2)
+end, "StarTip", "refresh"}
+
+moveMouseFrame.Event.LeftDown = function()
+	if not repositionNow then
+		table.insert(Event.System.Update.Begin, moveTbl)
+
+		repositionNow = true
+	end
+end
+
+moveMouseFrame.Event.LeftUp = function()
+	if repositionNow then
+		for i = #Event.System.Update.Begin, 1, -1 do
+			local v = Event.System.Update.Begin[i]
+			if v == moveTbl then			
+				table.remove(Event.System.Update.Begin, i)
+			end
+		end
+		local left = moveMouseFrame:GetLeft()
+		local top = moveMouseFrame:GetTop()
+		config.x = left
+		config.y = top
+		tooltipMain.frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", left, top)
+		repositionNow = false
+	end
+end
+
+startPositionMouse.Event.LeftPress = function()
+	closePositionMouse:SetVisible(true)
+	configDialog:SetVisible(false)
+end
+
+closePositionMouse.Event.LeftPress = function()
+	closePositionMouse:SetVisible(false)
+	configDialog:SetVisible(true)
+end
+
+mouse.Event.CheckboxChange = function()
+	if mouse:GetChecked() then
+		config.mouse = true
+		startPositionMouse:SetVisible(false)
+		table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
+	else
+		config.mouse = false
+		startPositionMouse:SetVisible(true)
+		for i = #Event.System.Update.Begin, 1, -1 do
+			local v = Event.System.Update.Begin[i][1]
+			if v == update then
+				table.remove(Event.System.Update.Begin, i)
+			end
+		end
+	end
+end
+
+
+
+
+
+
+
+
+function StarTip:OpenConfig()
+	configDialog:SetVisible(true)
 end
