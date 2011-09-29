@@ -14,7 +14,27 @@ local config = {
 	x = 10,
 	y = 10
 }
-_G.StarTip.config = config
+
+StarTip_SavedVariables = config
+
+local function svsave()
+	StarTip_SavedVariables = StarTip_SavedVariables or {}
+	for k, v in pairs(config) do
+		StarTip_SavedVariables[k] = v
+	end
+end
+
+local function svload()
+	if StarTip_SavedVariables then
+		for k, v in pairs(StarTip_SavedVariables) do
+			config[k] = v
+		end
+	end
+end
+
+table.insert(Event.Addon.SavedVariables.Save.Begin, {function () svsave() end, "StarTip", "Save variables"})
+table.insert(Event.Addon.SavedVariables.Load.Begin, {function () svload() end, "StarTip", "Load variables"})
+
 
 local context = UI.CreateContext("StarTip")
 
@@ -195,16 +215,6 @@ local function update()
 	tooltipMain:Reshape()
 end
 
-local function startup()
-	for k, mod in pairs(StarTip.modules) do
-		if mod.OnEnable then
-			mod:OnEnable()
-		end
-	end
-	if not config.mouse then
-		frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10 )
-	end
-end
 
 local function unitChanged(id)
 	if id then
@@ -219,14 +229,6 @@ local function unitChanged(id)
 		end
 	end
 end
-
-if config.mouse then
-	table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
-else
-	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
-end
-
-table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 
 table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip", "refresh"})
 
@@ -348,13 +350,23 @@ mouse.Event.CheckboxChange = function()
 	end
 end
 
-
-
-
-
-
-
-
 function StarTip:OpenConfig()
 	configDialog:SetVisible(true)
 end
+
+-- Startup
+
+local function startup()
+	for k, mod in pairs(StarTip.modules) do
+		if mod.OnEnable then
+			mod:OnEnable()
+		end
+	end
+	if config.mouse then
+		table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
+	else
+		frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
+	end	
+end
+
+table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
