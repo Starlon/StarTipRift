@@ -248,7 +248,7 @@ local configDialog = UI.CreateFrame("RiftWindow", "Configuration", context)
 configDialog:SetPoint("CENTER", UIParent, "CENTER")
 configDialog:SetWidth(420)
 configDialog:SetHeight(500)
-configDialog:SetVisible(true)
+configDialog:SetVisible(false)
 
 local close = UI.CreateFrame("RiftButton", "Exit Button", configDialog)
 close:SetPoint("TOPLEFT", configDialog, "TOPLEFT", 20, 50)
@@ -268,7 +268,7 @@ mouse:ResizeToDefault()
 mouse:SetPoint("TOPLEFT", mouseLabel, "TOPRIGHT", 10, 0)
 
 local startPositionMouse = UI.CreateFrame("RiftButton", "Start position mouse", configDialog)
-startPositionMouse:SetText("Position Mouse")
+startPositionMouse:SetText("Position Tooltip")
 startPositionMouse:ResizeToDefault()
 startPositionMouse:SetPoint("TOPLEFT", mouse, "TOPRIGHT", 10, -10)
 
@@ -293,7 +293,6 @@ end, "StarTip", "refresh"}
 moveMouseFrame.Event.LeftDown = function()
 	if not repositionNow then
 		table.insert(Event.System.Update.Begin, moveTbl)
-
 		repositionNow = true
 	end
 end
@@ -371,6 +370,7 @@ local function playerLoaded(units)
 				table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
 			else
 				frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
+				tooltipMain:Reshape()
 			end	
 			mouse:SetChecked(config.mouse)
 			startPositionMouse:SetVisible(not config.mouse)
