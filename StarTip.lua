@@ -74,16 +74,13 @@ end
 
 local pool = {}
 local function newCell()
-	local cell = select(2, tremove(pool)) or UI.CreateFrame("Text", "StarTipText" .. math.random() * 1000, frame)
-	cell:ClearAll()
-	cell:SetText(" ")
+	local cell = tremove(pool) or UI.CreateFrame("Text", "StarTipText", frame)
 	return cell
 end
 
 local function delCell(cell)
-	cell:ClearAll()
-	cell:SetVisible(false)
 	cell:SetText("")
+	cell:ClearAll()
 	tinsert(pool, cell)
 end
 
@@ -234,6 +231,8 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 		StarTip:CPU()
 	elseif commands:match("config") then
 		StarTip:OpenConfig()
+	else
+		print("Commands are 'config' and 'cpu'.")
 	end
 end, "StarTip", "Slash command"})
 
@@ -286,6 +285,11 @@ moveMouseFrame:SetBackgroundColor(0, 0, 0, .8)
 moveMouseFrame:SetWidth(80)
 moveMouseFrame:SetHeight(100)
 moveMouseFrame:SetMouseMasking("full")
+
+local moveMouseLabel = UI.CreateFrame("Text", "Position tooltip here label", moveMouseFrame)
+moveMouseLabel:SetPoint("CENTER", moveMouseFrame, "CENTER")
+moveMouseLabel:SetText("Move me")
+moveMouseLabel:ResizeToText()
 
 local repositionNow
 local moveTbl = {function()
