@@ -81,6 +81,7 @@ end
 local function delCell(cell)
 	cell:SetText("")
 	cell:ClearAll()
+	cell:SetFontColor(1, 1, 1, 1)
 	tinsert(pool, cell)
 end
 
