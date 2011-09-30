@@ -1,5 +1,12 @@
-local Dongle = DongleStub("Dongle-1.2"):New("StarTip")
-_G.StarTip = {tooltipMain = {lines={}}, modules={}, unit="mouseover", errorLevel=2}
+local addon, ns = ...
+
+local StarTip = DongleStub("Dongle-1.2"):New("StarTip")
+StarTip.tooltipMain = {lines={}}
+StarTip.modules={}
+StarTip.unit="mouseover"
+StarTip.errorLevel = 2
+
+ns.StarTip = StarTip
 
 local tooltipMain = StarTip.tooltipMain
 
@@ -371,7 +378,7 @@ table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 local function playerLoaded(units)
 	for k, v in pairs(units) do
 		if v == "player" then
-			config = Dongle:InitializeDB(StarTip_SavedVariables, defaults)
+			config = StarTip:InitializeDB(StarTip_SavedVariables, defaults)
 			config = config.profile
 
 			if not config then return end

@@ -1,4 +1,5 @@
-local StarTip = _G.StarTip
+local addon, ns = ...
+local StarTip = ns.StarTip
 local mod = StarTip:NewModule("UnitTooltip")
 local WidgetText = LibStub("LibScriptableWidgetText-1.0")
 local Evaluator = LibStub("LibScriptableUtilsEvaluator-1.0")

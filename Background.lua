@@ -1,3 +1,6 @@
+local addon, ns = ...
+
+local StarTip = ns.StarTip
 local mod = StarTip:NewModule("Background")
 
 mod.bgColor = { -- Default colors from CowTip

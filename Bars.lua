@@ -1,4 +1,6 @@
-local StarTip = _G.StarTip
+local addon, ns = ...
+local StarTip = ns.StarTip
+
 local mod = StarTip:NewModule("Bars")
 local WidgetBar = LibStub("LibScriptableWidgetBar-1.0", true)
 assert(WidgetBar, "Text module requires LibScriptableWidgetBar-1.0")
