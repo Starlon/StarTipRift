@@ -282,7 +282,7 @@ closePositionMouse:SetVisible(false)
 closePositionMouse:SetText("Close")
 
 local moveMouseFrame = UI.CreateFrame("Frame", "Position tooltip here", closePositionMouse)
-moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)
+moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", UIParent:GetWidth() / 2 - 40, UIParent:GetHeight() / 2 - 50)
 moveMouseFrame:SetBackgroundColor(0, 0, 0, .8)
 moveMouseFrame:SetWidth(80)
 moveMouseFrame:SetHeight(100)
@@ -296,7 +296,7 @@ moveMouseLabel:ResizeToText()
 local repositionNow
 local moveTbl = {function()
 	local mouse = Inspect.Mouse()
-	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - 80/2, mouse.y - 100/2)
+	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - 40 , mouse.y - 80)
 end, "StarTip", "refresh"}
 
 moveMouseFrame.Event.LeftDown = function()
@@ -325,6 +325,7 @@ end
 
 startPositionMouse.Event.LeftPress = function()
 	closePositionMouse:SetVisible(true)
+	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or (UIParent:GetWidth() / 2 - 40), config.y or (UIParent:GetHeight() / 2 - 50))
 	configDialog:SetVisible(false)
 end
 
