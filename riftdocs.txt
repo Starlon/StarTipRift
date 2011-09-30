@@ -1,0 +1,1647 @@
+Basic globals:
+	UI.CreateContext
+		Function documentation:
+			Creates a new UI context. A UI context must be created in order to create any frames.
+				context = UI.CreateContext(name)   -- Context <- string
+		Parameters:
+				name:	A descriptive name for this element. Used for error reports and performance information. May be shown to end-users.
+		Return values:
+				context:	A new context. Contexts are guaranteed to have at least the capabilities of a Frame.
+	UI.CreateFrame
+		Function documentation:
+			Creates a new frame. Frames are the blocks that all addon UIs are made out of. Since all frames must have a parent, you'll need to create a Context before any frames. See UI.CreateContext.
+			List of valid frame types:
+			Frame: The base type. No special capabilities. Useful for spacing, organization, input handling, and solid color squares.
+			Text: Displays text.
+			Texture: Displays a static texture image.
+				frame = UI.CreateFrame(type, name, parent)   -- Frame <- string, string, FrameReadonly
+		Parameters:
+				name:	A descriptive name for this element. Used for error reports and performance information. May be shown to end-users.
+				parent:	The new parent for this frame.
+				type:	The type of your new frame. Current supported types: Frame, Text, Texture.
+		Return values:
+				frame:	Your new frame.
+	UIParent.Event.Move
+	UIParent.Event.Size
+	_VERSION
+	assert
+	bit.arshift
+	bit.band
+	bit.bnot
+	bit.bor
+	bit.bswap
+	bit.bxor
+	bit.lshift
+	bit.rol
+	bit.ror
+	bit.rshift
+	bit.tobit
+	bit.tohex
+	collectgarbage
+	coroutine.create
+	coroutine.resume
+	coroutine.running
+	coroutine.status
+	coroutine.wrap
+	coroutine.yield
+	debug.traceback
+	dump
+		Function documentation:
+			Debug utility function. Similar to print(), but serializes any table parameters before outputting.
+				dump(...)   -- ...
+		Parameters:
+				...:	Takes any number of any parameter type.
+	error
+	gcinfo
+	getfenv
+	getmetatable
+	ipairs
+	load
+	loadstring
+	math.abs
+	math.acos
+	math.asin
+	math.atan
+	math.atan2
+	math.ceil
+	math.cos
+	math.cosh
+	math.deg
+	math.exp
+	math.floor
+	math.fmod
+	math.frexp
+	math.huge
+	math.ldexp
+	math.log
+	math.log10
+	math.max
+	math.min
+	math.mod
+	math.modf
+	math.pi
+	math.pow
+	math.rad
+	math.random
+	math.randomseed
+	math.sin
+	math.sinh
+	math.sqrt
+	math.tan
+	math.tanh
+	newproxy
+	next
+	pairs
+	pcall
+	print
+	print_raw
+	rawequal
+	rawget
+	rawset
+	select
+	setfenv
+	setmetatable
+	string.byte
+	string.char
+	string.find
+	string.format
+	string.gfind
+	string.gmatch
+	string.gsub
+	string.len
+	string.lower
+	string.match
+	string.rep
+	string.reverse
+	string.sub
+	string.upper
+	table.concat
+	table.foreach
+	table.foreachi
+	table.getn
+	table.insert
+	table.maxn
+	table.remove
+	table.sort
+	table.unpack
+	tonumber
+	tostring
+	type
+	unpack
+	xpcall
+ 
+Inspectors:
+	Inspect.Ability.Detail
+		Function documentation:
+			Provides detailed information about abilities.
+				detail = Inspect.Ability.Detail(ability)   -- table <- ability
+				details = Inspect.Ability.Detail(abilities)   -- table <- table
+		Parameters:
+				abilities:	A lookup table of identifiers of abilities to retrieve detail for.
+				ability:	The identifier of the ability to retrieve detail for.
+		Return values:
+				detail:	Detail table for a single ability.
+				details:	Detail tables for all requested abilities. The key is the ability ID, the value is the ability's detail table.
+		Returned members:
+				autoattack:	Autoattack mode of the ability.
+				castingTime:	Casting time of the ability, in seconds.
+				channeled:	Signals that the ability is channeled.
+				continuous:	Signals that the ability is continuous.
+				cooldown:	Cooldown of the ability, in seconds.
+				costCharge:	The amount of charge this ability consumes on use.
+				costEnergy:	The amount of energy this ability consumes on use.
+				costMana:	The amount of mana this ability consumes on use.
+				costPlanarCharge:	The amount of planar charges this ability consumes on use.
+				costPower:	The amount of power this ability consumes on use.
+				currentCooldownBegin:	The time the current cooldown started, in the context of Inspect.Time.Frame.
+				currentCooldownDuration:	Duration of the current cooldown the ability is influenced by, in seconds.
+				currentCooldownExpired:	Number of seconds the current cooldown is past its expiration time. Generally indicates lag.
+				currentCooldownRemaining:	Time remaining in the ability's current cooldown, in seconds.
+				gainCharge:	Amount of charge gained by using the ability.
+				icon:	Resource filename of the ability's icon.
+				name:	Name of the ability.
+				outOfRange:	Signals that the ability is out of range.
+				passive:	Signals that the ability is passive.
+				positioned:	Signals that the ability's effect is manually positioned by the user.
+				racial:	Signals that the ability is a racial ability.
+				rangeMax:	The maximum range of the ability.
+				rangeMin:	The minimum range of the ability.
+				stealthRequired:	Signals that the ability requires the user to be in stealth.
+				target:	The Unit ID of the unit that this ability will be used on if triggered at this moment.
+				unusable:	Signals that this ability is unusable.
+				weapon:	The required equipped weapon for this ability. May be "any", "melee", or "ranged".
+	Inspect.Ability.List
+		Function documentation:
+			List available abilities.
+				abilities = Inspect.Ability.List()   -- table <- void
+		Return values:
+				abilities:	A lookup table of IDs of the available abilities.
+	Inspect.Addon.Cpu
+		Function documentation:
+			Returns recent CPU usage information. This is calculated using an exponential-falloff method.
+				data = Inspect.Addon.Cpu()   -- table <- void
+		Return values:
+				data:	Recent CPU usage. This takes the format { AddonIdentifier = { SubIdentifier = cpu_used_as_a_fraction_of_one } }. SubIdentifiers are generated by Rift and the format may change without notice.
+	Inspect.Addon.Current
+		Function documentation:
+			Returns the current addon. This information is used internally for counting CPU usage and determining frame ownership.
+				addonIdentifier = Inspect.Addon.Current()   -- string <- void
+		Return values:
+				addonIdentifier:	The addon's identifier, as written in its TOC file.
+	Inspect.Buff.Detail
+		Function documentation:
+			Provides detailed information about the buffs on a unit.
+				detail = Inspect.Buff.Detail(unit, buff)   -- table <- unit, buff
+				details = Inspect.Buff.Detail(unit, buffs)   -- table <- unit, table
+		Parameters:
+				buff:	An identifier for the buff to retrieve detail for.
+				buffs:	A lookup table containing buff identifiers to retrieve details for.
+				unit:	The unit to inspect.
+		Return values:
+				detail:	Detail table for a single buff.
+				details:	Detail tables for all requested buffs. The key is the buff ID, the value is the buff's detail table.
+		Returned members:
+				begin:	The time the buff started, in the context of Inspect.Time.Frame.
+				caster:	Unit ID of the buff's caster.
+				curse:	Signals that the buff is a curse.
+				debuff:	Signals that the buff is a debuff. If this is missing, then it's an actual buff.
+				disease:	Signals that the buff is a disease.
+				duration:	Duration of the buff in seconds.
+				expired:	Number of seconds the buff is past its expiration time. Generally indicates lag.
+				icon:	Resource filename of the buff's icon.
+				name:	Name of the buff.
+				noncancelable:	Signals that the buff cannot be voluntarily canceled. Does not show up for debuffs.
+				poison:	Signals that the buff is a poison.
+				remaining:	Time remaining on the buff, in seconds.
+				stack:	Number of stacks on the buff.
+	Inspect.Buff.List
+		Function documentation:
+			List buffs on a unit.
+				buffs = Inspect.Buff.List(unit)   -- table <- unit
+		Parameters:
+				unit:	The unit to inspect.
+		Return values:
+				buffs:	A lookup table of the IDs of the buffs on the unit.
+	Inspect.Documentation
+		Function documentation:
+			Provide documentation on items in the addon environment. Called with no parameters, it returns a table listing all documentation. Can provide both human-readable and computer-readable documentation.
+				documentables = Inspect.Documentation()   -- table <- void
+				documentation = Inspect.Documentation(item)   -- string <- variant
+				documentation = Inspect.Documentation(item, parseable = false)   -- string <- variant, boolean
+				documentationTable = Inspect.Documentation(item, parseable = true)   -- table <- variant, boolean
+		Parameters:
+				item:	The item to get documentation on. May be either the item itself or a string identifier.
+				parseable:	Whether to return in a computer-readable format, as opposed to the normal human-readable format.
+		Return values:
+				documentables:	List of all items that documentation can be retrieved for. In {["itemname"] = true} format.
+				documentation:	Documentation for the requested item.
+				documentationTable:	Computer-readable documentation for the requested item. Format may change without warning.
+	Inspect.Mouse
+		Function documentation:
+			Returns information about the current mouse position and button state.
+				results = Inspect.Mouse()   -- table <- void
+		Return values:
+				results:	Table containing the current mouse state. May include members x, y, Left, Right, Middle, Mouse4, Mouse5.
+	Inspect.Shard
+		Function documentation:
+			Returns information about the current shard.
+				shard = Inspect.Shard()   -- table <- void
+		Return values:
+				shard:	Table containing requested data.
+		Returned members:
+				name:	The shard's name.
+	Inspect.System.Language
+		Function documentation:
+			The client's current language.
+				language = Inspect.System.Language()   -- string <- void
+		Return values:
+				language:	Current language. Valid values include "English", "French", "German", "Korean", "Russian".
+	Inspect.Time.Frame
+		Function documentation:
+			The game time of the last frame. This function's return value will not change until the next frame.
+				time = Inspect.Time.Frame()   -- number <- void
+		Return values:
+				time:	Time in seconds. Counted from an arbitrary point in the past. Guaranteed to be non-negative.
+	Inspect.Time.Real
+		Function documentation:
+			A high-resolution realtime timer. Not measured in the same timespace as Inspect.Time.Frame.
+				time = Inspect.Time.Real()   -- number <- void
+		Return values:
+				time:	Time in seconds. Counted from an arbitrary point in the past. Guaranteed to be non-negative.
+	Inspect.Unit.Castbar
+		Function documentation:
+			Provides detailed information about a unit's castbar.
+				detail = Inspect.Unit.Castbar(unit)   -- table <- unit
+				details = Inspect.Unit.Castbar(units)   -- table <- table
+		Parameters:
+				unit:	A unit, in either unit ID or unit specifier format.
+				units:	A lookup table containing units to inspect.
+		Return values:
+				detail:	Detail table for a single castbar.
+				details:	Detail tables for all requested castbars. The key is the unit ID or unit specifier, the value is the castbar's detail table.
+		Returned members:
+				ability:	ID of the ability being cast, if available.
+				abilityName:	Name of the ability being cast.
+				begin:	The time the cast started, in the context of Inspect.Time.Frame.
+				channeled:	True if this ability is channeled.
+				duration:	Duration of the cast in seconds.
+				expired:	Number of the seconds the cast is past its completion time. Generally indicates lag.
+				remaining:	Time remaining on the cast, in seconds.
+				uninterruptible:	Signals that the cast is not interruptible.
+	Inspect.Unit.Detail
+		Function documentation:
+			Provides detailed information about a unit.
+				detail = Inspect.Unit.Detail(unit)   -- table <- unit
+				details = Inspect.Unit.Detail(units)   -- table <- table
+		Parameters:
+				unit:	A unit, in either unit ID or unit specifier format.
+				units:	A lookup table containing units to inspect.
+		Return values:
+				detail:	Detail table for a single unit.
+				details:	Detail tables for all requested units. The key is the unit ID or unit specifier, the value is the unit's detail table.
+		Returned members:
+				afk:	Signals that the unit is AFK. Provided only for the player and the player's groupmembers.
+				calling:	The unit's calling. May be "mage", "rogue", "cleric", or "warrior".
+				charge:	The unit's charge. Provided only for the player.
+				combo:	The unit's combo points. Provided only for the player.
+				comboUnit:	The Unit ID of the unit that the combo points have been placed on. Provided only for the player.
+				energy:	The unit's energy.
+				energyMax:	The unit's maximum energy.
+				guaranteedLoot:	Signals that this unit guarantees loot on death. Shown in the user interface as a diamond above the portrait.
+				guild:	The unit's guild.
+				health:	The unit's health.
+				healthCap:	The unit's capped maximum health.
+				healthMax:	The unit's maximum health.
+				level:	The unit's level. May be "??" if the unit is hostile and very high-level.
+				loot:	The Unit ID that has looting rights to this corpse.
+				mana:	The unit's mana.
+				manaMax:	The unit's maximum mana.
+				mark:	The mark on this unit.
+				name:	The unit's name.
+				nameSecondary:	The unit's secondary name.
+				offline:	Signals that the unit is offline. Provided only for the player's groupmembers.
+				planar:	The unit's available planar charges. Provided only for the player.
+				planarMax:	The unit's maximum planar charges. Provided only for the player.
+				player:	Signals that the unit is a player, not an NPC.
+				power:	The unit's power.
+				pvp:	The unit's PvP flag.
+				ready:	The unit's readycheck status.
+				relation:	The unit's relation to you. May be "hostile" or "friendly". Neutral targets will not have this member.
+				role:	The unit's role. May be "tank", "heal", "dps", "support", or nil. Provided only for the player and the player's groupmembers.
+				titlePrefix:	The unit's title prefix.
+				titleSuffix:	The unit's title suffix.
+				vitality:	The unit's vitality. Provided only for the player.
+				warfront:	Signals that the unit has temporarily left the group to join a warfront. Provided only for groupmembers.
+	Inspect.Unit.List
+		Function documentation:
+			Lists all the units that the client can see.
+				list = Inspect.Unit.List()   -- table <- void
+		Return values:
+				list:	Map of unit ID to unit specifier. Units with multiple valid specs will have one chosen at random.
+	Inspect.Unit.Lookup
+		Function documentation:
+			Converts unit IDs to unit specifiers and vice-versa.
+				unit = Inspect.Unit.Lookup(unit)   -- unit <- unit
+				units = Inspect.Unit.Lookup(units)   -- table <- table
+		Parameters:
+				unit:	A single unit ID or unit specifier.
+				units:	A lookup table containing unit IDs and unit specifiers.
+		Return values:
+				unit:	A unit ID or unit specifier, whichever is the opposite of the parameter given. May be nil.
+				units:	A lookup table of unit IDs and unit specifiers. The key is the input, the value is the result. Invalid inputs will not result in output entries.
+ 
+Commands:
+	Command.Buff.Cancel
+		Function documentation:
+			Cancels a buff on the player. Not all buffs are cancelable.
+				Command.Buff.Cancel(buff)   -- buff
+		Parameters:
+				buff:	The ID of the buff to cancel.
+	Command.Slash.Register
+		Function documentation:
+			Registers a new chat slash command, inserts a new event table into the Event.Slash hierarchy, and returns that table. If called multiple times with the same slash command, will return the same table each time.
+				eventTable = Command.Slash.Register(slashCommand)   -- table <- string
+		Parameters:
+				slashCommand:	The name of the slash command to register.
+		Return values:
+				eventTable:	The event table for your slash command. nil if the slash command could not be registered (usually because it conflicts with a built-in slash command.)
+	Command.System.Flash
+		Function documentation:
+			Controls the flashing of the Rift taskbar icon.
+				Command.System.Flash(flash)   -- boolean
+		Parameters:
+				flash:	Whether the taskbar icon should flash or not.
+ 
+Utilities:
+	Utility.Dispatch
+		Function documentation:
+			Calls a function, crediting that function's execution and errors to a specific addon. Errors will be handled by the standard error handler and not relayed to the caller. Does not return anything.
+				Utility.Dispatch(func, identifier, info)   -- function, string, string
+		Parameters:
+				func:	The function to call.
+				identifier:	The identifier of the addon to credit execution time towards.
+				info:	An info string to be included in error reports.
+	Utility.Event.Create
+		Function documentation:
+			Creates a custom event. Takes an identifier and an event path as parameters. Called with Create("Identifier", "The.Event.Path") the event table will end up at Event.Identifier.The.Event.Path, and will behave like a standard Rift event table in every way. Undefined behavior if given an identifier or a path that conflicts with a built-in Rift event or an existing addon event.
+				handle, event = Utility.Event.Create(identifier, event)   -- function, table <- string, string
+		Parameters:
+				event:	The event's name. "." characters will be treated as hierarchy delimeters.
+				identifier:	The identifier of the addon creating this event.
+		Return values:
+				event:	The resulting event table.
+				handle:	A handle used to trigger the event. Called with any selection of parameters, it will pass those parameters through to properly registered event handlers in order. Any errors caused by those event handlers will be caught and handled.
+	Utility.Serialize.Inline
+		Function documentation:
+			Serializes a single parameter. Results in a string suitable for use as a parameter in Lua code. If the input is a table, it must not contain table cycles or non-tree structures.
+				serialized = Utility.Serialize.Inline(element)   -- string <- variant
+		Parameters:
+				element:	Element to serialize.
+		Return values:
+				serialized:	String containing serialized output. May be nil if there was an error with the input.
+ 
+Events:
+	Event.Ability.Add
+		Event documentation:
+			Signals the addition of a player ability.
+				Event.Ability.Add(abilities)
+		Parameters:
+			abilities: Lists the abilities that were added. Lookup table from ability ID to "true".
+	Event.Ability.Cooldown.Begin
+		Event documentation:
+			Signals the start of an ability's cooldown.
+				Event.Ability.Cooldown.Begin(cooldowns)
+		Parameters:
+			cooldowns: The abilities whose cooldown has been changed. The key is the ability ID, the value is the new cooldown. 0 indicates that the cooldown has finished.
+	Event.Ability.Cooldown.End
+		Event documentation:
+			Signals the end of an ability's cooldown. All the values in the "cooldown" parameter will be 0.
+				Event.Ability.Cooldown.End(cooldowns)
+		Parameters:
+			cooldowns: The abilities whose cooldown has been changed. The key is the ability ID, the value is the new cooldown. 0 indicates that the cooldown has finished.
+	Event.Ability.Range.False
+		Event documentation:
+			Signals a player ability exiting range from its current target.
+				Event.Ability.Range.False(abilities)
+		Parameters:
+			abilities: The abilities that have entered or exited range. The key is the ability ID, the value is whether they are currently in range.
+	Event.Ability.Range.True
+		Event documentation:
+			Signals a player ability entering range from its current target.
+				Event.Ability.Range.True(abilities)
+		Parameters:
+			abilities: The abilities that have entered or exited range. The key is the ability ID, the value is whether they are currently in range.
+	Event.Ability.Remove
+		Event documentation:
+			Signals the removal of a player ability.
+				Event.Ability.Remove(abilities)
+		Parameters:
+			abilities: Lists the abilities that were removed. Lookup table from ability ID to "false".
+	Event.Ability.Target
+		Event documentation:
+			Signals a player ability changing its current target.
+				Event.Ability.Target(abilities)
+		Parameters:
+			abilities: The abilities whose target has changed. The key is the ability ID, the value is the new target.
+	Event.Ability.Usable.False
+		Event documentation:
+			Signals a player ability becoming unusable.
+				Event.Ability.Usable.False(abilities)
+		Parameters:
+			abilities: The abilities whose usability has changed. The key is the ability ID, the value is the new usability.
+	Event.Ability.Usable.True
+		Event documentation:
+			Signals a player ability becoming usable.
+				Event.Ability.Usable.True(abilities)
+		Parameters:
+			abilities: The abilities whose usability has changed. The key is the ability ID, the value is the new usability.
+	Event.Addon.Load.Begin
+		Event documentation:
+			Signals the beginning of an addon's loading sequence.
+				Event.Addon.Load.Begin(addonidentifier)
+		Parameters:
+			addonidentifier: The addon's identifier.
+	Event.Addon.Load.End
+		Event documentation:
+			Signals the end of an addon's loading sequence. At this point, that addon is fully loaded and initialized.
+				Event.Addon.Load.End(addonidentifier)
+		Parameters:
+			addonidentifier: The addon's identifier.
+	Event.Addon.SavedVariables.Load.Begin
+		Event documentation:
+			Signals the beginning of an addon's saved variable loading.
+				Event.Addon.SavedVariables.Load.Begin(addonidentifier)
+		Parameters:
+			addonidentifier: The addon's identifier.
+	Event.Addon.SavedVariables.Load.End
+		Event documentation:
+			Signals the end of an addon's saved variable load.
+				Event.Addon.SavedVariables.Load.End(addonidentifier)
+		Parameters:
+			addonidentifier: The addon's identifier.
+		(1 handler)
+	Event.Addon.SavedVariables.Save.Begin
+		Event documentation:
+			Signals the beginning of an addon's saved variable saving.
+				Event.Addon.SavedVariables.Save.Begin(addonidentifier)
+		Parameters:
+			addonidentifier: The addon's identifier.
+	Event.Addon.SavedVariables.Save.End
+		Event documentation:
+			Signals the end of an addon's saved variable saving.
+				Event.Addon.SavedVariables.Save.End(addonidentifier)
+		Parameters:
+			addonidentifier: The addon's identifier.
+	Event.Addon.Shutdown.Begin
+		Event documentation:
+			Signals the beginning of the shutdown sequence.
+				Event.Addon.Shutdown.Begin()
+	Event.Addon.Shutdown.End
+		Event documentation:
+			Signals the end of the shutdown sequence. This is the last event that will be sent.
+				Event.Addon.Shutdown.End()
+	Event.Addon.Startup.End
+		Event documentation:
+			Signals the end of the startup sequence. At this point, all addons are fully loaded and initialized.
+				Event.Addon.Startup.End()
+	Event.Buff.Add
+		Event documentation:
+			Signals new buffs on a unit.
+				Event.Buff.Add(unit, buffs)
+		Parameters:
+			unit: The Unit ID of the unit involved.
+			buffs: A lookup table containing the buffs involved.
+	Event.Buff.Change
+		Event documentation:
+			Signals a change in existing buffs on a unit.
+				Event.Buff.Change(unit, buffs)
+		Parameters:
+			unit: The Unit ID of the unit involved.
+			buffs: A lookup table containing the buffs involved.
+	Event.Buff.Remove
+		Event documentation:
+			Signals removal of buffs from a unit.
+				Event.Buff.Remove(unit, buffs)
+		Parameters:
+			unit: The Unit ID of the unit involved.
+			buffs: A lookup table containing the buffs involved.
+	Event.Chat.Notify
+		Event documentation:
+			Signals a screen notification. This is generally used as a warning mechanism during boss fights.
+				Event.Chat.Notify(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				message:	The text said.
+	Event.Chat.Npc
+		Event documentation:
+			Signals an NPC speaking a line of text.
+				Event.Chat.Npc(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				from:	The unit ID of the speaker, if available.
+				fromName:	The name of the speaker.
+				message:	The text said.
+	Event.Combat.Damage
+		Event documentation:
+			Signals damage done to a unit.
+				Event.Combat.Damage(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				crit:	Whether this was the result of a critical hit.
+				damage:	The amount of damage actually done.
+				damageAbsorbed:	The amount of damage absorbed.
+				damageBlocked:	The amount of damage blocked.
+				damageIntercepted:	The amount of damage intercepted.
+				damageModified:	The amount of damage modified.
+				overkill:	The amount of overkill done.
+				target:	The unit ID for the target.
+				type:	The damage type. Values include "life", "death", "air", "earth", "fire", "water".
+	Event.Combat.Death
+		Event documentation:
+			Signals the death of a unit.
+				Event.Combat.Death(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				caster:	The unit ID for this event's initiator, if one exists.
+				target:	The unit ID for the target.
+	Event.Combat.Dodge
+		Event documentation:
+			Signals a unit dodging an ability.
+				Event.Combat.Dodge(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				target:	The unit ID for the target.
+	Event.Combat.Heal
+		Event documentation:
+			Signals healing done to a unit.
+				Event.Combat.Heal(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				crit:	Whether this was the result of a critical hit.
+				heal:	The amount healed.
+				overheal:	The amount of healing past maximum health wasted.
+				target:	The unit ID for the target.
+	Event.Combat.Immune
+		Event documentation:
+			Signals a unit resisting an ability through immunity.
+				Event.Combat.Immune(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				target:	The unit ID for the target.
+	Event.Combat.Miss
+		Event documentation:
+			Signals an ability's effect missing a unit.
+				Event.Combat.Miss(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				target:	The unit ID for the target.
+	Event.Combat.Parry
+		Event documentation:
+			Signals a unit parrying an ability.
+				Event.Combat.Parry(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				target:	The unit ID for the target.
+	Event.Combat.Resist
+		Event documentation:
+			Signals a unit resisting an ability.
+				Event.Combat.Resist(info)
+		Parameters:
+			info: Detailed information table about this event, containing several named parameters.
+		Parameter members:
+				ability:	The ability ID for the ability used, if available.
+				abilityName:	The name of the ability used.
+				caster:	The unit ID for this event's initiator, if one exists.
+				target:	The unit ID for the target.
+	Event.Slash	(category for dynamically-created events)
+	Event.Slash.dump
+		(Slash event documentation TBI)
+		(1 handler)
+	Event.Slash.eventlog
+		(Slash event documentation TBI)
+	Event.System.Error
+		Event documentation:
+			Signals that an addon error has occurred. To prevent infinite loops, errors in handlers for this event may not result in further events being triggered.
+				Event.System.Error(error)
+		Parameters:
+			error: Table containing error data.
+		Parameter members:
+				addon:	The identifier of the responsible addon. Used in error types event, frameEvent, dispatch, fileNotFound, fileLoad, and fileRun.
+				error:	The actual error message generated. Used in error types event, frameEvent, script, dispatch, fileLoad, and fileRun.
+				event:	The name of the event responsible. Used in error types event, frameEvent, and internal.
+				file:	The name of the file responsible. Used in error types fileNotFound, fileLoad, and fileRun.
+				frame:	The name of the frame that the event was generated on. Used in error type frameEvent.
+				info:	The info string provided as part of the event handler. Used in error types event and dispatch.
+				script:	The exact script entered by the user. Used in error type script.
+				stacktrace:	The stacktrace at the point of the error. Used in error types event, frameEvent, script, dispatch, and fileRun.
+				type:	Error type. "event" indicates an error within a global event handler. "frameEvent" indicates an error within a frame event handler. "script" indicates an error within a user-entered /script. "dispatch" indicates an error within a Utility.Dispatch handler. "internal" indicates an error within Rift's code (hopefully you'll never see this). "fileNotFound" indicates a missing file when attempting to load an addon. "fileLoad" indicates a parse failure when attempting to load an addon. "fileRun" indicates an execution error when attempting to load an addon.
+		(1 handler)
+	Event.System.Secure.Enter
+		Event documentation:
+			Signals that the system is entering Secure mode. Usually this is equivalent to entering combat. Functions that may not be called in Secure mode will be locked after this event is complete.
+				Event.System.Secure.Enter()
+	Event.System.Secure.Leave
+		Event documentation:
+			Signals that the system is leaving Secure mode. Usually this is equivalent to leaving combat. Functions that may not be called in Secure mode are unlocked just before this event fires.
+				Event.System.Secure.Leave()
+	Event.System.Update.Begin
+		Event documentation:
+			Signals the beginning of a frame render. This is your last chance to make UI changes for this frame.
+				Event.System.Update.Begin()
+	Event.System.Update.End
+		Event documentation:
+			Signals the end of a frame render.
+				Event.System.Update.End()
+		(1 handler)
+	Event.Unit.Add
+		Event documentation:
+			Signals the addition of units to unit specifiers. Always preceded by Event.Unit.Change.Remove. Triggers for unit IDs that have been removed from the specifier tree, but may not trigger for any children of those units. You may want to use LibUnitChange instead of this event.
+				Event.Unit.Add(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the unit specifier, or "false" if the unit now has no specifier.
+	Event.Unit.Available
+		Event documentation:
+			Signals the availability of Inspect.Unit.Detail.
+				Event.Unit.Available(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the unit specifier, or "false" if the unit now has no specifier.
+	Event.Unit.Castbar
+		Event documentation:
+			Signals a unit's castbar changing.
+				Event.Unit.Castbar(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is a castbar visibility flag.
+	Event.Unit.Detail.Afk
+		Event documentation:
+			Signals a unit's AFK flag changing. Will only trigger for partymembers.
+				Event.Unit.Detail.Afk(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Charge
+		Event documentation:
+			Signals a unit's charge changing. Will only trigger for the player's unit ID.
+				Event.Unit.Detail.Charge(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Combo
+		Event documentation:
+			Signals a unit's combo points changing. Will only trigger for the player's unit ID.
+				Event.Unit.Detail.Combo(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.ComboUnit
+		Event documentation:
+			Signals a unit's combo point target changing. Will only trigger for the player's unit ID.
+				Event.Unit.Detail.ComboUnit(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Energy
+		Event documentation:
+			Signals a unit's energy changing.
+				Event.Unit.Detail.Energy(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.EnergyMax
+		Event documentation:
+			Signals a unit's energy maximum changing.
+				Event.Unit.Detail.EnergyMax(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Guild
+		Event documentation:
+			Signals a unit's guild changing.
+				Event.Unit.Detail.Guild(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Health
+		Event documentation:
+			Signals a unit's health changing.
+				Event.Unit.Detail.Health(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.HealthCap
+		Event documentation:
+			Signals a unit's health cap changing.
+				Event.Unit.Detail.HealthCap(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.HealthMax
+		Event documentation:
+			Signals a unit's health maximum changing.
+				Event.Unit.Detail.HealthMax(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Level
+		Event documentation:
+			Signals a unit's level changing.
+				Event.Unit.Detail.Level(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Mana
+		Event documentation:
+			Signals a unit's mana changing.
+				Event.Unit.Detail.Mana(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.ManaMax
+		Event documentation:
+			Signals a unit's mana maximum changing.
+				Event.Unit.Detail.ManaMax(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Mark
+		Event documentation:
+			Signals a unit's mark changing.
+				Event.Unit.Detail.Mark(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Name
+		Event documentation:
+			Signals a unit's name changing.
+				Event.Unit.Detail.Name(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Offline
+		Event documentation:
+			Signals a unit's offline flag changing. Will only trigger for partymembers.
+				Event.Unit.Detail.Offline(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Planar
+		Event documentation:
+			Signals a unit's planar charges changing. Will only trigger for the player's unit ID.
+				Event.Unit.Detail.Planar(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.PlanarMax
+		Event documentation:
+			Signals a unit's maximum planar charges changing. Will only trigger for the player's unit ID.
+				Event.Unit.Detail.PlanarMax(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Power
+		Event documentation:
+			Signals a unit's power changing.
+				Event.Unit.Detail.Power(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Pvp
+		Event documentation:
+			Signals a unit's PvP flag changing.
+				Event.Unit.Detail.Pvp(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Role
+		Event documentation:
+			Signals a unit's role changing. Will only trigger for the player or partymembers.
+				Event.Unit.Detail.Role(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.TitlePrefix
+		Event documentation:
+			Signals a unit's title prefix changing.
+				Event.Unit.Detail.TitlePrefix(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.TitleSuffix
+		Event documentation:
+			Signals a unit's title suffix changing.
+				Event.Unit.Detail.TitleSuffix(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value, or "false" in place of nil.
+	Event.Unit.Detail.Vitality
+		Event documentation:
+			Signals a unit's vitality changing. Will only trigger for the player's unit ID.
+				Event.Unit.Detail.Vitality(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Detail.Warfront
+		Event documentation:
+			Signals a unit's warfront flag changing. Will only trigger for partymembers.
+				Event.Unit.Detail.Warfront(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the new value.
+	Event.Unit.Remove
+		Event documentation:
+			Signals the removal of units from unit specifiers. Always followed by Event.Unit.Change.Add. Triggers for unit IDs that have been removed from the specifier tree, but may not trigger for any children of those units. You may want to use LibUnitChange instead of this event.
+				Event.Unit.Remove(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the unit specifier, or "false" if the unit now has no specifier.
+	Event.Unit.Unavailable
+		Event documentation:
+			Signals the unavailability of Inspect.Unit.Detail.
+				Event.Unit.Unavailable(units)
+		Parameters:
+			units: Table of the units changed. Key is the unit ID, value is the unit specifier, or "false" if the unit now has no specifier.
+ 
+UI:
+	Layout:
+		Members:
+			GetBottom
+				Function documentation:
+					Retrieves the Y position of the bottom edge of this element.
+						bottom = Layout:GetBottom()   -- number <- void
+				Return values:
+						bottom:	The Y position of the bottom edge of this element.
+			GetBounds
+				Function documentation:
+					Retrieves the complete bounds of this element.
+						left, top, right, bottom = Layout:GetBounds()   -- number, number, number, number <- void
+				Return values:
+						bottom:	The Y position of the bottom edge of this element.
+						left:	The X position of the left edge of this element.
+						right:	The X position of the right edge of this element.
+						top:	The Y position of the top edge of this element.
+			GetEventTable
+				Function documentation:
+					Retrieves the event table of this element. By default, this value is also stored in "this.Event".
+						eventTable = Layout:GetEventTable()   -- table <- void
+				Return values:
+						eventTable:	The event table of this element.
+			GetHeight
+				Function documentation:
+					Retrieves the height of this element.
+						height = Layout:GetHeight()   -- number <- void
+				Return values:
+						height:	The height of this element.
+			GetLeft
+				Function documentation:
+					Retrieves the X position of the left edge of this element.
+						left = Layout:GetLeft()   -- number <- void
+				Return values:
+						left:	The X position of the left edge of this element.
+			GetName
+				Function documentation:
+					Retrieves the name of this element.
+						name = Layout:GetName()   -- string <- void
+				Return values:
+						name:	The name of this element, as provided by the addon that created it.
+			GetOwner
+				Function documentation:
+					Retrieves the owner of this element.
+						owner = Layout:GetOwner()   -- string <- void
+				Return values:
+						owner:	The owner of this element. Given as an addon identifier.
+			GetRight
+				Function documentation:
+					Retrieves the X position of the right edge of this element.
+						right = Layout:GetRight()   -- number <- void
+				Return values:
+						right:	The X position of the right edge of this element.
+			GetTop
+				Function documentation:
+					Retrieves the Y position of the top edge of this element.
+						top = Layout:GetTop()   -- number <- void
+				Return values:
+						top:	The Y position of the top edge of this element.
+			GetWidth
+				Function documentation:
+					Retrieves the width of this element.
+						width = Layout:GetWidth()   -- number <- void
+				Return values:
+						width:	The width of this element.
+			ReadAll
+				Function documentation:
+					Read all set points and sizes from this frame.
+						results = Layout:ReadAll()   -- table <- void
+				Return values:
+						results:	Result table. Contains data in the following format: {x = {size = (size), [(position)] = {layout = (layout), position = (position), offset = (offset)}}, y = (the same thing)}.
+			ReadHeight
+				Function documentation:
+					Read a set height from this frame.
+						height = Layout:ReadHeight()   -- number <- void
+				Return values:
+						height:	The parameter passed to SetHeight(), or nil if no such parameter has been passed.
+			ReadPoint
+				Function documentation:
+					Read a set point from this frame. Must be given a single-axis coordinate.
+						layout, position, offset = Layout:ReadPoint(coordinate)   -- Layout, number, number <- string
+						layout, position, offset = Layout:ReadPoint(x, y)   -- Layout, number, number <- number/nil, number/nil
+						origin, offset = Layout:ReadPoint(coordinate)   -- string, number <- string
+						origin, offset = Layout:ReadPoint(x, y)   -- string, number <- number/nil, number/nil
+				Parameters:
+						coordinate:	Named coordinate. Must be a one-axis coordinate.
+						x:	X coordinate of the point. Either this or Y must be nil.
+						y:	Y coordinate of the point. Either this or X must be nil.
+				Return values:
+						layout:	The table that this point is pinned to.
+						offset:	The offset in pixels from the source location to the actual location.
+						origin:	The string "origin".
+						position:	The position on "layout" that this point is pinned. 0 refers to the top or left edge, 1 refers to the bottom or right edge.
+			ReadWidth
+				Function documentation:
+					Read a set width from this frame.
+						width = Layout:ReadWidth()   -- number <- void
+				Return values:
+						width:	The parameter passed to SetWidth(), or nil if no such parameter has been passed.
+		Events:
+			Move
+				Frame event documentation:
+					Signals that the frame's vertices have moved.
+						Layout.Event:Move()
+			Size
+				Frame event documentation:
+					Signals that the frame's size has changed.
+						Layout.Event:Size()
+	Frame: Inherits from Layout
+		Members:
+			ClearAll
+				Function documentation:
+					Clear all set points and sizes from this frame.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:ClearAll()   -- void
+			ClearHeight
+				Function documentation:
+					Clear a set height from this frame.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:ClearHeight()   -- void
+			ClearPoint
+				Function documentation:
+					Clear a set point from this frame.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:ClearPoint(coordinate)   -- string
+						Frame:ClearPoint(x, y)   -- number/nil, number/nil
+				Parameters:
+						coordinate:	Named coordinate.
+						x:	X coordinate of the point.
+						y:	Y coordinate of the point.
+			ClearWidth
+				Function documentation:
+					Clear a set width from this frame.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:ClearWidth()   -- void
+			GetAlpha
+				Function documentation:
+					Gets the alpha multiplier of this frame.
+						alpha = Frame:GetAlpha()   -- number <- void
+				Return values:
+						alpha:	The alpha multiplier of this frame. 1 is fully opaque, 0 is fully transparent. This does not include multiplied alphas from this frame's parent - it's the exact value passed to SetAlpha.
+			GetBackgroundColor
+				Function documentation:
+					Retrieves the background color of this frame.
+						r, g, b, a = Frame:GetBackgroundColor()   -- number, number, number, number <- void
+				Return values:
+						a:	Alpha. 1 is fully opaque, 0 is fully transparent.
+						b:	Blue.
+						g:	Green.
+						r:	Red.
+			GetKeyFocus
+				Function documentation:
+					Gets the key focus status.
+						focus = Frame:GetKeyFocus()   -- boolean <- void
+				Return values:
+						focus:	Whether this frame is the current key focus.
+			GetLayer
+				Function documentation:
+					Gets the frame's layer order.
+						layer = Frame:GetLayer()   -- number <- void
+				Return values:
+						layer:	The render layer of this frame. See Frame:SetLayer for details.
+			GetMouseMasking
+				Function documentation:
+					Get the current mouse masking mode. See SetMouseMasking for details.
+						mask = Frame:GetMouseMasking()   -- string <- void
+				Return values:
+						mask:	The current mouse masking mode.
+			GetMouseoverUnit
+				Function documentation:
+					Gets the unit that is being represented by this frame.
+						unit = Frame:GetMouseoverUnit()   -- string <- void
+				Return values:
+						unit:	The current mouseover unit. May be nil if there is no mouseover unit.
+			GetParent
+				Function documentation:
+					Gets the parent of this frame.
+						parent = Frame:GetParent()   -- Frame <- void
+				Return values:
+						parent:	The parent element of this frame.
+			GetSecureMode
+				Function documentation:
+					Get the current secure mode. See SetSecureMode for details.
+						secure = Frame:GetSecureMode()   -- string <- void
+				Return values:
+						secure:	The current secure mode.
+			GetVisible
+				Function documentation:
+					Gets the visibility flag for this frame.
+						visible = Frame:GetVisible()   -- boolean <- void
+				Return values:
+						visible:	This frame's visibility flag, as set by SetVisible. Does not check the visibility flags of the frame's parents.
+			SetAllPoints
+				Function documentation:
+					Pins all the edges of this frame to the edges of a different frame. If no target is given, defaults to this frame's parent.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetAllPoints()   -- void
+						Frame:SetAllPoints(target)   -- Layout
+				Parameters:
+						target:	Target Layout to pin this frame's edges to.
+			SetAlpha
+				Function documentation:
+					Sets the alpha transparency multiplier for this frame and its children.
+						Frame:SetAlpha(alpha)   -- number
+				Parameters:
+						alpha:	The new alpha multiplier. 1 is fully opaque, 0 is fully transparent.
+			SetBackgroundColor
+				Function documentation:
+					Sets the background color of this frame.
+						Frame:SetBackgroundColor(r, g, b)   -- number, number, number
+						Frame:SetBackgroundColor(r, g, b, a)   -- number, number, number, number
+				Parameters:
+						a:	Alpha. 1 is fully opaque, 0 is fully transparent. Defaults to 1.
+						b:	Blue.
+						g:	Green.
+						r:	Red.
+			SetHeight
+				Function documentation:
+					Sets the height of this frame. Undefined results if the frame already has two pinned Y coordinates.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetHeight(height)   -- number
+				Parameters:
+						height:	The new height of this frame.
+			SetKeyFocus
+				Function documentation:
+					Sets the key focus status. Note that only one frame can be the key focus at a time. Focusing on another frame will automatically unset the current focus.
+						Frame:SetKeyFocus(focus)   -- boolean
+				Parameters:
+						focus:	The new key focus setting.
+			SetLayer
+				Function documentation:
+					Sets the frame layer for this frame. This can be any number. Frames are drawn in ascending order. If two frames have the same layer number, then the order of those frames is undefined, but stable during a single play session. Frames are always drawn after their parents.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetLayer(layer)   -- number
+				Parameters:
+						layer:	The new layer for this frame.
+			SetMouseMasking
+				Function documentation:
+					Sets the frame's mouse masking mode.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetMouseMasking(mask)   -- string
+				Parameters:
+						mask:	The new mouse masking mode. "full" is the standard mode, and means that creating any Left, Right, or movement-related mouse event will cause the frame to accept and consume any event from any of those types. "limited" causes the frame to accept and consume only events for buttons that have been hooked, so that hooking "LeftDown" will still pass Right mouse events through the frame. Note that hooking any keypress event will still consume MouseMove/In/Out events.
+			SetMouseoverUnit
+				Function documentation:
+					Sets the unit that will be represented by this frame.
+					Permitted only on a frame with "restricted" SecureMode while the addon environment is not secured.
+						Frame:SetMouseoverUnit(unit)   -- string
+						Frame:SetMouseoverUnit(unit)   -- nil
+				Parameters:
+						unit:	The new mouseover unit. May be a unit ID or a unit specifier. Pass in nil to disable the mouseover effect.
+			SetParent
+				Function documentation:
+					Sets the parent of this frame. Circular dependencies result in undefined behavior. If this frame's secure mode is "restricted", then its parent must also have a secure mode of "restricted".
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetParent(parent)   -- FrameReadonly
+				Parameters:
+						parent:	The new parent for this frame.
+			SetPoint
+				Function documentation:
+					Pins a point on this frame to a location on another frame. This is a rather complex function and you should look at examples to see how to use it.
+					This function can take many different forms. In general, it looks like this: SetPoint(point_on_this_frame, target_frame, point_on_target_frame [, x_offset, y_offset]).
+					The first part is the point on this frame that will be attached. Usually, these are string identifiers. "TOPLEFT", "TOPCENTER", "TOPRIGHT", "CENTERLEFT", "CENTER", "CENTERRIGHT", "BOTTOMLEFT", "BOTTOMCENTER", "BOTTOMRIGHT". You may also use a string identifier that refers to a single axis - "TOP", "BOTTOM", "LEFT", "RIGHT", "CENTERX", "CENTERY". If you want more direct numeric control you can use number pairs. 0,0 is equivalent to "TOPLEFT", 1,1 is equivalent to "BOTTOMRIGHT", 0.5,nil is equivalent to "CENTERX".
+					The second part is the frame to attach to, as well as the point on that frame to attach to. The frame is simply passing in the frame table. The point is the same identifier or number pair as the first parameter.
+					Optionally, you may include an X or Y offset to the point.
+					This connection is permanent, and if the target frame moves, this frame will move along with it. 
+					Caveat: If the target is a frame set to the "restricted" SecureMode, and the client is currently in "secure" mode, then unexpected behavior may occur.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetPoint(...)   -- ...
+				Parameters:
+						...:	This function's parameters are complicated. More details will be forthcoming.
+			SetSecureMode
+				Function documentation:
+					Sets the frame's secure mode.
+						Frame:SetSecureMode(secure)   -- string
+				Parameters:
+						secure:	The new secure mode. "normal" is the standard mode. It allows for most functionality to be used and does not restrict frames in combat. "restricted" allows for certain sensitive functions to be called, but disables a significant amount of functionality in combat. If you are not planning to use any restricted functions, your frame should be in normal mode.
+			SetVisible
+				Function documentation:
+					Sets the frame's visibility flag. If set to false, then this frame and all its children will not be rendered or accept mouse input.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetVisible(visible)   -- boolean
+				Parameters:
+						visible:	The new visibility flag.
+			SetWidth
+				Function documentation:
+					Sets the width of this frame. Undefined results if the frame already has two pinned X coordinates.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Frame:SetWidth(width)   -- number
+				Parameters:
+						width:	The new width of this frame.
+		Events:
+			KeyDown
+				Frame event documentation:
+					Signals a key pressed.
+						Frame.Event:KeyDown(button)
+				Parameters:
+					button: The key, in string form.
+			KeyFocusGain
+				Frame event documentation:
+					Signals gaining key focus.
+						Frame.Event:KeyFocusGain()
+			KeyFocusLoss
+				Frame event documentation:
+					Signals losing key focus.
+						Frame.Event:KeyFocusLoss()
+			KeyType
+				Frame event documentation:
+					Signals text typed.
+						Frame.Event:KeyType(typed)
+				Parameters:
+					typed: The text.
+			KeyUp
+				Frame event documentation:
+					Signals a key released.
+						Frame.Event:KeyUp(button)
+				Parameters:
+					button: The key, in string form.
+			LeftClick
+				Frame event documentation:
+					Signals that the mouse's left button has been clicked inside the frame. Blocks left mouse events and mouse movement events from frames below this one. May block right mouse events depending on the MouseMasking mode.
+						Frame.Event:LeftClick()
+			LeftDown
+				Frame event documentation:
+					Signals that the mouse's left button has been pressed inside the frame. Blocks left mouse events and mouse movement events from frames below this one. May block right mouse events depending on the MouseMasking mode.
+						Frame.Event:LeftDown()
+			LeftUp
+				Frame event documentation:
+					Signals that the mouse's left button has been released inside the frame. Blocks left mouse events and mouse movement events from frames below this one. May block right mouse events depending on the MouseMasking mode.
+						Frame.Event:LeftUp()
+			LeftUpoutside
+				Frame event documentation:
+					Signals that the mouse's left button has been released outside the frame, after a "Down" message. Blocks left mouse events and mouse movement events from frames below this one. May block right mouse events depending on the MouseMasking mode.
+						Frame.Event:LeftUpoutside()
+			MiddleClick
+				Frame event documentation:
+					Signals that the mouse's middle button has been clicked inside the frame. Blocks middle mouse events from frames below this one.
+						Frame.Event:MiddleClick()
+			MiddleDown
+				Frame event documentation:
+					Signals that the mouse's middle button has been pressed inside the frame. Blocks middle mouse events from frames below this one.
+						Frame.Event:MiddleDown()
+			MiddleUp
+				Frame event documentation:
+					Signals that the mouse's middle button has been released inside the frame. Blocks middle mouse events from frames below this one.
+						Frame.Event:MiddleUp()
+			MiddleUpoutside
+				Frame event documentation:
+					Signals that the mouse's middle button has been released outside the frame, after a "Down" message. Blocks middle mouse events from frames below this one.
+						Frame.Event:MiddleUpoutside()
+			Mouse4Click
+				Frame event documentation:
+					Signals that the mouse's fourth button has been clicked inside the frame. Blocks fourth button mouse events from frames below this one.
+						Frame.Event:Mouse4Click()
+			Mouse4Down
+				Frame event documentation:
+					Signals that the mouse's fourth button has been pressed inside the frame. Blocks fourth button mouse events from frames below this one.
+						Frame.Event:Mouse4Down()
+			Mouse4Up
+				Frame event documentation:
+					Signals that the mouse's fourth button has been released inside the frame. Blocks fourth button mouse events from frames below this one.
+						Frame.Event:Mouse4Up()
+			Mouse4Upoutside
+				Frame event documentation:
+					Signals that the mouse's fourth button has been released outside the frame, after a "Down" message. Blocks fourth button mouse events from frames below this one.
+						Frame.Event:Mouse4Upoutside()
+			Mouse5Click
+				Frame event documentation:
+					Signals that the mouse's fifth button has been clicked inside the frame. Blocks fifth button mouse events from frames below this one.
+						Frame.Event:Mouse5Click()
+			Mouse5Down
+				Frame event documentation:
+					Signals that the mouse's fifth button has been pressed inside the frame. Blocks fifth button mouse events from frames below this one.
+						Frame.Event:Mouse5Down()
+			Mouse5Up
+				Frame event documentation:
+					Signals that the mouse's fifth button has been released inside the frame. Blocks fifth button mouse events from frames below this one.
+						Frame.Event:Mouse5Up()
+			Mouse5Upoutside
+				Frame event documentation:
+					Signals that the mouse's fifth button has been released outside the frame, after a "Down" message. Blocks fifth button mouse events from frames below this one.
+						Frame.Event:Mouse5Upoutside()
+			MouseIn
+				Frame event documentation:
+					Signals that the mouse cursor has been moved onto the frame. Blocks mouse movement events from frames below this one. May block left and right events depending on the MouseMasking mode.
+						Frame.Event:MouseIn()
+			MouseMove
+				Frame event documentation:
+					Signals that the mouse cursor has been moved within the frame. Blocks mouse movement events from frames below this one. May block left and right events depending on the MouseMasking mode.
+						Frame.Event:MouseMove(x, y)
+				Parameters:
+					x: X coordinate.
+					y: Y coordinate.
+			MouseOut
+				Frame event documentation:
+					Signals that the mouse cursor has been moved off of the frame. Blocks mouse movement events from frames below this one. May block left and right events depending on the MouseMasking mode.
+						Frame.Event:MouseOut()
+			RightClick
+				Frame event documentation:
+					Signals that the mouse's right button has been clicked inside the frame. Blocks right mouse events and mouse movement events from frames below this one. May block left mouse events depending on the MouseMasking mode.
+						Frame.Event:RightClick()
+			RightDown
+				Frame event documentation:
+					Signals that the mouse's right button has been pressed inside the frame. Blocks right mouse events and mouse movement events from frames below this one. May block left mouse events depending on the MouseMasking mode.
+						Frame.Event:RightDown()
+			RightUp
+				Frame event documentation:
+					Signals that the mouse's right button has been released inside the frame. Blocks right mouse events and mouse movement events from frames below this one. May block left mouse events depending on the MouseMasking mode.
+						Frame.Event:RightUp()
+			RightUpoutside
+				Frame event documentation:
+					Signals that the mouse's right button has been released outside the frame, after a "Down" message. Blocks right mouse events and mouse movement events from frames below this one. May block left mouse events depending on the MouseMasking mode.
+						Frame.Event:RightUpoutside()
+			WheelBack
+				Frame event documentation:
+					Signals that the mousewheel has been moved backward inside the frame. Blocks mousewheel events from frames below this one.
+						Frame.Event:WheelBack()
+			WheelForward
+				Frame event documentation:
+					Signals that the mousewheel has been moved forward inside the frame. Blocks mousewheel events from frames below this one.
+						Frame.Event:WheelForward()
+	Context: Inherits from Frame
+		Members:
+			(No extra members)
+		Events:
+			(No extra events)
+	Mask: Inherits from Frame
+		Members:
+			(No extra members)
+		Events:
+			(No extra events)
+	Text: Inherits from Frame
+		Members:
+			GetFont
+				Function documentation:
+					Gets the current font used for this element.
+						source, font = Text:GetFont()   -- string, string <- void
+				Return values:
+						font:	The actual font identifier. Either a resource identifier or a filename.
+						source:	The source of the resource. "Rift" will take the resource from Rift's internal data. Anything else will take the resource from the addon with that identifier.
+			GetFontColor
+				Function documentation:
+					Gets the current font color for this element.
+						r, g, b, a = Text:GetFontColor()   -- number, number, number, number <- void
+				Return values:
+						a:	Alpha. 1 is fully opaque, 0 is fully transparent.
+						b:	Blue.
+						g:	Green.
+						r:	Red.
+			GetFontSize
+				Function documentation:
+					Gets the font size of the current element.
+						fontsize = Text:GetFontSize()   -- number <- void
+				Return values:
+						fontsize:	The current font size of this element.
+			GetFullHeight
+				Function documentation:
+					Get the height that would be required for this element to display all lines of text.
+						height = Text:GetFullHeight()   -- number <- void
+				Return values:
+						height:	The element height needed to display all lines of text.
+			GetFullWidth
+				Function documentation:
+					Get the width that would be required for this element to avoid word wrapping or truncation.
+						width = Text:GetFullWidth()   -- number <- void
+				Return values:
+						width:	The element width needed to avoid word wrapping or truncation.
+			GetText
+				Function documentation:
+					Get the current text for this element.
+						text = Text:GetText()   -- string <- void
+				Return values:
+						text:	The current text of the element.
+			GetWordwrap
+				Function documentation:
+					Gets the wordwrap flag for this element.
+						wordwrap = Text:GetWordwrap()   -- boolean <- void
+				Return values:
+						wordwrap:	The current wordwrap flag for this element. If false, long lines will be truncated. Defaults to false.
+			ResizeToText
+				Function documentation:
+					Sets the element's width and height to display all text without wordwrapping or truncation.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Text:ResizeToText()   -- void
+			SetFont
+				Function documentation:
+					Sets the current font used for this element.
+						Text:SetFont(source, font)   -- string, string
+				Parameters:
+						font:	The actual font identifier. Either a resource identifier or a filename.
+						source:	The source of the resource. "Rift" will take the resource from Rift's internal data. Anything else will take the resource from the addon with that identifier.
+			SetFontColor
+				Function documentation:
+					Sets the current font color for this element.
+						Text:SetFontColor(r, g, b)   -- number, number, number
+						Text:SetFontColor(r, g, b, a)   -- number, number, number, number
+				Parameters:
+						a:	Alpha. 1 is fully opaque, 0 is fully transparent. Defaults to 1.
+						b:	Blue.
+						g:	Green.
+						r:	Red.
+			SetFontSize
+				Function documentation:
+					Sets the current font size of this element.
+						Text:SetFontSize(fontsize)   -- number
+				Parameters:
+						fontsize:	The new font size of this element.
+			SetText
+				Function documentation:
+					Sets the current text for this element.
+						Text:SetText(text)   -- string
+				Parameters:
+						text:	The new text for the element.
+			SetWordwrap
+				Function documentation:
+					Sets the wordwrap flag for this element.
+						Text:SetWordwrap(wordwrap)   -- boolean
+				Parameters:
+						wordwrap:	The new wordwrap flag for this element. If false, long lines will be truncated. Defaults to false.
+		Events:
+			(No extra events)
+	Texture: Inherits from Frame
+		Members:
+			GetTexture
+				Function documentation:
+					Gets the current texture used for this element.
+						source, texture = Texture:GetTexture()   -- string, string <- void
+				Return values:
+						source:	The source of the resource. "Rift" will take the resource from Rift's internal data. Anything else will take the resource from the addon with that identifier.
+						texture:	The actual texture identifier. Either a resource identifier or a filename.
+			GetTextureHeight
+				Function documentation:
+					Returns the actual pixel height of the current texture.
+						height = Texture:GetTextureHeight()   -- number <- void
+				Return values:
+						height:	The height of the current texture in pixels.
+			GetTextureWidth
+				Function documentation:
+					Returns the actual pixel width of the current texture.
+						width = Texture:GetTextureWidth()   -- number <- void
+				Return values:
+						width:	The width of the current texture in pixels.
+			ResizeToTexture
+				Function documentation:
+					Sets the element's width and height to the exact pixel size of the texture.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						Texture:ResizeToTexture()   -- void
+			SetTexture
+				Function documentation:
+					Sets the current texture used for this element.
+						Texture:SetTexture(source, texture)   -- string, string
+				Parameters:
+						source:	The source of the resource. "Rift" will take the resource from Rift's internal data. Anything else will take the resource from the addon with that identifier.
+						texture:	The actual texture identifier. Either a resource identifier or a filename.
+		Events:
+			(No extra events)
+	RiftButton: Inherits from Frame
+		Members:
+			GetDefaultHeight
+				Function documentation:
+					Returns the default height of Rift buttons.
+						height = RiftButton:GetDefaultHeight()   -- number <- void
+				Return values:
+						height:	Default button height.
+			GetDefaultWidth
+				Function documentation:
+					Returns the default width of Rift buttons.
+						width = RiftButton:GetDefaultWidth()   -- number <- void
+				Return values:
+						width:	Default button width.
+			GetEnabled
+				Function documentation:
+					Gets whether the button is enabled or grayed out.
+						enabled = RiftButton:GetEnabled()   -- boolean <- void
+				Return values:
+						enabled:	The current enable state of this item.
+			GetText
+				Function documentation:
+					Gets this button's text.
+						text = RiftButton:GetText()   -- string <- void
+				Return values:
+						text:	The current text of the element.
+			ResizeToDefault
+				Function documentation:
+					Resizes this button to its default width and height.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						RiftButton:ResizeToDefault()   -- void
+			SetEnabled
+				Function documentation:
+					Sets whether the button is enabled or grayed out.
+						RiftButton:SetEnabled(enabled)   -- boolean
+				Parameters:
+						enabled:	The new enable state of this item.
+			SetText
+				Function documentation:
+					Sets this button's text.
+						RiftButton:SetText(text)   -- string
+				Parameters:
+						text:	The new text for the element.
+		Events:
+			LeftPress
+				Frame event documentation:
+					Signals that the button has been pressed. Equivalent to LeftClick, but only triggered while the button is enabled.
+						RiftButton.Event:LeftPress()
+	RiftCheckbox: Inherits from Frame
+		Members:
+			GetChecked
+				Function documentation:
+					Gets whether the button is checked or not.
+						checked = RiftCheckbox:GetChecked()   -- boolean <- void
+				Return values:
+						checked:	The current checked state of this item.
+			GetDefaultHeight
+				Function documentation:
+					Returns the default height of Rift checkboxes.
+						height = RiftCheckbox:GetDefaultHeight()   -- number <- void
+				Return values:
+						height:	Default button height.
+			GetDefaultWidth
+				Function documentation:
+					Returns the default width of Rift checkboxes.
+						width = RiftCheckbox:GetDefaultWidth()   -- number <- void
+				Return values:
+						width:	Default button width.
+			GetEnabled
+				Function documentation:
+					Gets whether the checkbox is enabled or grayed out.
+						enabled = RiftCheckbox:GetEnabled()   -- boolean <- void
+				Return values:
+						enabled:	The current enable state of this item.
+			ResizeToDefault
+				Function documentation:
+					Resizes this checkbox to its default width and height.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						RiftCheckbox:ResizeToDefault()   -- void
+			SetChecked
+				Function documentation:
+					Sets whether the checkbox is checked or not.
+						RiftCheckbox:SetChecked(checked)   -- boolean
+				Parameters:
+						checked:	The new checked state of this item.
+			SetEnabled
+				Function documentation:
+					Sets whether the checkbox is enabled or grayed out.
+						RiftCheckbox:SetEnabled(enabled)   -- boolean
+				Parameters:
+						enabled:	The new enable state of this item.
+		Events:
+			CheckboxChange
+				Frame event documentation:
+					Signals that the checkbox's checked state has changed.
+						RiftCheckbox.Event:CheckboxChange()
+	RiftTextfield: Inherits from Frame
+		Members:
+			GetCursor
+				Function documentation:
+					Returns the current position of the cursor.
+						cursor@result = RiftTextfield:GetCursor()   -- number <- void
+				Return values:
+						cursor@result:	The current position of this cursor. 0 indicates a cursor placed before any text.
+			GetDefaultHeight
+				Function documentation:
+					Returns the default height of Rift textfields.
+						height = RiftTextfield:GetDefaultHeight()   -- number <- void
+				Return values:
+						height:	Default textfield height.
+			GetDefaultWidth
+				Function documentation:
+					Returns the default width of Rift textfields.
+						width = RiftTextfield:GetDefaultWidth()   -- number <- void
+				Return values:
+						width:	Default textfield width.
+			GetSelection
+				Function documentation:
+					Returns the current bounds of the selected text.
+						begin, end = RiftTextfield:GetSelection()   -- number, number <- void
+				Return values:
+						begin:	The beginning of the selected text, in the same format GetCursor uses. nil if there is no text selected.
+						end:	The end of the selected text, in the same format GetCursor uses. nil if there is no text selected.
+			GetSelectionText
+				Function documentation:
+					Get the current selected text for this element. Returns nil if no text has been selected.
+						text = RiftTextfield:GetSelectionText()   -- string <- void
+				Return values:
+						text:	The current text of the element.
+			GetText
+				Function documentation:
+					Get the current text for this element.
+						text = RiftTextfield:GetText()   -- string <- void
+				Return values:
+						text:	The current text of the element.
+			SetCursor
+				Function documentation:
+					Changes the current position of the cursor.
+						RiftTextfield:SetCursor(cursor)   -- number
+				Parameters:
+						cursor:	The new position of this cursor. Must be within the valid range.
+			SetSelection
+				Function documentation:
+					Sets the current bounds of the selected text. Call with no arguments to remove the current selection.
+						RiftTextfield:SetSelection()   -- void
+						RiftTextfield:SetSelection(begin, end)   -- number, number
+				Parameters:
+						begin:	The new beginning of the selected text, in the same format SetCursor uses. Must be an integer and smaller than "end".
+						end:	The new end of the selected text, in the same format SetCursor uses. Must be an integer and larger than "begin".
+			SetText
+				Function documentation:
+					Set the current text for this element.
+						RiftTextfield:SetText(text)   -- string
+				Parameters:
+						text:	The new text for the element.
+		Events:
+			TextfieldChange
+				Frame event documentation:
+					Signals that the textfield's text has changed.
+						RiftTextfield.Event:TextfieldChange()
+			TextfieldSelect
+				Frame event documentation:
+					Signals that the textfield's selection has changed.
+						RiftTextfield.Event:TextfieldSelect()
+	RiftWindow: Inherits from Frame
+		Members:
+			GetBorder
+				Function documentation:
+					Gets the element representing the window border.
+						border = RiftWindow:GetBorder()   -- FrameReadonly <- void
+				Return values:
+						border:	The window border.
+			GetContent
+				Function documentation:
+					Gets the element representing the window content area.
+						content = RiftWindow:GetContent()   -- FrameReadonly <- void
+				Return values:
+						content:	The window content area.
+			GetController
+				Function documentation:
+					Gets the ID of the current controller for this window.
+						controller = RiftWindow:GetController()   -- string <- void
+				Return values:
+						controller:	"border" or "content", whichever dictates the dimensions of the other.
+			GetDefaultHeight
+				Function documentation:
+					Returns the default height of Rift windows.
+						height = RiftWindow:GetDefaultHeight()   -- number <- void
+				Return values:
+						height:	Default window height.
+			GetDefaultWidth
+				Function documentation:
+					Returns the default width of Rift windows.
+						width = RiftWindow:GetDefaultWidth()   -- number <- void
+				Return values:
+						width:	Default window width.
+			GetTitle
+				Function documentation:
+					Get the current title for this element.
+						title = RiftWindow:GetTitle()   -- string <- void
+				Return values:
+						title:	The current title of the element.
+			GetTrimDimensions
+				Function documentation:
+					Gets the thicknesses of the border's visual trim.
+						left, top, right, bottom = RiftWindow:GetTrimDimensions()   -- number, number, number, number <- void
+				Return values:
+						bottom:	The thickness of the bottom window border.
+						left:	The thickness of the left window border.
+						right:	The thickness of the right window border.
+						top:	The thickness of the top window border.
+			SetController
+				Function documentation:
+					Sets the current controller for this window. The controller will take on the exact dimensions of the RiftWindow object, and the other element will adjust accordingly.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						RiftWindow:SetController(controller)   -- string
+				Parameters:
+						controller:	The new controller ID. May be either "border" or "content".
+			SetTitle
+				Function documentation:
+					Set the current title for this element.
+						RiftWindow:SetTitle(title)   -- string
+				Parameters:
+						title:	The new title for the element.
+		Events:
+			(No extra events)
+
