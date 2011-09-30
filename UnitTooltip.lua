@@ -235,12 +235,12 @@ do
     end
     function draw()
         for i, widget in ipairs(widgetsToDraw) do
-			if widget.cell then
+			if widget.cell and widget.buffer ~= "" then
 				widget.cell:SetFontSize(widget.fontSize or 12)
 				widget.cell:SetText(widget.buffer)
 			end
 
-			if widget.color.is_valid then
+			if widget.color.is_valid and widget.buffer ~= "" then
 				widget.color:Eval()
 				local r, g, b, a = widget.color:P2N()
 				widget.cell:SetFontColor(r or 0, g or 0, b or 0, a or 1)

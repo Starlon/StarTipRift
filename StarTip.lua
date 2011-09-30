@@ -88,34 +88,37 @@ local function delCell(cell)
 end
 
 tooltipMain.AddLine = function(self, txt)
-	local lineNum = self:NumLines() + 1
+	local lineNum = self:NumLines()
 	local cell = newCell()
-	if lineNum == 1 then
+	if lineNum == 0 then
 		cell:SetPoint("TOPLEFT", frame, "TOPLEFT")
-		cell:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 	else
-		cell:SetPoint("TOPLEFT", self.lines[lineNum - 1][1], "BOTTOMLEFT")
-		cell:SetPoint("TOPRIGHT", self.lines[lineNum - 1][1], "BOTTOMRIGHT")
+		local h = self.lines[lineNum][1]:GetHeight()
+		cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, h * lineNum)
 	end
 	tinsert(self.lines, new(cell))
 	cell:SetText(txt)
+	cell:ResizeToText()
 	return cell
 end
 
 tooltipMain.AddDoubleLine = function(self, txt1, txt2)
-	local lineNum = self:NumLines() + 1
-	local line = self.lines[lineNum - 1]
+	local lineNum = self:NumLines()
+	local line = self.lines[lineNum]
 	local cell1 = newCell()
 	local cell2 = newCell()
-	if lineNum == 1 then
+	if lineNum == 0 then
 		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT")
 	else
-		cell1:SetPoint("TOPLEFT", line[1], "BOTTOMLEFT")
+		local h = line[1]:GetHeight()
+		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, h * lineNum)
 	end
 	cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
 	tinsert(self.lines, new(cell1, cell2))
 	cell1:SetText(txt1)
 	cell2:SetText(txt2)	
+	cell1:ResizeToText()
+	cell2:ResizeToText()
 	return cell1, cell2
 end
 
