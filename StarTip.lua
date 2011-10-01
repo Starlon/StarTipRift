@@ -43,7 +43,7 @@ tooltipMain.context = context
 local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
 frame.flash = LibFlash:New(frame)
 tooltipMain.frame = frame
-frame:SetBackgroundColor(0, 0, 0, .5)
+frame:SetBackgroundColor(0, 0, 0, .8)
 frame:SetHeight(500)
 frame:SetWidth(600)
 
