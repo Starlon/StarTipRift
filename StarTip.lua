@@ -14,6 +14,13 @@ local LibCore = LibStub("LibScriptableLCDCoreLite-1.0")
 local LibEvaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
 local LibFlash = LibStub("LibFlash")
 
+if FooBar then
+	local mod = FooBarModule:new(FooBar.getFoobar(), "StarTipFooBar")
+	mod:setText("StarTip")
+	mod:registerEvent("LeftClick", function() StarTip:OpenConfig() end)
+	StarTip.foobar = mod
+end
+
 local environment = {}
 local core = LibCore:New(environment, "StarTip", 2)
 StarTip.core = core

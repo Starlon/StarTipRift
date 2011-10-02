@@ -33,7 +33,8 @@ Embed = {
 Dependencies = {
   LibStub = {"optional", "before"}, 
   LibCallbackHandler = {"optional", "before"}, 
-  Dongle = {"optional", "before"}
+  Dongle = {"optional", "before"},
+  FooBar = {"optional", "before"}
 }
 
 SavedVariables = {
