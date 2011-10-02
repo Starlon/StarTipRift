@@ -385,6 +385,7 @@ table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 local function playerLoaded(units)
 	for k, v in pairs(units) do
 		if v == "player" then
+			StarTip_SavedVariables = StarTip_SavedVariables or {}
 			config = StarTip:InitializeDB(StarTip_SavedVariables, defaults)
 			config = config.profile
 
