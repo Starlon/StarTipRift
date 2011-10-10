@@ -369,7 +369,7 @@ function mod:CreateLines()
     end})
 end
 
-function mod:OnEnable()
+function mod:OnStartup()
 	self:CreateLines()
 end
 

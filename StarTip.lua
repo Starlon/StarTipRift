@@ -373,8 +373,8 @@ end
 
 local function startup()
 	for k, mod in pairs(StarTip.modules) do
-		if mod.OnEnable then
-			mod:OnEnable()
+		if mod.OnStartup then
+			mod:OnStartup()
 		end
 	end
 	

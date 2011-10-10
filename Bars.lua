@@ -124,6 +124,7 @@ function createBars()
 		bar:SetLayer(1)
 		bar.solid:SetBackgroundColor(0, 0, 0, .5)
 		bar:SetBackgroundColor(0, 0, 0, v.alpha or 0.3)
+
 		-- Set the solid bar to fill the entire buff bar.
 		bar.solid:SetPoint("TOPLEFT", bar, "TOPLEFT")
 		bar.solid:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
@@ -131,9 +132,6 @@ function createBars()
 		bar.text = UI.CreateFrame("Text", "Text", bar)
 		bar.text:SetPoint("CENTER", bar, "CENTER")
     
-		-- This is hardcoded, but in a full fleshed-out addon, it would be set by the user.
-		-- This could be done now with slash commands, but couldn't be saved yet.
-
 		bar:SetPoint(v.points[1][1], mod.tooltipMain.frame, v.points[1][2], v.points[1][3] or 0, v.points[1][4] or 0)
 		bar:SetPoint(v.points[2][1], mod.tooltipMain.frame, v.points[2][2], v.points[2][3] or 0, v.points[1][4] or 0)
 		
@@ -152,7 +150,7 @@ function startBars()
 	end
 end
 
-function mod:OnEnable()
+function mod:OnStartup()
 	createBars()
 end
 
