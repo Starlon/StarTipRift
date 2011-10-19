@@ -97,7 +97,7 @@ local function delCell(cell)
 	cell:ResizeToText()
 	cell:ClearAll()
 	cell:SetFontColor(1, 1, 1, 1)
-	tinsert(pool, cell)
+	tinsert(pool, 1, cell)
 end
 
 tooltipMain.AddLine = function(self, txt)
