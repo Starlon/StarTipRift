@@ -242,26 +242,6 @@ end
 
 table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip", "refresh"})
 
-table.insert(Command.Slash.Register("startip"), {function (commands)	
-	if commands == "cpu" then
-		StarTip:CPU()
-	elseif commands:match("config") then
-		StarTip:OpenConfig()
-	else
-		print("Commands are 'config' and 'cpu'.")
-	end
-end, "StarTip", "Slash command"})
-
-function StarTip:CPU()
-	local cpu = Inspect.Addon.Cpu()
-	if cpu.StarTip then
-		print("-------- StarTip CPU Usage --------")
-		for k, v in pairs(cpu.StarTip) do
-			print(k, ":", v)
-		end
-	end
-end
-
 local configDialog = UI.CreateFrame("RiftWindow", "Configuration", context)
 configDialog:SetPoint("CENTER", UIParent, "CENTER")
 configDialog:SetWidth(420)
@@ -382,12 +362,15 @@ end
 
 table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
 
+local isLoaded
 local function playerLoaded(units)
+	if isLoaded then return end
+	isLoaded = true
 	for k, v in pairs(units) do
 		if v == "player" then
 			StarTip_SavedVariables = StarTip_SavedVariables or {}
-			config = StarTip:InitializeDB(StarTip_SavedVariables, defaults)
-			config = config.profile
+			StarTip.db = StarTip:InitializeDB(StarTip_SavedVariables, defaults)
+			config = StarTip.db and StarTip.db.profile
 
 			if not config then return end
 			
@@ -398,15 +381,31 @@ local function playerLoaded(units)
 				tooltipMain:Reshape()
 			end	
 			mouse:SetChecked(config.mouse)
-			startPositionMouse:SetVisible(not config.mouse)
-			
-			for i = #Event.Unit.Available, 1, -1 do
-				if Event.Unit.Available[i][1] == playerLoaded then
-					table.remove(Event.Unit.Available, i)
-				end
-			end
+			startPositionMouse:SetVisible(not config.mouse)			
 		end
 	end
 end
 
-table.insert(Event.Unit.Available, {playerLoaded, "StarTip", "player loaded"})
+table.insert(Event.Unit.Available, {playerLoaded, "StarTip", "StarTip player loaded"})
+
+table.insert(Command.Slash.Register("startip"), {function (commands)	
+	if commands == "cpu" then
+		StarTip:CPU()
+	elseif commands:match("config") then
+		StarTip:OpenConfig()
+	elseif commands:match("reset") then
+		StarTip.db:ResetDB()
+	else
+		print("Commands are 'config' and 'cpu'.")
+	end
+end, "StarTip", "Slash command"})
+
+function StarTip:CPU()
+	local cpu = Inspect.Addon.Cpu()
+	if cpu.StarTip then
+		print("-------- StarTip CPU Usage --------")
+		for k, v in pairs(cpu.StarTip) do
+			print(k, ":", v)
+		end
+	end
+end

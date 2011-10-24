@@ -1136,9 +1136,11 @@ UI:
 			SetSecureMode
 				Function documentation:
 					Sets the frame's secure mode.
+					"normal" is the standard mode. It allows for most functionality to be used and does not restrict frames in combat. "restricted" allows for certain sensitive functions to be called, but disables a significant amount of functionality in combat. In order to change a frame to "restricted", its parent must already be "restricted". Note that a "restricted" frame can still have "normal" children.
+					If you are not planning to use any restricted functions, your frame should remain in normal mode.
 						Frame:SetSecureMode(secure)   -- string
 				Parameters:
-						secure:	The new secure mode. "normal" is the standard mode. It allows for most functionality to be used and does not restrict frames in combat. "restricted" allows for certain sensitive functions to be called, but disables a significant amount of functionality in combat. If you are not planning to use any restricted functions, your frame should be in normal mode.
+						secure:	The new secure mode. Valid inputs are "normal" and "restricted".
 			SetVisible
 				Function documentation:
 					Sets the frame's visibility flag. If set to false, then this frame and all its children will not be rendered or accept mouse input.
@@ -1514,6 +1516,76 @@ UI:
 				Frame event documentation:
 					Signals that the checkbox's checked state has changed.
 						RiftCheckbox.Event:CheckboxChange()
+	RiftSlider: Inherits from Frame
+		Members:
+			GetDefaultHeight
+				Function documentation:
+					Returns the default height of Rift sliders.
+						height = RiftSlider:GetDefaultHeight()   -- number <- void
+				Return values:
+						height:	Default button height.
+			GetDefaultWidth
+				Function documentation:
+					Returns the default width of Rift sliders.
+						width = RiftSlider:GetDefaultWidth()   -- number <- void
+				Return values:
+						width:	Default button width.
+			GetEnabled
+				Function documentation:
+					Gets whether the slider is enabled or grayed out.
+						enabled = RiftSlider:GetEnabled()   -- boolean <- void
+				Return values:
+						enabled:	The current enable state of this item.
+			GetPosition
+				Function documentation:
+					Returns the current position of the slider.
+						position = RiftSlider:GetPosition()   -- number <- void
+				Return values:
+						position:	The current position of this slider.
+			GetRange
+				Function documentation:
+					Returns the current range of the slider.
+						minimum, maximum = RiftSlider:GetRange()   -- number, number <- void
+				Return values:
+						maximum:	The maximum value for the position of this slider.
+						minimum:	The minimum value for the position of this slider.
+			ResizeToDefault
+				Function documentation:
+					Resizes this slider to its default width and height.
+					Not permitted on a frame with "restricted" SecureMode while the addon environment is secured.
+						RiftSlider:ResizeToDefault()   -- void
+			SetEnabled
+				Function documentation:
+					Sets whether the slider is enabled or grayed out.
+						RiftSlider:SetEnabled(enabled)   -- boolean
+				Parameters:
+						enabled:	The new enable state of this item.
+			SetPosition
+				Function documentation:
+					Changes the current position of the slider.
+						RiftSlider:SetPosition(position)   -- number
+				Parameters:
+						position:	The new position of this slider. Must be within the current range.
+			SetRange
+				Function documentation:
+					Sets the current range of the slider.
+						RiftSlider:SetRange(minimum, maximum)   -- number, number
+				Parameters:
+						maximum:	The new maximum value for the position of this slider. Must be an integer and larger than "minimum".
+						minimum:	The new minimum value for the position of this slider. Must be an integer and smaller than "maximum".
+		Events:
+			SliderChange
+				Frame event documentation:
+					Signals a change in the slider position.
+						RiftSlider.Event:SliderChange()
+			SliderGrab
+				Frame event documentation:
+					Signals the user grabbing the slider with the mouse.
+						RiftSlider.Event:SliderGrab()
+			SliderRelease
+				Frame event documentation:
+					Signals the user releasing the slider.
+						RiftSlider.Event:SliderRelease()
 	RiftTextfield: Inherits from Frame
 		Members:
 			GetCursor
