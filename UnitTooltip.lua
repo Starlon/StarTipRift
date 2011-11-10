@@ -79,7 +79,7 @@ return UnitRelationColor(unit..'.target')
 		right = "return UnitLevel(unit)",
 		colorRight = "return DifficultyColor(unit)",
 		--alignRight = WidgetText.ALIGN_RIGHT,
-		enabled = true
+		enabled = false
 	},
 	[4] = {
 		id = "guild",
@@ -99,8 +99,16 @@ end
 	[5] = {
 		id = "calling",
 		name = "Calling",
-		left = "return 'Calling:'",
-		right = "return UnitCalling(unit)",
+		left = [[
+local calling = UnitCalling(unit)
+local txt = ""
+if calling then 
+	txt = calling .. " (" .. UnitLevel(unit) .. ")"
+end
+return txt
+]],
+		colorLeft = "return DifficultyColor(unit)",
+		
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	},
@@ -209,6 +217,35 @@ if loot then return UnitName(loot) end
 		enabled = true
 	},
 	[15] = {
+		id = "race",
+		name = "Race",
+		left = "return 'Race:'",
+		right = "return UnitRace(unit)",
+		enabled = true
+	},
+	[16] = {
+		id = "location",
+		name = "Location",
+		left = "return 'Location:'",
+		right = "return UnitLocation(unit)",
+		enabled = true
+	},
+	[17] = {
+		id = 'tag',
+		name = "Tag",
+		left = [[
+return UnitTagText(unit)
+]],
+		enabled = true
+	},
+	[500] = {
+		id = "publicsize",
+		name = "Public Size",
+		left = "local pg = UnitPublicSize(unit); if pg then return 'Public Group (' ..pg..')'; end ",
+		enabled = true
+
+	},
+	[1000] = {
 		id = "dps",
 		name = "DPS",
 		left = "return 'DPS:'",

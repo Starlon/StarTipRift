@@ -409,3 +409,4 @@ function StarTip:CPU()
 		end
 	end
 end
+
