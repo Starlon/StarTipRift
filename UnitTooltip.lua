@@ -28,7 +28,7 @@ ResetDPS(unit)
 ]]
 },
 
-lines = {
+lines = ns.custom_UT_profile or {
     [1] = {
 		id = "unitname",
         name = "UnitName",
@@ -238,14 +238,14 @@ return UnitTagText(unit)
 ]],
 		enabled = true
 	},
-	[500] = {
+	[18] = {
 		id = "publicsize",
 		name = "Public Size",
 		left = "local pg = UnitPublicSize(unit); if pg then return 'Public Group (' ..pg..')'; end ",
 		enabled = true
 
 	},
-	[1000] = {
+	[19] = {
 		id = "dps",
 		name = "DPS",
 		left = "return 'DPS:'",

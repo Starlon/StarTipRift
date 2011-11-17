@@ -1,5 +1,4 @@
 local addon, ns = ...
-
 local StarTip = DongleStub("Dongle-1.2"):New("StarTip")
 StarTip.tooltipMain = {lines={}}
 StarTip.modules={}
@@ -51,8 +50,8 @@ local frame = UI.CreateFrame("Frame", "StarTipFrame", context)
 frame.flash = LibFlash:New(frame)
 tooltipMain.frame = frame
 frame:SetBackgroundColor(0, 0, 0, .8)
-frame:SetHeight(500)
-frame:SetWidth(600)
+frame:SetHeight(1)
+frame:SetWidth(1)
 
 local tremove, tinsert = table.remove, table.insert
 local select = select
@@ -228,8 +227,9 @@ end
 
 local function unitChanged(id)
 	if id then
+		local details = Inspect.Unit.Detail(id)
 		for k, mod in pairs(StarTip.modules) do
-			if mod.SetUnit then mod:SetUnit() end
+			if mod.SetUnit and details then mod:SetUnit(details) end
 		end
 		tooltipMain:Show()
 	else

@@ -16,9 +16,7 @@ mod.bgColor = { -- Default colors from CowTip
 		}
 local bgColor = mod.bgColor
 
-function mod:SetUnit()
-	local details = Inspect.Unit.Detail("mouseover")
-	
+function mod:SetUnit(details)
 	local col = bgColor.other
 	
 	if details.health == 0 then

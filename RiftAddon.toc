@@ -10,7 +10,7 @@ Email = "sisibley@gmail.com"
 
 Version = "1.0"
 
-Environment = "1.3"
+Environment = "1.6"
 
 RunOnStartup = {
   "StarTip.lua",

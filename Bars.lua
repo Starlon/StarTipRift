@@ -154,7 +154,7 @@ function mod:OnStartup()
 	createBars()
 end
 
-function mod:SetUnit()
+function mod:SetUnit(details)
 	startBars()
 end
 
