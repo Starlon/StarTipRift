@@ -73,15 +73,6 @@ return UnitRelationColor(unit..'.target')
 		enabled = true,
 	},
 	[3] = {
-		id = "level",
-		name = "Level",
-		left = "return 'Level:'",
-		right = "return UnitLevel(unit)",
-		colorRight = "return DifficultyColor(unit)",
-		--alignRight = WidgetText.ALIGN_RIGHT,
-		enabled = false
-	},
-	[4] = {
 		id = "guild",
 		name = "Guild/Title",
 		left = "return UnitPlayer(unit) and 'Guild:' or 'Title:'",
@@ -96,20 +87,26 @@ end
 ]],
 		enabled = true
 	},
+	[4] = {
+		id = "level",
+		name = "Level",
+		left = "return 'Level:'",
+		right = "return UnitLevel(unit)",
+		colorRight = "return DifficultyColor(unit)",
+		--alignRight = WidgetText.ALIGN_RIGHT,
+		enabled = true
+	},
 	[5] = {
 		id = "calling",
 		name = "Calling",
+
 		left = [[
-local calling = UnitCalling(unit)
-local txt = ""
-if calling then 
-	txt = calling .. " (" .. UnitLevel(unit) .. ")"
-end
-return txt
+return "Calling:"
 ]],
-		colorLeft = "return DifficultyColor(unit)",
+		right = [[
+return UnitCalling(unit)
+]],
 		
-		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	},
 	[6] = {
@@ -120,14 +117,20 @@ return txt
 		enabled = true
 	},
 	[7] = {
+		id = "faction",
+		name = "Faction",
+		left ="return 'Faction:'",
+		right = "return UnitFaction(unit)",
+		enable = true
+	},
+	[8] = {
 		id = "relation",
 		name = "Relation",
 		left = "return 'Relation:'",
-		right = "return nil -- UnitRelation(unit)",
-		--alignRight = WidgetText.ALIGN_RIGHT,
+		right = "return UnitRelation(unit)",
 		enabled = true	
 	},
-	[8] = {
+	[9] = {
 		id = "health",
 		name = "Health",
 		left = "return 'Health:'",
@@ -144,7 +147,7 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 		cols = 15,
 		enabled = true
 	},
-	[9] = {
+	[10] = {
 		id = "mana",
 		name = "Mana",
 		left = "return 'Mana:'",
@@ -161,7 +164,7 @@ return GradientMana(UnitMana(unit) / UnitManaMax(unit))
 		cols = 15,
 		enabled = true
 	},
-	[10] = {
+	[11] = {
 		id = "power",
 		name = "Power",
 		left = "return 'Power:'",
@@ -177,7 +180,7 @@ return GradientMana(UnitPower(unit) / 100)
 		cols = 15,
 		enabled = true
 	},
-	[11] = {
+	[12] = {
 		id = "energy",
 		name = "Energy",
 		left = "return 'Energy:'",
@@ -193,13 +196,13 @@ return GradientMana(UnitEnergy(unit) / UnitEnergyMax(unit))
 		cols = 15,
 		enabled = true
 	},	
-	[12] = {
+	[13] = {
 		id = "guaranteedloot",
 		name = "Guaranteed Loot",
 		left = "return UnitGuaranteedLoot(unit) and Angle('This NPC is guaranteed to drop loot.')",
 		enabled = true
 	},	
-	[13] = {
+	[14] = {
 		id = "loot",
 		name = "Loot",
 		left = "return 'Loot:'",
@@ -209,28 +212,28 @@ if loot then return UnitName(loot) end
 ]],
 		enabled = true
 	},
-	[14] = {
+	[15] = {
 		id = "mark",
 		name = "Mark",
 		left = "return 'Mark:'",
 		right = "return UnitMark(unit)",
 		enabled = true
 	},
-	[15] = {
+	[16] = {
 		id = "race",
 		name = "Race",
 		left = "return 'Race:'",
 		right = "return UnitRace(unit)",
 		enabled = true
 	},
-	[16] = {
+	[17] = {
 		id = "location",
 		name = "Location",
 		left = "return 'Location:'",
 		right = "return UnitLocation(unit)",
 		enabled = true
 	},
-	[17] = {
+	[18] = {
 		id = 'tag',
 		name = "Tag",
 		left = [[
@@ -238,14 +241,14 @@ return UnitTagText(unit)
 ]],
 		enabled = true
 	},
-	[18] = {
+	[19] = {
 		id = "publicsize",
 		name = "Public Size",
 		left = "local pg = UnitPublicSize(unit); if pg then return 'Public Group (' ..pg..')'; end ",
 		enabled = true
 
 	},
-	[19] = {
+	[20] = {
 		id = "dps",
 		name = "DPS",
 		left = "return 'DPS:'",
