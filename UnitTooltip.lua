@@ -28,7 +28,7 @@ ResetDPS(unit)
 ]]
 },
 
-lines = ns.custom_UT_profile or {
+lines = {
     [1] = {
 		id = "unitname",
         name = "UnitName",
@@ -387,11 +387,11 @@ function mod:CreateLines()
                 if type(left) == "string" and type(right) == "string" then
                     lineNum = lineNum + 1
                     if v.right and v.right ~= "" then
-                        local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('-', '-')
+                        local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('', '')
 						v.leftObj.cell = cell1
 						v.rightObj.cell = cell2
                     else
-                        local cell = StarTip.tooltipMain:AddLine('-')
+                        local cell = StarTip.tooltipMain:AddLine('')
 						v.leftObj.cell = cell
                     end
                     if v.rightObj then
