@@ -1452,3 +1452,4 @@ local function Activate(self, old)
 end
 
 Dongle = DongleStub:Register(Dongle, Activate)
+_G.Dongle = Dongle

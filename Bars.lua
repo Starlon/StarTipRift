@@ -1,7 +1,7 @@
 local addon, ns = ...
 local StarTip = ns.StarTip
-
 local mod = StarTip:NewModule("Bars")
+
 local WidgetBar = LibStub("LibScriptableWidgetBar-1.0", true)
 assert(WidgetBar, "Text module requires LibScriptableWidgetBar-1.0")
 
@@ -32,7 +32,7 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 		update = 1,
 		layer = 1, 
 		level = 100,
-		points = {{"BOTTOMLEFT", "TOPLEFT"}, {"BOTTOMRIGHT", "TOPRIGHT"}}
+		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -3}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -3}}
 	},
 	[2] = {
 		name = "Mana Bar",
@@ -62,7 +62,7 @@ return Gradient(mana / max, unit)
 		update = 1,
 		layer = 1, 
 		level = 100,
-		points = {{"TOPLEFT", "BOTTOMLEFT"}, {"TOPRIGHT", "BOTTOMRIGHT"}}
+		points = {{"TOPLEFT", "BOTTOMLEFT", 0, 3}, {"TOPRIGHT", "BOTTOMRIGHT", 0, 3}}
 	},
 	[3] = {
 		name = "Cast Bar",
@@ -83,7 +83,7 @@ return perc
 		update = 1,
 		layer = 1,
 		level = 100,
-		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -10}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -10}}
+		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -10-3}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -10-3}}
 	}
 	}
 }
@@ -158,4 +158,15 @@ function mod:SetUnit(details)
 	startBars()
 end
 
-
+function mod:EstablishBars(data) 
+	if type(data) ~= "table" then return end
+	for k, v in pairs(widgets) do
+		v:Del()
+	end
+	config.bars = {
+	widgets = {}}
+	for k, v in pairs(data) do
+		config.bars[k] = v
+	end
+	createBars()
+end

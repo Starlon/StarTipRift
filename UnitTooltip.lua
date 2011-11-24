@@ -408,7 +408,19 @@ function mod:CreateLines()
     end})
 end
 
+function mod:EstablishLines(data)
+	if type(data) ~= "table" then return end
+	config.lines = {}
+	for i, v in pairs(data) do
+		config.lines[i] = v
+	end
+	lines = {}
+	self:CreateLines()
+	
+end
+
 function mod:OnStartup()
+	lines = {}
 	self:CreateLines()
 end
 

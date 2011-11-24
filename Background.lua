@@ -1,7 +1,5 @@
 local addon, ns = ...
-
-local StarTip = ns.StarTip
-local mod = StarTip:NewModule("Background")
+local mod = ns.StarTip:NewModule("Background")
 
 mod.bgColor = { -- Default colors from CowTip
 			guild = {0, 0.15, 0, .8},
