@@ -68,26 +68,29 @@ function StarTip.copy(src, dst)
     return dst
 end
 
-local pool = {}
-local function new(...)
-	local tbl = tremove(pool) or {}
-	for i = 1, select("#", ...) do
-		tbl[i] = select(i, ...)
+local new, del
+do
+	local pool = {}
+	function new(...)
+		local tbl = tremove(pool) or {}
+		for i = 1, select("#", ...) do
+			tbl[i] = select(i, ...)
+		end
+		return tbl
 	end
-	return tbl
-end
-
-local function del(tbl)
-	assert(tbl)
-	tinsert(pool, tbl)
-	for i = 1, #tbl do
-		tremove(tbl)
+	
+	function del(tbl)
+		assert(tbl)
+		tinsert(pool, tbl)
+		for i = 1, #tbl do
+			tremove(tbl)
+		end
 	end
 end
-
 local pool = {}
 local function newCell()
 	local cell = tremove(pool) or UI.CreateFrame("Text", "StarTipText", frame)
+	cell:SetFontSize(12)
 	return cell
 end
 
@@ -104,6 +107,7 @@ tooltipMain.AddLine = function(self, txt)
 	local cell = newCell()
 	if lineNum == 0 then
 		cell:SetPoint("TOPLEFT", frame, "TOPLEFT")
+		cell:SetFontSize(15)
 	else
 		local h = self.lines[lineNum][1]:GetHeight()
 		cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, h * lineNum)
@@ -121,6 +125,7 @@ tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 	local cell2 = newCell()
 	if lineNum == 0 then
 		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT")
+		cell1:SetFontSize(15)
 	else
 		local h = line[1]:GetHeight()
 		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, h * lineNum)
@@ -375,7 +380,7 @@ local function playerLoaded(units)
 			if not config then return end
 			
 			if config.mouse then
-				table.insert(Event.System.Update.Begin, {update, "StarTip", "refresh"})
+				table.insert(Event.Mouse.Move, {update, "StarTip", "refresh"})
 			else
 				frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
 				tooltipMain:Reshape()

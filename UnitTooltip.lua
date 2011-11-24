@@ -93,7 +93,6 @@ end
 		left = "return 'Level:'",
 		right = "return UnitLevel(unit)",
 		colorRight = "return DifficultyColor(unit)",
-		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true
 	},
 	[5] = {
@@ -121,7 +120,7 @@ return UnitCalling(unit)
 		name = "Faction",
 		left ="return 'Faction:'",
 		right = "return UnitFaction(unit)",
-		enable = true
+		enabled = true
 	},
 	[8] = {
 		id = "relation",
