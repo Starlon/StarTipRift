@@ -193,7 +193,7 @@ tooltipMain.Reshape = function(self)
 			width = w
 		end
 	end
-	frame:SetWidth(width)
+	frame:SetWidth(width + 3)
 	frame:SetHeight(height)
 	top:SetPoint("BOTTOMLEFT", frame, "TOPLEFT")
 	top:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT")
