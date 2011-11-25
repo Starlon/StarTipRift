@@ -14,6 +14,13 @@ local config = {
 			ResetDPS(unit)
 		]]
 
+	},
+	lines = {
+		[1] = {
+			name = "Warning",
+			left = "return 'StarTip has no profile.'",
+			enabled = true
+		}
 	}
 }
 

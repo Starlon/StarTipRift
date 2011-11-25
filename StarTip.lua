@@ -266,6 +266,14 @@ function StarTip:EstablishBackground(data)
 	if mod then mod:Establish(data) end
 end
 
+function StarTip:GetModule(name1) 
+	for name2, mod in StarTip:IterateModules() do
+		if name1 == name2 then
+			return mod
+		end
+	end
+end
+
 local abs = math.abs
 local function update()
 	if not tooltipMain:Shown() then return end
