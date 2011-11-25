@@ -3,4 +3,4 @@ externals:
     Libs/LibFlash: git://github.com/Starlon/LibFlash-Rift.git
 
 move-folders:
-    StarTipNatural: StarTipNatural    
+    StarTipNatural: StarTipNatural/
