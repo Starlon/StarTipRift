@@ -47,7 +47,6 @@ return .5, .7, .6
 ]],
 	update = 300,
 	repeating = true,
-	addon = "Default"
 }
 
 local bordersWidget
@@ -62,7 +61,8 @@ local defaults = {
 	profile = {
 		mouse = true,
 		x = 10,
-		y = 10
+		y = 10,
+		addon = "Default"
 	}
 }
 local config
@@ -495,7 +495,8 @@ do
 				end	
 				mouse:SetChecked(config.mouse)
 				startPositionMouse:SetVisible(not config.mouse)			
-				StarTip:Finalize("Default")
+print(StarTip.db.profile.addon)
+				StarTip:Finalize(StarTip.db.profile.addon)
 			end
 		end
 	end
