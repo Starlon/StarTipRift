@@ -83,7 +83,7 @@ function mod:SetUnit(details)
 	startBars()
 end
 
-function mod:EstablishBars(data) 
+function mod:Establish(data) 
 	if type(data) ~= "table" then return end
 	for k, v in pairs(widgets) do
 		v:Del()

@@ -114,9 +114,9 @@ do
 	end
 end
 local pool = {}
-local function newCell()
+local function newCell(size)
 	local cell = tremove(pool) or UI.CreateFrame("Text", "StarTipText", frame)
-	cell:SetFontSize(12)
+	cell:SetFontSize(size or 12)
 	return cell
 end
 
@@ -130,7 +130,7 @@ end
 
 tooltipMain.AddLine = function(self, txt)
 	local lineNum = self:NumLines()
-	local cell = newCell()
+	local cell = newCell(12)
 	if lineNum == 0 then
 		cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, 0)
 		cell:SetFontSize(15)
@@ -147,8 +147,8 @@ end
 tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 	local lineNum = self:NumLines()
 	local line = self.lines[lineNum]
-	local cell1 = newCell()
-	local cell2 = newCell()
+	local cell1 = newCell(12)
+	local cell2 = newCell(12)
 	if lineNum == 0 then
 		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, 0)
 		cell1:SetFontSize(15)
@@ -244,16 +244,14 @@ end
 
 function StarTip:EstablishLines(data)
 	if type(data) ~= "table" then return end
-	for k, v in StarTip:IterateModules() do
-		if v.EstablishLines then v:EstablishLines(data) end
-	end
+	local mod = self:GetModule("UnitTooltip")
+	mod:Establish(data)
 end
 
 function StarTip:EstablishBars(data)
 	if type(data) ~= "table" then return end
-	for k, v in StarTip:IterateModules() do
-		if v.EstablishBars then v:EstablishBars(data) end
-	end
+	local mod = self:GetModule("Bars")
+	mod:Establish(data)
 end
 
 function StarTip:EstablishBorders(data)
@@ -261,6 +259,11 @@ function StarTip:EstablishBorders(data)
 	bordersWidget:Del()
 	bordersWidget = WidgetColor:New(core, "Borders", data, StarTip.errorLevel, bordersWidget.draw)
 
+end
+
+function StarTip:EstablishBackground(data)
+	local mod = self:GetModule("Background")
+	if mod then mod:Establish(data) end
 end
 
 local abs = math.abs
@@ -293,7 +296,7 @@ local function unitChanged(id)
 	if id then
 		local details = Inspect.Unit.Detail(id)
 		for k, mod in StarTip:IterateModules() do
-			if mod.SetUnit and details then mod:SetUnit(details) end
+			if mod.SetUnit and details then mod:SetUnit(details, "mouseover") end
 		end
 		tooltipMain:Show()
 		bordersWidget:Start()

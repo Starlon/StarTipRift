@@ -178,7 +178,7 @@ function mod:CreateLines()
     end})
 end
 
-function mod:EstablishLines(data)
+function mod:Establish(data)
 	if type(data) ~= "table" then return end
 	config.lines = {}
 	for i, v in pairs(data) do

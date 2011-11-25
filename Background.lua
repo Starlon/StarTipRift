@@ -2,42 +2,59 @@ local addon, ns = ...
 local StarTip = ns.StarTip
 local mod = ns.StarTip:NewModule("Background")
 
-mod.bgColor = { -- Default colors from CowTip
-			guild = {0, 0.15, 0, .8},
-			hostilePC = {0.25, 0, 0, .8},
-			hostileNPC = {0.15, 0, 0, .8},
-			neutralNPC = {0.15, 0.15, 0, .8},
-			friendlyPC = {0, 0, 0.25, .8},
-			friendlyNPC = {0, 0, 0.15, .8},
-			other = {0, 0, 0, .8},
-			dead = {0.15, 0.15, 0.15, .8},
-			tapped = {0.25, 0.25, 0.25, .8},
-		}
-local bgColor = mod.bgColor
+local backgrounds = {
+	guild = "return BackgroundColor(unit)",
+	hostilePC = "return BackgroundColor(unit)",
+	hostileNPC = "return BackgroundColor(unit)",
+	neutralNPC = "return BackgroundColor(unit)",
+	friendlyPC = "return BackgroundColor(unit)",
+	friendlyNPC = "return BackgroundColor(unit)",
+	other = "return BackgroundColor(unit)",
+	dead = "return BackgroundColor(unit)",
+	tapped = "return BackgroundColor(unit)"
+}
 
-function mod:SetUnit(details)
-	local col = bgColor.other
-	
+local update = function(details)
+
+	local col = backgrounds.other
 	if details.health == 0 then
-		col = bgColor.dead
+		col = backgrounds.dead
 	elseif details.player then
 		local playerDetails = Inspect.Unit.Detail("player")
 		local guild = playerDetails.guild
 		if details.reaction == "hostile" then
-			col = bgColor.hostilePC
+			col = backgrounds.hostilePC
 		elseif guild and guild == details.guild then
-			col = bgColor.guild
+			col = backgrounds.guild
 		else
-			col = bgColor.friendlyPC
+			col = backgrounds.friendlyPC
 		end
 	else
 		if details.reaction == "hostile" then
-			col = bgColor.hostileNPC
+			col = backgrounds.hostileNPC
 		elseif details.reaction then
-			col = bgColor.friendlyNPC
+			col = backgrounds.friendlyNPC
 		else
-			col = bgColor.neutralNPC
+			col = backgrounds.neutralNPC
 		end
 	end
-	StarTip.tooltipMain.frame:SetBackgroundColor(unpack(col))
+
+	local r, g, b, a = StarTip.evaluator.Evaluate(StarTip.core.environment, "StarTip.Background", col, "mouseover")
+
+	StarTip.tooltipMain.frame:SetBackgroundColor(r or 0, g or 0, b or 0, a or .5)
+end
+
+local timer = LibStub("LibScriptableUtilsTimer-1.0"):New("StarTip.Bars", 300, true, update) 
+
+function mod:SetUnit(details, unit)
+	update(details)
+	timer:Start(300, details)
+end
+
+function mod:OnHide()
+	timer:Stop()
+end
+
+function mod:Establish(tbl)
+	backgrounds = tbl
 end

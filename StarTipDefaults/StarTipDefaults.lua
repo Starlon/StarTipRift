@@ -228,7 +228,7 @@ return UnitTagText(unit)
 	}
 
 }
-StarTip:EstablishLines(lines)
+StarTip:EstablishLines(lines, "StarTipDefault")
 
 local bars = {
 	[1] = {
@@ -321,4 +321,18 @@ return r, g, b, .5
 	update = 300,
 	repeating = true
 }
-StarTip:EstablishBorders(borders)
+StarTip:EstablishBorders(borders, "StarTipDefault")
+
+local backgrounds = {
+	guild = "return BackgroundColor(unit)",
+	hostilePC = "return BackgroundColor(unit)",
+	hostileNPC = "return BackgroundColor(unit)",
+	neutralNPC = "return BackgroundColor(unit)",
+	friendlyPC = "return BackgroundColor(unit)",
+	friendlyNPC = "return BackgroundColor(unit)",
+	other = "return BackgroundColor(unit)",
+	dead = "return BackgroundColor(unit)",
+	tapped = "return BackgroundColor(unit)"
+}
+StarTip:EstablishBackground(backgrounds,  "StarTipDefault")
+
