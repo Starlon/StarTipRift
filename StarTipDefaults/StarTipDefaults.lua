@@ -336,4 +336,4 @@ profile.backgrounds = {
 
 profile.borderSize = 1
 
-StarTip:InitializeAddon("Default", profile)
+StarTip:InitializeProfile("Default", profile)

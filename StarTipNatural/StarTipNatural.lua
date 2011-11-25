@@ -169,4 +169,4 @@ return r, g, b, .5
 
 profile.borderSize = 3
 
-StarTip:InitializeAddon("StarTip Natural", profile)
+StarTip:InitializeProfile("StarTip Natural", profile)

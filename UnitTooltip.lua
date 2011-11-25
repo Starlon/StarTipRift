@@ -132,14 +132,14 @@ function mod:CreateLines()
             local lineNum = 0
             StarTip.tooltipMain:Clear()
             for i, v in ipairs(self) do
+		--[[
                 if v.leftObj then
-                    v.leftObj.cell = nil
-					v.leftObj.buffer = false
+			v.leftObj.buffer = nil
                 end
                 if v.rightObj then
-                    v.rightObj.cell = nil
-					v.rightObj.buffer = false
+			v.rightObj.buffer = nil
                 end
+		]]
                 local left, right = '', ''
                 StarTip.core.environment.unit = "mouseover"
                 if v.right then

@@ -256,9 +256,10 @@ function StarTip:Ready(addon)
 	return type(StarTip.db) == "table"
 end
 
-function StarTip:InitializeAddon(addon, data)
+function StarTip:InitializeProfile(addon, data)
 	addons[addon] = addons[addon] or data
 end
+StarTip.InitializeAddon = InitializeProfile
 
 local loadedAddon
 function StarTip:Finalize(addon)
@@ -271,7 +272,7 @@ function StarTip:Finalize(addon)
 	if data.background then self:EstablishBackground(data.background) end
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
-	borderSize = data.borderSize or 1
+	borderSize = data.borderSize or borderSize
 	return true
 end
 
@@ -280,7 +281,7 @@ function StarTip:EstablishLines(data)
 	local mod = self:GetModule("UnitTooltip")
 	for k, v in pairs(mod.widgets) do
 		if v.cell then v.cell:SetVisible(false) end
-		--v:Del()
+		v:Del()
 	end
 	mod:Establish(data)
 end
