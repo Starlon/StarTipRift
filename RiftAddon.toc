@@ -1,3 +1,6 @@
+local debug = true
+--@debug@ debug = false --@end-debug
+
 Identifier = "StarTip"
 
 Name = "StarTip"
@@ -29,6 +32,9 @@ Embed = {
   ["Libs/Dongle"] = true,
   ["StarTipDefaults"] = true
 }
+if debug then
+	Embed["StarTipNatural"] = true
+end
 
 -- This line would set up dependencies with several other addons.
 Dependencies = {

@@ -255,9 +255,12 @@ function StarTip:InitializeAddon(addon, data)
 	addons[addon] = data
 end
 
+local loadedAddon
 function StarTip:Finalize(addon)
 	local data = addons[addon]
+print(":" .. addon .. ":", data)
 	if not data then return end
+	loadedAddon = addon
 	if data.lines then self:EstablishLines(data.lines) end
 	if data.bars then self:EstablishBars(data.bars) end
 	if data.borders then self:EstablishBorders(data.borders) end
@@ -271,8 +274,8 @@ function StarTip:EstablishLines(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("UnitTooltip")
 	for k, v in pairs(mod.widgets) do
-		v.cell:SetVisible(false)
-		v:Del()
+		if v.cell then v.cell:SetVisible(false) end
+		--v:Del()
 	end
 	mod:Establish(data)
 end
@@ -281,8 +284,8 @@ function StarTip:EstablishBars(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("Bars")
 	for k, v in pairs(mod.bars) do
-		v.bar:SetVisible(false)
-		v:Del()
+		if v.bar then v.bar:SetVisible(false) end
+		--v:Del()
 	end
 
 	mod:Establish(data)
@@ -508,12 +511,23 @@ end
 table.insert(Command.Slash.Register("startip"), {function (commands)	
 	if commands == "cpu" then
 		StarTip:CPU()
-	elseif commands:match("config") then
+	elseif commands:match("^config") then
 		StarTip:OpenConfig()
-	elseif commands:match("reset") then
+	elseif commands:match("^reset") then
 		StarTip.db:ResetDB()
+	elseif commands:match("^profile ") then
+		local len1 = string.len(commands)
+		local len2 = string.len("profile ") + 1
+		local cmd = string.sub(commands, len2, len1)
+		print(cmd)
+		StarTip:Finalize(cmd)
 	else
-		print("Commands are 'config' and 'cpu'.")
+		print("Commands are 'profile', 'config' and 'cpu'.")
+		print("Loaded profile: " .. loadedAddon)
+		print("Available Profiles:")
+		for addon in pairs(addons) do
+			print(">", addon)
+		end
 	end
 end, "StarTip", "Slash command"})
 

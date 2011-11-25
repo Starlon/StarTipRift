@@ -85,13 +85,13 @@ function mod:ClearLines()
 	self:StopLines()
 	StarTip.tooltipMain:Clear()
 	for k, v in ipairs(lines) do
-		v:Del()
+		--if v.Del then v:Del() end
 	end
-	wipe(lines)
 end
 
 local tbl
 function mod:CreateLines()
+    self:ClearLines()
     local llines = {}
     local j = 0
     for i, v in ipairs(config.lines) do
@@ -193,7 +193,6 @@ function mod:Establish(data)
 	for i, v in pairs(data) do
 		config.lines[i] = v
 	end
-	lines = {}
 	self:CreateLines()
 	
 end
