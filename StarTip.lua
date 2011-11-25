@@ -200,19 +200,24 @@ tooltipMain.Reshape = function(self)
 	end
 	frame:SetWidth(width + 3)
 	frame:SetHeight(height)
+
+	top:ClearAll()
 	top:SetPoint("BOTTOMLEFT", frame, "TOPLEFT")
 	top:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT")
 	top:SetHeight(borderSize)
 
 
+	bottom:ClearAll()
 	bottom:SetPoint("TOPLEFT", frame, "BOTTOMLEFT")
 	bottom:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT")
 	bottom:SetHeight(borderSize)
 	
+	left:ClearAll()
 	left:SetPoint("TOPLEFT", frame, "TOPRIGHT", -borderSize, 0)
 	left:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", borderSize, 0)
 	left:SetWidth(borderSize)
 
+	right:ClearAll()
 	right:SetPoint("TOPRIGHT", frame, "TOPLEFT", -borderSize, 0)
 	right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", borderSize, 0)
 	right:SetWidth(borderSize)
@@ -252,7 +257,7 @@ function StarTip:Ready(addon)
 end
 
 function StarTip:InitializeAddon(addon, data)
-	addons[addon] = data
+	addons[addon] = addons[addon] or data
 end
 
 local loadedAddon
@@ -266,7 +271,7 @@ function StarTip:Finalize(addon)
 	if data.background then self:EstablishBackground(data.background) end
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
-	borderSize = data.borderSize
+	borderSize = data.borderSize or 1
 	return true
 end
 
