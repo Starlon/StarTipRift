@@ -1,5 +1,3 @@
-local debug = true
---@debug@ debug = false --@end-debug
 
 Identifier = "StarTip"
 
@@ -30,11 +28,9 @@ Embed = {
   ["Libs/LibScriptable-1.0"] = true,
   ["Libs/LibFlash"] = true,
   ["Libs/Dongle"] = true,
-  ["StarTipDefaults"] = true
+  ["StarTipDefaults"] = true,
+  ["StarTipNatural"] = true
 }
-if debug then
-	Embed["StarTipNatural"] = true
-end
 
 -- This line would set up dependencies with several other addons.
 Dependencies = {
