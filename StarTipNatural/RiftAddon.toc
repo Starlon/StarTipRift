@@ -1,0 +1,25 @@
+Identifier = "StarTipNatural"
+
+Name = "StarTip Natural"
+
+Description = "StarTip naturel layout."
+
+Author = "Scott Sibley (starlon)"
+Website = ""
+Email = "sisibley@gmail.com"
+
+Version = "1.1"
+
+Environment = "1.6"
+
+RunOnStartup = {
+  "StarTipNatural.lua",
+}
+
+Dependencies = {
+  StarTip = {"required", "before"}
+}
+
+SavedVariables = {
+  StarTipNatural_SavedVariables = "account",
+}
