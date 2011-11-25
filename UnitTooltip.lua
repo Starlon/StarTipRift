@@ -259,7 +259,7 @@ return UnitTagText(unit)
 
 }
 }
-
+lines = {}
 local function wipe(tbl)
 	for i = 1, #tbl do
 		tremove(tbl)

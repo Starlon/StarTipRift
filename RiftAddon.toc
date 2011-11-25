@@ -26,7 +26,8 @@ Embed = {
   ["Libs/LibUnitChange"] = true,
   ["Libs/LibScriptable-1.0"] = true,
   ["Libs/LibFlash"] = true,
-  ["Libs/Dongle"] = true
+  ["Libs/Dongle"] = true,
+  ["StarTipDefaults"] = true
 }
 
 -- This line would set up dependencies with several other addons.
