@@ -248,7 +248,7 @@ return self.lastHealthBarMax or 0
 if not UnitHealth(unit) then return 1, 1, 1 end
 return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 ]],
-		height = 6,
+		height = 3,
 		length = 0,
 		enabled = true,
 		update = 1,
@@ -278,7 +278,7 @@ local mana = UnitMana(unit) or UnitPower(unit) or UnitEnergy(unit) or 0
 local max = UnitManaMax(unit) or (UnitPower(unit) and 100) or (UnitEnergyMax(unit))
 return Gradient(mana / max, unit)
 ]],
-		height = 6,
+		height = 3,
 		length = 0,
 		enabled = true,
 		update = 1,
@@ -298,7 +298,7 @@ return perc
 		max = "return 1",
 		min = "return 0",
 		color1 = "return 1, 0, 1",
-		height = 6,
+		height = 3,
 		length = 0,
 		alpha = 0,
 		enabled = true,
@@ -333,5 +333,7 @@ profile.backgrounds = {
 	tapped = "return BackgroundColor(unit)"
 }
 
+
+profile.borderSize = 1
 
 StarTip:InitializeAddon("Default", profile)

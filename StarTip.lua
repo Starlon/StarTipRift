@@ -9,7 +9,7 @@ local left = UI.CreateFrame("Texture", "StarTip-LeftBorder", frame)
 local right = UI.CreateFrame("Texture", "StarTip-RightBorder", frame)
 local top = UI.CreateFrame("Texture", "StarTip-TopBorder", frame)
 local bottom = UI.CreateFrame("Texture", "StarTip-BottomBorder", frame)
-local borderSize = 3
+local borderSize = 1
 local borderColor = {0, 0, 0, 1}
 local WidgetColor = LibStub("LibScriptableWidgetColor-1.0") 
 tooltipMain = frame
@@ -266,6 +266,7 @@ function StarTip:Finalize(addon)
 	if data.background then self:EstablishBackground(data.background) end
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
+	borderSize = data.borderSize
 	return true
 end
 
@@ -522,6 +523,7 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 		if StarTip:Finalize(cmd) then
 			StarTip.db.profile.addon = cmd
 		end
+		print("You just loaded a profile. You'll likely need to reload the UI. Type: /reloadui")
 	else
 		print("Commands are 'profile', 'config' and 'cpu'.")
 		print("Loaded profile: " .. loadedAddon)

@@ -167,4 +167,6 @@ return r, g, b, .5
     repeating = true
 }
 
+profile.borderSize = 3
+
 StarTip:InitializeAddon("StarTip Natural", profile)
