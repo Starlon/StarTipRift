@@ -1,4 +1,6 @@
-local lines = {
+local addon, profile = ...
+
+profile.lines = {
     [1] = {
 		id = "unitname",
         name = "UnitName",
@@ -228,9 +230,8 @@ return UnitTagText(unit)
 	}
 
 }
-StarTip:EstablishLines(lines, "StarTipDefault")
 
-local bars = {
+profile.bars = {
 	[1] = {
 		name = "Health Bar",
 		type = "bar",
@@ -307,9 +308,9 @@ return perc
 		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -10-3}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -10-3}}
 	}
 }
-StarTip:EstablishBars(bars)
 
-local borders = {
+
+profile.borders = {
 	expression = [[
 if UnitCalling(unit) then 
 	local r, g, b = ClassColor(unit)
@@ -321,9 +322,8 @@ return r, g, b, .5
 	update = 300,
 	repeating = true
 }
-StarTip:EstablishBorders(borders, "StarTipDefault")
 
-local backgrounds = {
+profile.backgrounds = {
 	guild = "return BackgroundColor(unit)",
 	hostilePC = "return BackgroundColor(unit)",
 	hostileNPC = "return BackgroundColor(unit)",
@@ -334,5 +334,15 @@ local backgrounds = {
 	dead = "return BackgroundColor(unit)",
 	tapped = "return BackgroundColor(unit)"
 }
-StarTip:EstablishBackground(backgrounds,  "StarTipDefault")
 
+
+local stopped
+local function update()
+	if stopped then return end
+	if type(StarTip.db) == "table" then
+		StarTip:Establish("StarTipDefaults", profile)
+		stopped = true
+	end
+end
+
+table.insert(Event.System.Update.Begin, {update, "StarTipDefaults", "update"})

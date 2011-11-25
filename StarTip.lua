@@ -24,6 +24,7 @@ local LibCore = LibStub("LibScriptableLCDCoreLite-1.0")
 StarTip.evaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
 local LibFlash = LibStub("LibFlash")
 local modules = {}
+local addons = {}
 
 if FooBar then
 	local mod = FooBarModule:new(FooBar.getFoobar(), "StarTipFooBar")
@@ -242,6 +243,17 @@ tooltipMain.Shown = function(self)
 	return frame:GetVisible()
 end
 
+function StarTip:Establish(addon, data)
+	addons[addon] = addons[addon] or addon
+	if data.lines then self:EstablishLines(data.lines) end
+	if data.bars then self:EstablishBars(data.bars) end
+	if data.borders then self:EstablishBorders(data.borders) end
+	if data.background then self:EstablishBackground(data.background) end
+	if data.animation then self:EstablishAnimation(data.animation) end
+	if data.histograms then self:EstablishHistograms(data.histograms) end
+	
+end
+
 function StarTip:EstablishLines(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("UnitTooltip")
@@ -263,6 +275,8 @@ end
 
 function StarTip:EstablishBackground(data)
 	local mod = self:GetModule("Background")
+	addon = addon or "None"
+	addons[addon] = data
 	if mod then mod:Establish(data) end
 end
 
