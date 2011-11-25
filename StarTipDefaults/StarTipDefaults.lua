@@ -339,7 +339,7 @@ profile.backgrounds = {
 local stopped
 local function update()
 	if stopped then return end
-	if type(StarTip.db) == "table" then
+	if StarTip:Ready() then
 		StarTip:Establish("StarTipDefaults", profile)
 		stopped = true
 	end

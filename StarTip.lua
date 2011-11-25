@@ -243,6 +243,10 @@ tooltipMain.Shown = function(self)
 	return frame:GetVisible()
 end
 
+function StarTip:Ready()
+	return type(self.db) == "table"
+end
+
 function StarTip:Establish(addon, data)
 	addons[addon] = addons[addon] or addon
 	if data.lines then self:EstablishLines(data.lines) end
