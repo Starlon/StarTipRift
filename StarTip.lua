@@ -258,8 +258,7 @@ end
 local loadedAddon
 function StarTip:Finalize(addon)
 	local data = addons[addon]
-print(":" .. addon .. ":", data)
-	if not data then return end
+	if not data then return false end
 	loadedAddon = addon
 	if data.lines then self:EstablishLines(data.lines) end
 	if data.bars then self:EstablishBars(data.bars) end
@@ -267,7 +266,7 @@ print(":" .. addon .. ":", data)
 	if data.background then self:EstablishBackground(data.background) end
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
-
+	return true
 end
 
 function StarTip:EstablishLines(data)
@@ -520,7 +519,9 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 		local len2 = string.len("profile ") + 1
 		local cmd = string.sub(commands, len2, len1)
 		print(cmd)
-		StarTip:Finalize(cmd)
+		if StarTip:Finalize(cmd) then
+			StarTip.db.profile.addon = cmd
+		end
 	else
 		print("Commands are 'profile', 'config' and 'cpu'.")
 		print("Loaded profile: " .. loadedAddon)
