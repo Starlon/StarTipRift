@@ -23,8 +23,11 @@ StarTip.errorLevel = 2
 local LibCore = LibStub("LibScriptableLCDCoreLite-1.0")
 StarTip.evaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
 local LibFlash = LibStub("LibFlash")
+local LibTimer = LibStub("LibScriptableUtilsTimer-1.0")
+
 local modules = {}
 local addons = {}
+local queue = {}
 
 if FooBar then
 	local mod = FooBarModule:new(FooBar.getFoobar(), "StarTipFooBar")
@@ -43,7 +46,8 @@ GetTime = GetTime or Inspect.Time.Frame
 return .5, .7, .6
 ]],
 	update = 300,
-	repeating = true
+	repeating = true,
+	addon = "Default"
 }
 
 local bordersWidget
@@ -243,24 +247,24 @@ tooltipMain.Shown = function(self)
 	return frame:GetVisible()
 end
 
-function StarTip:Ready()
-	return type(self.db) == "table"
+function StarTip:Ready(addon)
+	return type(StarTip.db) == "table"
 end
 
-function StarTip:Establish(addon, data)
-	addons[addon] = addons[addon] or addon
-	self:Finalize(data)
-	
+function StarTip:InitializeAddon(addon, data)
+	addons[addon] = data
 end
 
-function StarTip:Finalize(data)
+function StarTip:Finalize(addon)
+	local data = addons[addon]
+	if not data then return end
 	if data.lines then self:EstablishLines(data.lines) end
 	if data.bars then self:EstablishBars(data.bars) end
 	if data.borders then self:EstablishBorders(data.borders) end
 	if data.background then self:EstablishBackground(data.background) end
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
-	
+
 end
 
 function StarTip:EstablishLines(data)
@@ -491,6 +495,7 @@ do
 				end	
 				mouse:SetChecked(config.mouse)
 				startPositionMouse:SetVisible(not config.mouse)			
+				StarTip:Finalize("Default")
 			end
 		end
 	end

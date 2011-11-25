@@ -334,13 +334,4 @@ profile.backgrounds = {
 }
 
 
-local stopped
-local function update()
-	if stopped then return end
-	if StarTip:Ready() then
-		StarTip:Establish("StarTipDefaults", profile)
-		stopped = true
-	end
-end
-
-table.insert(Event.System.Update.Begin, {update, "StarTipDefaults", "update"})
+StarTip:InitializeAddon("Default", profile)
