@@ -103,8 +103,8 @@ function mod:CreateLines()
             local update = v.update or 0
             v.update = 0
             if v.left and v.leftUpdating then v.update = update end
-            mod.core.environment.unit = "player"
-            llines[j].leftObj = v.left and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
+            StarTip.core.environment.unit = "player"
+            llines[j].leftObj = v.left and WidgetText:New(StarTip.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 
 			v.align = v.alignRight
             v.value = v.right
@@ -114,8 +114,8 @@ function mod:CreateLines()
             v.color = v.colorRight
             v.maxWidth = v.maxWidthR
             v.minWidth = v.minWidthR
-			mod.core.environment.unit = "player"
-            llines[j].rightObj = v.right and WidgetText:New(mod.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
+			StarTip.core.environment.unit = "player"
+            llines[j].rightObj = v.right and WidgetText:New(StarTip.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 			
         end
     end
@@ -133,22 +133,22 @@ function mod:CreateLines()
 					v.rightObj.buffer = false
                 end
                 local left, right = '', ''
-                mod.core.environment.unit = "mouseover"
+                StarTip.core.environment.unit = "mouseover"
                 if v.right then
                     if v.rightObj then
-                        mod.core.environment.self = v.rightObj
-                        right = mod.evaluator.ExecuteCode(mod.core.environment, v.name .. " right", v.right)
+                        StarTip.core.environment.self = v.rightObj
+                        right = StarTip.evaluator.ExecuteCode(StarTip.core.environment, v.name .. " right", v.right)
                         if type(right) == "number" then right = right .. "" end
                     end
                     if v.leftObj then
-                        mod.core.environment.self = v.leftObj
-                        left = mod.evaluator.ExecuteCode(mod.core.environment, v.name .. " left", v.left)
+                        StarTip.core.environment.self = v.leftObj
+                        left = StarTip.evaluator.ExecuteCode(StarTip.core.environment, v.name .. " left", v.left)
                         if type(left) == "number" then left = left .. "" end
                     end
                 else
                     if v.leftObj then
-                        mod.core.environment.self = v.leftObj
-                        left = mod.evaluator.ExecuteCode(mod.core.environment, v.name .. " left", v.left)
+                        StarTip.core.environment.self = v.leftObj
+                        left = StarTip.evaluator.ExecuteCode(StarTip.core.environment, v.name .. " left", v.left)
                         if type(left) == "number" then left = left .. "" end
                     end
                     right = ''
@@ -199,8 +199,8 @@ function mod:OnHide()
 end
 
 function mod:SetUnit()
-	if not self.core.environment.UnitName("mouseover") then return end
-	Evaluator.Evaluate(self.core.environment, "onMouseover", config.onMouseover.code, "mouseover")
+	if not StarTip.core.environment.UnitName("mouseover") then return end
+	Evaluator.Evaluate(StarTip.core.environment, "onMouseover", config.onMouseover.code, "mouseover")
 	self:StopLines()
 	lines()
 end

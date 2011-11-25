@@ -1,4 +1,5 @@
 local addon, ns = ...
+local StarTip = ns.StarTip
 local mod = ns.StarTip:NewModule("Background")
 
 mod.bgColor = { -- Default colors from CowTip
@@ -38,5 +39,5 @@ function mod:SetUnit(details)
 			col = bgColor.neutralNPC
 		end
 	end
-	self.tooltipMain.frame:SetBackgroundColor(unpack(col))
+	StarTip.tooltipMain.frame:SetBackgroundColor(unpack(col))
 end

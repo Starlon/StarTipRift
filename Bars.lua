@@ -14,7 +14,7 @@ local config = {
 }
 
 function updateBar(widget)
-	if not mod.core.environment.UnitName("mouseover") then return end
+	if not StarTip.core.environment.UnitName("mouseover") then return end
 	
 	local bar = widget.bar
 	
@@ -41,7 +41,7 @@ end
 
 function createBars()
 	for k, v in ipairs(config.bars) do
-		local bar = UI.CreateFrame("Frame", "Bar", mod.tooltipMain.frame)
+		local bar = UI.CreateFrame("Frame", "Bar", StarTip.tooltipMain.frame)
 		bar.solid = UI.CreateFrame("Frame", "Background", bar)
 		bar:SetVisible(true)
 		bar.solid:SetVisible(true)
@@ -57,12 +57,12 @@ function createBars()
 		bar.text = UI.CreateFrame("Text", "Text", bar)
 		bar.text:SetPoint("CENTER", bar, "CENTER")
     
-		bar:SetPoint(v.points[1][1], mod.tooltipMain.frame, v.points[1][2], v.points[1][3] or 0, v.points[1][4] or 0)
-		bar:SetPoint(v.points[2][1], mod.tooltipMain.frame, v.points[2][2], v.points[2][3] or 0, v.points[1][4] or 0)
+		bar:SetPoint(v.points[1][1], StarTip.tooltipMain.frame, v.points[1][2], v.points[1][3] or 0, v.points[1][4] or 0)
+		bar:SetPoint(v.points[2][1], StarTip.tooltipMain.frame, v.points[2][2], v.points[2][3] or 0, v.points[1][4] or 0)
 		
 		bar:SetHeight(v.height)
 		
-		local widget = WidgetBar:New(mod.core, v.name, copy(v), v.row or 0, v.col or 0, v.layer or 1, mod.errorLevel or 2, updateBar)
+		local widget = WidgetBar:New(StarTip.core, v.name, copy(v), v.row or 0, v.col or 0, v.layer or 1, mod.errorLevel or 2, updateBar)
 		widget.bar = bar
 		table.insert(widgets, widget)
 	end

@@ -21,7 +21,7 @@ StarTip.tooltipMain = tooltipMain
 StarTip.errorLevel = 2
 
 local LibCore = LibStub("LibScriptableLCDCoreLite-1.0")
-local LibEvaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
+StarTip.evaluator = LibStub("LibScriptableUtilsEvaluator-1.0")
 local LibFlash = LibStub("LibFlash")
 local modules = {}
 
@@ -261,23 +261,6 @@ function StarTip:EstablishBorders(data)
 	bordersWidget:Del()
 	bordersWidget = WidgetColor:New(core, "Borders", data, StarTip.errorLevel, bordersWidget.draw)
 
-end
-
-local newModule = StarTip.NewModule
-function StarTip:NewModule(name)
-	local tbl = {name=name, core=core, evaluator=LibEvaluator, tooltipMain=tooltipMain, context=context}
-	table.insert(modules, tbl)
-	--[[local mod = newModule(StarTip, name)
-	for k, v in pairs(tbl) do
-		mod[k] = v
-	end
-	]]
-	local mod = tbl
-	return mod
-end
-
-function StarTip:IterateModules()
-	return ipairs(modules)
 end
 
 local abs = math.abs
