@@ -19,7 +19,7 @@ if name then
 end
 ]],
         colorLeft = [[
-return UnitRelationColor(unit)
+return RelationColor(unit)
 ]],
         enabled = true,
 		update = 1000,
@@ -37,7 +37,7 @@ return  name and (name .. pvp) or "None"
 ]],
 		colorRight = [[
 if not UnitName(unit..".target") then return 1, 1, 1, 1 end
-return UnitRelationColor(unit..'.target')
+return RelationColor(unit..'.target')
 ]],
 		rightUpdating = true,
 		update = 500,
@@ -313,11 +313,9 @@ return perc
 profile.borders = {
 	expression = [[
 if UnitCalling(unit) then 
-	local r, g, b = ClassColor(unit)
-	return r, g, b, .5
+	return ClassColor(unit)
 end
-local r, g, b = RelationColor(unit)
-return r, g, b, .5
+return RelationColor(unit)
 ]],
 	update = 300,
 	repeating = true

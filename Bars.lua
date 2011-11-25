@@ -40,6 +40,12 @@ function updateBar(widget)
 end
 
 function createBars()
+	if widgets then
+		for k, v in pairs(widgets) do
+			v:Del()
+		end
+	end
+	widgets = {}
 	for k, v in ipairs(config.bars) do
 		local bar = UI.CreateFrame("Frame", "Bar", StarTip.tooltipMain.frame)
 		bar.solid = UI.CreateFrame("Frame", "Background", bar)
@@ -66,7 +72,7 @@ function createBars()
 		widget.bar = bar
 		table.insert(widgets, widget)
 	end
-	
+	mod.bars = widgets	
 end
 
 function startBars()
@@ -85,13 +91,7 @@ end
 
 function mod:Establish(data) 
 	if type(data) ~= "table" then return end
-	for k, v in pairs(widgets) do
-		v:Del()
-	end
-	config.bars = {
-	widgets = {}}
-	for k, v in pairs(data) do
-		config.bars[k] = v
-	end
+	widgets = {}
+	config.bars = data
 	createBars()
 end

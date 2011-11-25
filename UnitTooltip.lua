@@ -110,7 +110,6 @@ function mod:CreateLines()
             local update = v.update or 0
             v.update = 0
             if v.left and v.leftUpdating then v.update = update end
-            StarTip.core.environment.unit = "player"
             llines[j].leftObj = v.left and WidgetText:New(StarTip.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 
 			v.align = v.alignRight
@@ -121,9 +120,11 @@ function mod:CreateLines()
             v.color = v.colorRight
             v.maxWidth = v.maxWidthR
             v.minWidth = v.minWidthR
-			StarTip.core.environment.unit = "player"
             llines[j].rightObj = v.right and WidgetText:New(StarTip.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 			
+
+            if llines[j].rightObj then table.insert(mod.widgets, llines[j].rightObj) end
+            if llines[j].leftObj then table.insert(mod.widgets, llines[j].rightObj) end
         end
     end
     self:ClearLines()
@@ -165,24 +166,25 @@ function mod:CreateLines()
                     lineNum = lineNum + 1
                     if v.right and v.right ~= "" then
                         local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('', '')
-						v.leftObj.cell = cell1
-						v.rightObj.cell = cell2
+			v.leftObj.cell = cell1
+			v.rightObj.cell = cell2
                     else
                         local cell = StarTip.tooltipMain:AddLine('')
-						v.leftObj.cell = cell
+			v.leftObj.cell = cell
                     end
                     if v.rightObj then
-						v.rightObj.buffer = false
+			v.rightObj.buffer = false
                         v.rightObj:Start("mouseover")
                     end
                     if v.leftObj then
-						v.leftObj.buffer = false
+			v.leftObj.buffer = false
                         v.leftObj:Start("mouseover")
                     end
                     v.lineNum = lineNum
                 end
             end
     end})
+    mod.lines = lines
 end
 
 function mod:Establish(data)
@@ -198,6 +200,7 @@ end
 
 function mod:OnStartup()
 	lines = {}
+	mod.widgets = {}
 	self:CreateLines()
 end
 

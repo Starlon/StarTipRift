@@ -249,6 +249,11 @@ end
 
 function StarTip:Establish(addon, data)
 	addons[addon] = addons[addon] or addon
+	self:Finalize(data)
+	
+end
+
+function StarTip:Finalize(data)
 	if data.lines then self:EstablishLines(data.lines) end
 	if data.bars then self:EstablishBars(data.bars) end
 	if data.borders then self:EstablishBorders(data.borders) end
@@ -261,12 +266,21 @@ end
 function StarTip:EstablishLines(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("UnitTooltip")
+	for k, v in pairs(mod.widgets) do
+		v.cell:SetVisible(false)
+		v:Del()
+	end
 	mod:Establish(data)
 end
 
 function StarTip:EstablishBars(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("Bars")
+	for k, v in pairs(mod.bars) do
+		v.bar:SetVisible(false)
+		v:Del()
+	end
+
 	mod:Establish(data)
 end
 
@@ -278,9 +292,8 @@ function StarTip:EstablishBorders(data)
 end
 
 function StarTip:EstablishBackground(data)
+	if type(data) ~= "table" then return end
 	local mod = self:GetModule("Background")
-	addon = addon or "None"
-	addons[addon] = data
 	if mod then mod:Establish(data) end
 end
 
