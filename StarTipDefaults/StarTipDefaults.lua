@@ -236,11 +236,11 @@ local SimpleMeter = _G.SimpleMeter
 if SimpleMeter then
     local encounterIndex = SimpleMeter.state.encounterIndex
     local encounter = SimpleMeter.state.encounters[encounterIndex]
-    if encounter and encounter:GetUnit(unit) then
+    if encounter then
         return encounter:BuildCopyText("ally", "dps", "self")
     end
+    return "<SimpleMeter>"
 end
-return "<SimpleMeter>"
 ]],
 		leftUpdating = true,
 		update = 200,
