@@ -236,8 +236,29 @@ local SimpleMeter = _G.SimpleMeter
 if SimpleMeter then
     local encounterIndex = SimpleMeter.state.encounterIndex
     local encounter = SimpleMeter.state.encounters[encounterIndex]
+    local name = UnitName(unit)
+
+    local function split(txt, delim)
+        local tbl = {}
+	for i = 1, string.len(txt) do
+		local remaining = string.sub(txt, i) 
+                if i == string.len(txt) then
+                    buf = remaining
+                else
+                    buf = string.sub(txt, 1, -string.len(remaining))
+                end
+                table.insert(tbl, buf)
+        end
+        return tbl
+    end
+ 
     if encounter then
-        return encounter:BuildCopyText("ally", "dps", "self")
+        local txt = encounter:BuildCopyText("ally", "dps", "all")
+        local tbl = split(txt, "\n")
+        for i, v in ipairs(tbl) do
+            if v:match(name) then return v end
+        end
+	if txt:match(name) then return "blah" end
     end
     return "<SimpleMeter>"
 end
