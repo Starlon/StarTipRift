@@ -1,3 +1,4 @@
+
 local addon, profile = ...
 
 profile.lines = {
@@ -232,6 +233,7 @@ return UnitTagText(unit)
 		id = "simplemeter",
 		name = "Simple Meter",
 		left = [[
+-- Credits go to Jor. This comes from SimpleMeter's BuildCopyText method for encounters.
 -- Friendly and hostile checks are performed internally. 
 -- Provide 'mode' and 'expand'. 
 -- 'mode' is the report requested. DPS, Damage done, healing done, damage taken, heal taken, and dps otherwise. 
