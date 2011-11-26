@@ -1,5 +1,9 @@
 local addon, profile = ...
 
+local WidgetText = {}
+WidgetText.ALIGN_LEFT, WidgetText.ALIGN_CENTER, WidgetText.ALIGN_RIGHT, WidgetText.ALIGN_MARQUEE, WidgetText.ALIGN_AUTOMATIC, WidgetText.ALIGN_PINGPONG = 1, 2, 3, 4, 5, 6
+WidgetText.SCROLL_RIGHT, WidgetText.SCROLL_LEFT = 1, 2
+
 profile.lines = {
     [1] = {
         id = "unitname",
@@ -41,6 +45,12 @@ end
         colorLeft = [[
 return UnitRelationColor(unit)
 ]],
+	alignLeft = WidgetText.ALIGN_PINGPONG,
+	cols = 30,
+        dontRtrim = true,
+	leftUpdating = true,
+	update = 100,
+	speed = 100,
         enabled = true
     },
 
