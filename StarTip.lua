@@ -504,7 +504,7 @@ do
 				end	
 				mouse:SetChecked(config.mouse)
 				startPositionMouse:SetVisible(not config.mouse)			
-print(StarTip.db.profile.addon)
+				print("Loading... " .. StarTip.db.profile.addon)
 				StarTip:Finalize(StarTip.db.profile.addon)
 			end
 		end
@@ -525,7 +525,6 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 		local len1 = string.len(commands)
 		local len2 = string.len("profile ") + 1
 		local cmd = string.sub(commands, len2, len1)
-		print(cmd)
 		if StarTip:Finalize(cmd) then
 			StarTip.db.profile.addon = cmd
 		end

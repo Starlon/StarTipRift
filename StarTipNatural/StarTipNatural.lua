@@ -105,13 +105,20 @@ return UnitRelationColor(unit..'.target')
         name = "Tag",
         left = [[
 local txt = (UnitCalling(unit) or "") .. (UnitTagText(unit) or "")
-if txt == "" then return nil end
+local details = Inspect.Unit.Detail(unit)
+if details.health == 0 then
+    txt = txt .. "<Corpse>"
+end
+
+txt = txt == "" and nil
+
 return txt
 ]],
         colorLeft = [[
 local details = Inspect.Unit.Detail(unit)
 if details.calling then return ClassColor(unit) end
-return RelationColor(unit)
+local txt = ""
+return RelationColor(unit) .. txt
 ]],
         enabled = true
     },
@@ -219,6 +226,7 @@ if SimpleMeter then
         if text ~= "0" then 
 	    return text
 	end
+        return "<SimpleMeter>"
     end
     return "<SimpleMeter>"
 end
@@ -279,4 +287,5 @@ return r, g, b, .5
 
 profile.borderSize = 3
 
+StarTip:InitializeProfile("Natural", profile)
 StarTip:InitializeProfile("StarTip Natural", profile)
