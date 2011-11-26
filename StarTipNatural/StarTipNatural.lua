@@ -141,7 +141,7 @@ return size and "Public  Group: " .. size .. members
 -- 'all' will look at everything.
 -- mode: dps, dmg, hps, heal, dtk, htk
 -- expand: all, self, top5
-local mode, expand = "dps", "top5"
+local mode, expand = "dps", "self"
 
 return SimpleMeter(unit, mode, expand)
 ]],
