@@ -227,6 +227,24 @@ return UnitTagText(unit)
 		enabled = true,
 		rightUpdating = true,
 		update = 200
+	},
+	[21] = {
+		id = "simplemeter",
+		name = "Simple Meter",
+		left = [[
+local SimpleMeter = _G.SimpleMeter
+if SimpleMeter then
+    local encounterIndex = SimpleMeter.state.encounterIndex
+    local encounter = SimpleMeter.state.encounters[encounterIndex]
+    if encounter and encounter:GetUnit(unit) then
+        return encounter:BuildCopyText("ally", "dps", "self")
+    end
+end
+return "<SimpleMeter>"
+]],
+		leftUpdating = true,
+		update = 200,
+		enabled = true
 	}
 
 }
