@@ -77,9 +77,12 @@ return UnitRelationColor(unit)
         name = "Target",
         left = "return 'Target:'",
         right = [[
-local pvp = UnitPVP(unit .. ".target") and "++" or ""
-local name = UnitName(unit..".target")
-return  name and (name .. pvp) or "None"
+local pvp = UnitPVP(unit .. ".target") and "++" or " "
+local lvl = UnitLevel(unit .. ".target")
+local class = UnitCalling(unit .. ".target")
+local name = UnitName(unit..".target") or "None"
+local txt = string.format("%s%s%s%s",  name, pvp, lvl and " ("..lvl..") " or "", class and " ("..class..")" or "")
+return  txt
 ]],
         colorLeft = [[
 if not UnitName(unit..".target") then return UnitRelationColor(unit) end
