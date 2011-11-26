@@ -232,6 +232,17 @@ return UnitTagText(unit)
 		id = "simplemeter",
 		name = "Simple Meter",
 		left = [[
+-- Friendly and hostile checks are performed internally. 
+-- Provide 'mode' and 'expand'. 
+-- 'mode' is the report requested. DPS, Damage done, healing done, damage taken, heal taken, and dps otherwise. 
+-- And 'expand' is the list. 
+-- 'self' points to the current encounter.
+-- 'top5' looks at the top 5 units.
+-- 'all' will look at everything.
+-- mode: dps, dmg, hps, heal, dtk, htk
+-- expand: all, self, top5
+local mode, expand = "dps", "top5"
+
 local SimpleMeter = _G.SimpleMeter
 if SimpleMeter then
     local encounterIndex = SimpleMeter.state.encounterIndex
@@ -299,9 +310,9 @@ if SimpleMeter then
     if encounter then
         local relation = UnitRelation(unit)
         if relation == "Friendly" then
-            grab("ally", "dps", "all")
+            grab("ally", mode, expand)
         elseif relation == "Hostile" then
-            grab("enemy", "dps", "all")
+            grab("enemy", mode, expand)
         end
 
         local text = timeText .. totalText .. SimpleMeter.Util.FormatNumber(total) .. unitText
