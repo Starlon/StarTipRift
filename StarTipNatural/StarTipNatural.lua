@@ -131,22 +131,16 @@ return size and "Public  Group: " .. size .. members
         id = "simplemeter",
 	name = "Simple Meter",
 	left = [[
--- Credits go to Jor. This comes from SimpleMeter's BuildCopyText method for encounters.
 -- Friendly and hostile checks are performed internally. 
 -- Provide 'mode' and 'expand'. 
--- 'mode' is the report requested. DPS, Damage done, healing done, damage taken, heal taken, and dps otherwise. 
--- And 'expand' is the list. 
--- 'self' points to the current encounter.
--- 'top5' looks at the top 5 units.
--- 'all' will look at everything.
--- mode: dps, dmg, hps, heal, dtk, htk
+-- mode: dps (dps), dmg (damage done), hps (healing per sec), heal (healing done), dtk (damage taken), htk(heals taken)
 -- expand: all, self, top5
-local mode, expand = "dps", "self"
 
+local mode, expand = "dps", "all"
 return SimpleMeter(unit, mode, expand)
 ]],
 	leftUpdating = true,
-	update = 200,
+	update = 300,
 	enabled = true
     },
     [9] = {
