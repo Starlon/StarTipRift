@@ -91,7 +91,7 @@ return UnitRelationColor(unit..'.target')
 
         colorRight = [[
 if not UnitName(unit..".target") then return 1, 1, 1, 1 end
-return UnitRelationColor(unit..'.target')
+return ClassColor(unit..'.target')
 ]],
         rightUpdating = true,
         update = 500,
