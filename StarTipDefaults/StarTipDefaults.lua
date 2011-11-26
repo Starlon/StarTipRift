@@ -305,7 +305,9 @@ if SimpleMeter then
         end
 
         local text = timeText .. totalText .. SimpleMeter.Util.FormatNumber(total) .. unitText
-        return text
+        if text ~= "0" then 
+	    return text
+	end
     end
     return "<SimpleMeter>"
 end
