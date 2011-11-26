@@ -45,12 +45,6 @@ end
         colorLeft = [[
 return UnitRelationColor(unit)
 ]],
-	alignLeft = WidgetText.ALIGN_PINGPONG,
-	cols = 30,
-        dontRtrim = true,
-	leftUpdating = true,
-	update = 100,
-	speed = 100,
         enabled = true
     },
 
@@ -149,86 +143,7 @@ return size and "Public  Group: " .. size .. members
 -- expand: all, self, top5
 local mode, expand = "dps", "top5"
 
-local SimpleMeter = _G.SimpleMeter
-if SimpleMeter then
-    local encounterIndex = SimpleMeter.state.encounterIndex
-    local encounter = SimpleMeter.state.encounters[encounterIndex]
-    local unitid = Inspect.Unit.Lookup(unit)
-    local total, count = 0, 0
-    local timeText,totalText, unitText = "", "", ""
-
-    local function grab(side, mode, expand)
-        local list, copyFrom = {}, {}
-        if side == "ally" then
-            copyFrom = encounter.allies
-        else
-            copyFrom = encounter.enemies
-        end
-
-        if #copyFrom == 0 then return "" end
-
-        for _, v in pairs(copyFrom) do
-            table.insert(list, v)
-        end
-
-        encounter:Sort(list, mode)
-
-	local time = encounter:GetCombatTime()
-        timeText = "Time: " .. SimpleMeter.Util.FormatTime(time)
-
-        if side == "ally" then
-            totalText = totalText .. " Ally"
-        elseif side == "enemy" then
-            totalText = totalText .. " Enemy"
-        end
-        totalText = totalText .. " " .. SimpleMeter.Modes[mode].desc .. ": "
-
-        for _, id in pairs(list) do
-            local unit = encounter.units[id]
-            for k, v in pairs(encounter.units) do
-                if k == unitid then
-                    local v = 0
-        	    if mode == "dps" then
-                        v = unit.damage / time
-                    elseif mode == "dmg" then
-                        v = unit.damage
-                    elseif v == "heal" then
-                        v =  unit.heal / time
-		    elseif v == "gtk" then
-                        v = unit.damageTaken
-                    elseif v == "htk" then
-                        v = unit.healTaken
-                    else
-                        v = unit.damage / time
-                    end
-                    if (expand == "all" and v > 0)
-                       or (expand == "top5" and count < 5)
-                       or (expand == "self" and id == SimpleMeter.state.playerId) then
-                            unitText = unitText .. "  " .. unit.name .. " :" .. SimpleMeter.Util.FormatNumber(v)
-                            count = count + 1
-                    end
-                    total = total + v
-		end
-            end
-	end
-
-    end
-    if encounter then
-        local relation = UnitRelation(unit)
-        if relation == "Friendly" then
-            grab("ally", mode, expand)
-        elseif relation == "Hostile" then
-            grab("enemy", mode, expand)
-        end
-
-        local text = timeText .. totalText .. SimpleMeter.Util.FormatNumber(total) .. unitText
-        if text ~= "0" then 
-	    return text
-	end
-        return "<SimpleMeter>"
-    end
-    return "<SimpleMeter>"
-end
+return SimpleMeter(unit, mode, expand)
 ]],
 	leftUpdating = true,
 	update = 200,
