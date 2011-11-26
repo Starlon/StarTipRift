@@ -109,16 +109,12 @@ local details = Inspect.Unit.Detail(unit)
 if details.health == 0 then
     txt = txt .. "<Corpse>"
 end
-
-txt = txt == "" and nil
-
 return txt
 ]],
         colorLeft = [[
 local details = Inspect.Unit.Detail(unit)
 if details.calling then return ClassColor(unit) end
-local txt = ""
-return RelationColor(unit) .. txt
+return RelationColor(unit)
 ]],
         enabled = true
     },
