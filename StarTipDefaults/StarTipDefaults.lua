@@ -330,6 +330,8 @@ end
 		enabled = true
 	}
 
+
+
 }
 
 profile.bars = {
@@ -408,6 +410,7 @@ return perc
 		level = 100,
 		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -10-3}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -10-3}}
 	}
+
 }
 
 
