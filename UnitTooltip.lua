@@ -54,7 +54,7 @@ do
         for i, widget in ipairs(widgetsToDraw) do
 			if widget.cell and widget.buffer ~= "" then
 				widget.cell:SetFontSize(widget.config.fontSize or 12)
-				local _ = widget.buffer and widget.cell:SetText(widget.buffer)
+				widget.cell:SetText(widget.buffer or "Error")
 			end
 
 			if widget.color.is_valid and widget.buffer ~= "" then
