@@ -18,7 +18,7 @@ local config = {
 	lines = {
 		[1] = {
 			name = "Warning",
-			left = "return 'StarTip has no profile.'",
+			left = "return 'StarTip has no profile loaded. To see a list, type: `/startip` To load a profile type: `/startip profile Default`'",
 			enabled = true
 		}
 	}

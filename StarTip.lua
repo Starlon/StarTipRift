@@ -505,7 +505,12 @@ do
 				end	
 				mouse:SetChecked(config.mouse)
 				startPositionMouse:SetVisible(not config.mouse)			
-				print("Loading... " .. StarTip.db.profile.addon)
+				if StarTip.db.profile.addon == "StarTip Natural" then StarTip.db.profile.addon = "Natural" end
+				print("----- StarTip - Tooltips from the Outer Rift -----")
+				print("Loading Profile... " .. StarTip.db.profile.addon)
+				print("To change profile, type: /startip profile <profile name>")
+				print("Example: /startip profile Natural")
+				print("--------------------------------------------------")
 				StarTip:Finalize(StarTip.db.profile.addon)
 			end
 		end
