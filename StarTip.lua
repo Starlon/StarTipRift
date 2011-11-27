@@ -83,6 +83,7 @@ tooltipMain.frame = frame
 frame:SetBackgroundColor(0, 0, 0, .8)
 frame:SetHeight(1)
 frame:SetWidth(1)
+frame:SetVisible(false)
 
 local tremove, tinsert = table.remove, table.insert
 local select = select
