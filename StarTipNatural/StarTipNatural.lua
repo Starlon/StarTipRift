@@ -144,6 +144,16 @@ return SimpleMeter(unit, mode, expand)
 	enabled = true
     },
     [9] = {
+        id = "dps",
+	name = "DPS",
+	left = [[
+return UnitDPS(unit) or "DPS"
+]],
+	leftUpdating = true,
+	update = 300,
+	enabled = true
+    },
+    [10] = {
         id = "space",
         name = "Space",
         left = "return ' '",
