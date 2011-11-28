@@ -105,6 +105,9 @@ local class = UnitClass(unit)
 local tags = UnitTagText(unit)
 local details = Inspect.Unit.Detail(unit)
 local txt = class
+if tags then
+	txt = (txt or "") .. tags
+end
 if details and details.health == 0 then
     txt = (txt or "") .. "<Corpse>"
 end
