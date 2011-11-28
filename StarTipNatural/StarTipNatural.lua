@@ -131,7 +131,7 @@ return size and "Public  Group: " .. size .. members
         id = "simplemeter",
 	name = "Simple Meter DPS + DPS since mouseover",
 	left = [[
-The number within brackets is recorded after mousing over the unit, so it may lag a little.
+-- The number within brackets is recorded after mousing over the unit, so it may lag a little.
 -- Friendly and hostile checks are performed internally. 
 -- Provide 'mode' and 'expand'. 
 -- mode: dps (dps), dmg (damage done), hps (healing per sec), heal (healing done), dtk (damage taken), htk(heals taken)
