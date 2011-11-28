@@ -55,6 +55,7 @@ do
 			if widget.cell and widget.buffer ~= "" then
 				widget.cell:SetFontSize(widget.config.fontSize or 12)
 				widget.cell:SetText(widget.buffer or "Error")
+				widget.cell:ResizeToText()
 			end
 
 			if widget.color.is_valid and widget.buffer ~= "" then

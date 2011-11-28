@@ -52,11 +52,11 @@ return UnitRelationColor(unit)
         id = "info",
         name = "Info",
         left = [[
-local lvl = UnitLevel(unit)
-return lvl and ("Level " .. lvl)
+local lvl = UnitLevel(unit) or "??"
+return "Level " .. lvl
 ]],
         right = [[
-return (UnitRace(unit) or "")
+return (UnitRace(unit) or " ")
 ]],
         colorLeft = [[
 return DifficultyColor(unit)
@@ -101,18 +101,23 @@ return ClassColor(unit..'.target')
         id = 'tag',
         name = "Tag",
         left = [[
-local txt = (UnitCalling(unit) or "") .. (UnitTagText(unit) or "")
+local class = UnitClass(unit)
+local tags = UnitTagText(unit)
 local details = Inspect.Unit.Detail(unit)
-if details.health == 0 then
-    txt = txt .. "<Corpse>"
+local txt = class
+if details and details.health == 0 then
+    txt = (txt or "") .. "<Corpse>"
 end
 return txt
 ]],
         colorLeft = [[
 local details = Inspect.Unit.Detail(unit)
-if details.calling then return ClassColor(unit) end
+if details and details.calling then 
+    return ClassColor(unit) 
+end
 return RelationColor(unit)
 ]],
+	dontRtrim = true,
         enabled = true
     },
     [7] = {
@@ -124,21 +129,14 @@ local members = size and (size == 1 and " member") or " members"
 
 return size and "Public  Group: " .. size .. members
 ]],
-        enabled = true
+        enabled = true 
     },
 
    [8] = {
         id = "simplemeter",
 	name = "Simple Meter DPS + DPS since mouseover",
-	left = [[
--- The number within brackets is recorded after mousing over the unit, so it may lag a little.
--- Friendly and hostile checks are performed internally. 
--- Provide 'mode' and 'expand'. 
--- mode: dps (dps), dmg (damage done), hps (healing per sec), heal (healing done), dtk (damage taken), htk(heals taken)
--- expand: all, self, top5
-
-local mode, expand = "dps", "all"
-return SimpleMeter(unit, mode, expand)
+left = [[
+return SimpleMeter(unit, "dps", "all")
 ]],
 	leftUpdating = true,
 	update = 300,
@@ -197,3 +195,11 @@ return r, g, b, .5
 profile.borderSize = 3
 
 StarTip:InitializeProfile("Natural", profile)
+
+-- SimpleMeter(unit, mode, expand)
+-- The number within brackets is recorded after mousing over the unit, so it may lag a little.
+-- Friendly and hostile checks are performed internally. 
+-- Provide 'mode' and 'expand'. 
+-- mode: dps (dps), dmg (damage done), hps (healing per sec), heal (healing done), dtk (damage taken), htk(heals taken)
+-- expand: all, self, top5
+
