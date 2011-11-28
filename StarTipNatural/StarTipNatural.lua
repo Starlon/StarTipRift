@@ -144,7 +144,7 @@ return SimpleMeter(unit, mode, expand)
 	update = 300,
 	enabled = true
     },
-    [10] = {
+    [9] = {
         id = "space",
         name = "Space",
         left = "return ' '",
