@@ -3,7 +3,7 @@ Identifier = "StarTip"
 
 Name = "StarTip"
 
-Description = "Tooltips from Outerspace"
+Description = "Tooltips from the Outer Rift"
 
 Author = "Scott Sibley (Starlon)"
 Website = ""

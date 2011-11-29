@@ -225,7 +225,7 @@ return UnitTagText(unit)
 		name = "DPS",
 		left = "return 'DPS:'",
 		right = "return UnitDPS(unit) or '---'",
-		enabled = true,
+		enabled = false,
 		rightUpdating = true,
 		update = 200
 	},
