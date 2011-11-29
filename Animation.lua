@@ -10,7 +10,8 @@ mod.core = LibCore:New(mod.environment, "Animation")
 
 local defaults = {
 	profile = {
-		animationsOn = true,
+		animationsOn = false,
+		animationSpeed = 1000,
 		animationInit = [[
 t = 0
 ]],
@@ -42,8 +43,8 @@ function mod:RunPoint(x, y)
 		Evaluator.ExecuteCode(mod.environment, "Position.animationPoint", mod.db.profile.animationPoint)
 
 		local xx, yy = mod.environment.x or 0, mod.environment.y or 0
-	        x = x + floor((((xx or 0) + 1.0) * UIParent:GetWidth() / 100))
-        	y = y + floor((((yy or 0) + 1.0) * UIParent:GetHeight() / 100))
+	        x = x + floor((((xx or 0) + 1.0) * UIParent:GetWidth() / mod.db.profile.animationSpeed))
+        	y = y + floor((((yy or 0) + 1.0) * UIParent:GetHeight() / mod.db.profile.animationSpeed))
 	end
 	return x, y
 end
