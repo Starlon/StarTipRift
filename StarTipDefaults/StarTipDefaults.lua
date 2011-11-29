@@ -233,7 +233,7 @@ return UnitTagText(unit)
 		id = "simplemeter",
 		name = "Simple Meter",
 		left = [[
-return SimpleMeter("dps", "all")
+return SimpleMeter(unit, "dps", "all")
 ]],
 		leftUpdating = true,
 		update = 200,
