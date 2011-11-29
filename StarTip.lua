@@ -289,6 +289,7 @@ function StarTip:Finalize(addon)
 	if data.background then self:EstablishBackground(data.background) end
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
+
 	borderSize = data.borderSize or borderSize
 	return true
 end
@@ -342,7 +343,7 @@ local function update()
 	local width = frame:GetWidth()
 	local height = frame:GetHeight()
 	local x, y = mouse.x - width / 2, mouse.y - height
-	
+	x, y = StarTip.animation:RunPoint(x, y)	
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	local top = frame:GetTop() - 6
@@ -355,6 +356,7 @@ local function update()
 	if left < 0 then x = x + abs(left) end
 	if bottom > uih then y = y - (bottom - uih) end
 	if right > uiw then x = x - (right - uiw) end
+	
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()
@@ -531,6 +533,10 @@ do
 					print("--------------------------------------------------")
 				end
 				StarTip:Finalize(StarTip.db.profile.addon)
+
+				StarTip.animation = StarTip:GetModule("Animation")
+				StarTip.animation:RunInit()
+
 			end
 		end
 	end
