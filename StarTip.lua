@@ -506,12 +506,12 @@ do
 				mouse:SetChecked(config.mouse)
 				startPositionMouse:SetVisible(not config.mouse)			
 				if StarTip.db.profile.addon == "StarTip Natural" then StarTip.db.profile.addon = "Natural" end
-				if not StarTip.db.profile.toggleMessageOff then
+				if not StarTip.db.profile.messageToggleOff then
 					print("----- StarTip - Tooltips from the Outer Rift -----")
 					print("Loading Profile... " .. StarTip.db.profile.addon)
 					print("To change profile, type: /startip profile <profile name>")
 					print("Example: /startip profile Natural")
-					print("To toggle showing this message: /startip startupmessage")
+					print("To toggle showing this message: /startip togglemessage")
 					print("--------------------------------------------------")
 				end
 				StarTip:Finalize(StarTip.db.profile.addon)
@@ -538,12 +538,12 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 			StarTip.db.profile.addon = cmd
 		end
 		print("You just loaded a profile. You'll likely need to reload the UI. Type: /reloadui")
-	elseif commands:match("^startupmessage") then
+	elseif commands:match("^togglemessage") then
 		StarTip.db.profile.messageToggleOff = not StarTip.db.profile.messageToggleOff
-		print("Message is not " .. StarTip.db.profile.messageToggleOff and "off" or "on")
+		print("Message is not " .. (StarTip.db.profile.messageToggleOff and "off" or "on"))
 	else
 		
-		print("Commands are 'profile', 'config' and 'cpu'.")
+		print("Commands are 'profile', 'config' and 'cpu', 'togglemessage'.")
 		print("Loaded profile: " .. loadedAddon)
 		print("Available Profiles:")
 		for addon in pairs(addons) do
