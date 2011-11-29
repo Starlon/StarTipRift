@@ -352,11 +352,20 @@ local function update()
 	local right = frame:GetRight()
 	local uiw = UIParent:GetWidth()
 	local uih = UIParent:GetHeight()
+	local r = top-uih
+	local c = right-uiw
 	if top < 0 then y = y + abs(top) end
 	if left < 0 then x = x + abs(left) end
 	if bottom > uih then y = y - (bottom - uih) end
-	if right > uiw then x = x - (right - uiw) end
-	
+	if right > uiw then x = x - (right - uiw)end
+	if r > 0 then
+		y = y - r
+	end
+	if c > 0 then
+		x = x - c
+	end
+	--x = x + c
+	--y = y + r	
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()
@@ -563,9 +572,12 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 	elseif commands:match("^togglemessage") then
 		StarTip.db.profile.messageToggleOff = not StarTip.db.profile.messageToggleOff
 		print("Message is not " .. (StarTip.db.profile.messageToggleOff and "off" or "on"))
+	elseif commands:match("^toggleanimation") then
+		local mod = StarTip:GetModule("Animation")
+		mod.db.profile.animationsOn = not not not mod.db.profile.animationsOn
 	else
 		
-		print("Commands are 'profile', 'config' and 'cpu', 'togglemessage'.")
+		print("Commands are 'profile', 'config' and 'cpu', 'togglemessage', 'toggleanimation'.")
 		print("Loaded profile: " .. loadedAddon)
 		print("Available Profiles:")
 		for addon in pairs(addons) do
