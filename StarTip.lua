@@ -29,6 +29,22 @@ local modules = {}
 local addons = {}
 local queue = {}
 
+table.insert(Event.System.Error, {function(err)
+	if err.addon == "StarTip" then
+		local mod = StarTip:GetModule("UnitTooltip")
+		for k, v in pairs(mod.lines) do
+			local left = v.leftObj
+			local right = v.rightObj
+			if left and err.error:match(left.config.name) then
+				table.remove(mod.lines, k)
+				print("Disabling line: " .. left.config.name)
+			end
+		end
+		
+	end
+end, "StarTip", "Error Handler"})
+
+
 if FooBar then
 	local mod = FooBarModule:new(FooBar.getFoobar(), "StarTipFooBar")
 	mod:setText("StarTip")
@@ -413,7 +429,7 @@ local repositionNow
 local moveTbl = {function()
 	local mouse = Inspect.Mouse()
 	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - 40 , mouse.y - 80)
-end, "StarTip", "refresh"}
+end, "StarTip", "Move reposition frame"}
 
 moveMouseFrame.Event.LeftDown = function()
 	if not repositionNow then
@@ -482,7 +498,7 @@ local function startup()
 	
 end
 
-table.insert(Event.Addon.Startup.End, {startup, "StarTip", "refresh"})
+table.insert(Event.Addon.Startup.End, {startup, "StarTip", "Startup End"})
 
 do
 	local tableloaded
@@ -498,7 +514,7 @@ do
 				if not config then return end
 				
 				if config.mouse then
-					table.insert(Event.Mouse.Move, {update, "StarTip", "refresh"})
+					table.insert(Event.Mouse.Move, {update, "StarTip", "Mouse Move"})
 				else
 					frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
 					tooltipMain:Reshape()
