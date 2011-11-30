@@ -25,27 +25,28 @@ d=(v*0.3); r=t+i*PI*0.02; x=cos(r)*d; y=sin(r)*d
 	}
 }
 
+local animation
 function mod:RunFrame()
-	Evaluator.ExecuteCode(mod.environment, "StarTip.Position.animationFrame", self.db.profile.animationFrame)
+	Evaluator.ExecuteCode(mod.environment, "StarTip.Position.animationFrame", animation.animationFrame)
 end
 
 function mod:RunInit()
 	self.db = StarTip.db:RegisterNamespace("Animation", defaults)
-	Evaluator.ExecuteCode(self.environment, "StarTip.Position.animationInit", mod.db.profile.animationInit)
+	animation = self.db.profile
+	Evaluator.ExecuteCode(self.environment, "StarTip.Position.animationIni", animation.animationInit)
 end
 
 local random, floor = math.random, math.floor
 function mod:RunPoint(x, y)
-	mod.db.profile.animationSpeed = 10
 	local x, y = x or 0, y or 0
 	if mod.db.profile.animationsOn then
 		mod.environment.i = (mod.environment.i or 0) + 1
 		mod.environment.v = (mod.environment.v or 0) +  random()
-		Evaluator.ExecuteCode(mod.environment, "Position.animationPoint", mod.db.profile.animationPoint)
+		Evaluator.ExecuteCode(mod.environment, "Position.animationPoint", animation.animationPoint)
 
 		local xx, yy = mod.environment.x or 0, mod.environment.y or 0
-	        x = x + floor((((xx or 0) + 1.0) * UIParent:GetWidth() / mod.db.profile.animationSpeed))
-        	y = y + floor((((yy or 0) + 1.0) * UIParent:GetHeight() / mod.db.profile.animationSpeed))
+	        x = x + floor((((xx or 0) + 1.0) * UIParent:GetWidth() / animation.animationSpeed))
+        	y = y + floor((((yy or 0) + 1.0) * UIParent:GetHeight() / animation.animationSpeed))
 	end
 	return x, y
 end
@@ -54,3 +55,12 @@ function mod:SetUnit()
 	self:RunFrame()
 end
 
+function mod:Establish(data)
+	if not data.animation then return end
+
+	animation = data.animation
+	animation.animationSpeed = animation.animationSpeed or self.db.profile.animationSpeed
+	animation.animationInit = animation.animationInit or self.db.profile.animationInit
+	animation.animationFrame = animation.animationFrame or self.db.profile.animationFrame
+	animation.animationPoint = animation.animationPoint or self.db.profile.animationPoint
+end

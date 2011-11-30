@@ -192,10 +192,25 @@ local r, g, b = RelationColor(unit)
 return r, g, b, .5
 ]],
     update = 300,
-    repeating = true
+    repeating = true,
+    borderSize = 3
 }
 
-profile.borderSize = 3
+
+profile.animation = {
+	animationsOn = false,
+	animationSpeed = 1000,
+	animationInit = [[
+t = 0
+]],
+	animationFrame = [[
+t = t - 5
+v = 0
+]],
+	animationPoint = [[
+d=(v*0.3); r=t+i*PI*0.02; x=cos(r)*d; y=sin(r)*d
+]]
+}
 
 StarTip:InitializeProfile("Natural", profile)
 

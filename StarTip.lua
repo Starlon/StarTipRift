@@ -60,7 +60,7 @@ StarTip.core = core
 local borders = {
 	expression = [[
 GetTime = GetTime or Inspect.Time.Frame
-return .5, .7, .6
+return .5, .7, GetTime()
 ]],
 	update = 300,
 	repeating = true,
@@ -291,7 +291,6 @@ function StarTip:Finalize(addon)
 	if data.animation then self:EstablishAnimation(data.animation) end
 	if data.histograms then self:EstablishHistograms(data.histograms) end
 
-	borderSize = data.borderSize or borderSize
 	return true
 end
 
@@ -318,14 +317,20 @@ end
 
 function StarTip:EstablishBorders(data)
 	if type(data) ~= "table" then return end
-	bordersWidget:Del()
 	bordersWidget = WidgetColor:New(core, "Borders", data, StarTip.errorLevel, bordersWidget.draw)
 
+	borderSize = data.borderSize or borderSize
 end
 
 function StarTip:EstablishBackground(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("Background")
+	if mod then mod:Establish(data) end
+end
+
+function StarTip:EstablishAnimation(data)
+	if type(data) ~= "table" then return end
+	local mod = self:GetModule("Animation")
 	if mod then mod:Establish(data) end
 end
 
