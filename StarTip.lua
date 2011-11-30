@@ -38,6 +38,7 @@ table.insert(Event.System.Error, {function(err)
 			if left and err.error:match(left.config.name) then
 				table.remove(mod.lines, k)
 				print("Disabling line: " .. left.config.name)
+				break
 			end
 		end
 		
