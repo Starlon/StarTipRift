@@ -353,20 +353,10 @@ local function update()
 	local right = frame:GetRight()
 	local uiw = UIParent:GetWidth()
 	local uih = UIParent:GetHeight()
-	local r = top-uih
-	local c = right-uiw
 	if top < 0 then y = y + abs(top) end
 	if left < 0 then x = x + abs(left) end
-	if bottom > uih then y = y - (bottom - uih) end
-	if right > uiw then x = x - (right - uiw)end
-	if r > 0 then
-		y = y - r
-	end
-	if c > 0 then
-		x = x - c
-	end
-	--x = x + c
-	--y = y + r	
+	if bottom > uih then y = uih - height end
+	if right > uiw then x = uiw - width end
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()

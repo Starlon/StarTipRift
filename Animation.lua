@@ -36,6 +36,7 @@ end
 
 local random, floor = math.random, math.floor
 function mod:RunPoint(x, y)
+	mod.db.profile.animationSpeed = 10
 	local x, y = x or 0, y or 0
 	if mod.db.profile.animationsOn then
 		mod.environment.i = (mod.environment.i or 0) + 1
