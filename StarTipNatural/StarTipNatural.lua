@@ -67,6 +67,33 @@ return UnitRelationColor(unit)
         enabled = true
     },
     [4] = {
+        id = 'tag',
+        name = "Tag",
+        left = [[
+local class = UnitClass(unit)
+local tags = UnitTagText(unit)
+local details = Inspect.Unit.Detail(unit)
+local txt = class
+if tags then
+	txt = (txt or "") .. tags
+end
+if details and details.health == 0 then
+    txt = (txt or "") .. "<Corpse>"
+end
+return txt
+]],
+        colorLeft = [[
+local details = Inspect.Unit.Detail(unit)
+if details and details.calling then 
+    return ClassColor(unit) 
+end
+return RelationColor(unit)
+]],
+	dontRtrim = true,
+        enabled = true
+    },
+
+    [5] = {
         id = "target",
         name = "Target",
         left = "return 'Target:'",
@@ -91,36 +118,10 @@ return ClassColor(unit..'.target')
         update = 500,
         enabled = true,
     },
-    [5] = {
+    [6] = {
         id = "location",
         name = "Location",
         left = "return UnitLocation(unit)",
-        enabled = true
-    },
-    [6] = {
-        id = 'tag',
-        name = "Tag",
-        left = [[
-local class = UnitClass(unit)
-local tags = UnitTagText(unit)
-local details = Inspect.Unit.Detail(unit)
-local txt = class
-if tags then
-	txt = (txt or "") .. tags
-end
-if details and details.health == 0 then
-    txt = (txt or "") .. "<Corpse>"
-end
-return txt
-]],
-        colorLeft = [[
-local details = Inspect.Unit.Detail(unit)
-if details and details.calling then 
-    return ClassColor(unit) 
-end
-return RelationColor(unit)
-]],
-	dontRtrim = true,
         enabled = true
     },
     [7] = {
