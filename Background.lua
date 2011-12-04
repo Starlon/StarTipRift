@@ -39,7 +39,7 @@ local update = function(details)
 		end
 	end
 
-	local r, g, b, a = StarTip.evaluator.Evaluate(StarTip.core.environment, "StarTip.Background", col, "mouseover")
+	local r, g, b, a = StarTip.evaluator.Evaluate(StarTip.core.environment, "StarTip.Background", col, StarTip.unit)
 
 	StarTip.tooltipMain.frame:SetBackgroundColor(r or 0, g or 0, b or 0, a or .5)
 end

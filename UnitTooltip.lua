@@ -142,7 +142,7 @@ function mod:CreateLines()
                 end
 		]]
                 local left, right = '', ''
-                StarTip.core.environment.unit = "mouseover"
+                StarTip.core.environment.unit = StarTip.unit
                 if v.right then
                     if v.rightObj then
                         StarTip.core.environment.self = v.rightObj
@@ -175,11 +175,11 @@ function mod:CreateLines()
                     end
                     if v.rightObj then
 			v.rightObj.buffer = false
-                        v.rightObj:Start("mouseover")
+                        v.rightObj:Start(StarTip.unit)
                     end
                     if v.leftObj then
 			v.leftObj.buffer = false
-                        v.leftObj:Start("mouseover")
+                        v.leftObj:Start(StarTip.unit)
                     end
                     v.lineNum = lineNum
                 end
@@ -209,8 +209,8 @@ function mod:OnHide()
 end
 
 function mod:SetUnit()
-	if not StarTip.core.environment.UnitName("mouseover") then return end
-	Evaluator.Evaluate(StarTip.core.environment, "onMouseover", config.onMouseover.code, "mouseover")
+	if not StarTip.core.environment.UnitName(StarTip.unit) then return end
+	Evaluator.Evaluate(StarTip.core.environment, "onMouseover", config.onMouseover.cde, StarTip.unit)
 	self:StopLines()
 	lines()
 end

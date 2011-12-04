@@ -352,16 +352,16 @@ local function update()
 	x, y = StarTip.animation:RunPoint(x, y)	
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
-	local top = frame:GetTop() - 6
-	local bottom = frame:GetBottom() + 6
-	local left = frame:GetLeft()
-	local right = frame:GetRight()
+	local top = frame:GetTop() - 12
+	local bottom = frame:GetBottom() + 12
+	local left = frame:GetLeft() - 12
+	local right = frame:GetRight() + 12
 	local uiw = UIParent:GetWidth()
 	local uih = UIParent:GetHeight()
 	if top < 0 then y = y + abs(top) end
 	if left < 0 then x = x + abs(left) end
-	if bottom > uih then y = uih - height end
-	if right > uiw then x = uiw - width end
+	if bottom > uih + height then y = uih - height end
+	if right > uiw + width then x = uiw - width; end
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()
@@ -372,7 +372,7 @@ local function unitChanged(id)
 	if id then
 		local details = Inspect.Unit.Detail(id)
 		for k, mod in StarTip:IterateModules() do
-			if mod.SetUnit and details then mod:SetUnit(details, "mouseover") end
+			if mod.SetUnit and details then mod:SetUnit(details, StarTip.unit) end
 		end
 		tooltipMain:Show()
 		bordersWidget:Start()
@@ -541,6 +541,7 @@ do
 
 				StarTip.animation = StarTip:GetModule("Animation")
 				StarTip.animation:RunInit()
+				StarTip.unit = "mouseover"
 
 			end
 		end

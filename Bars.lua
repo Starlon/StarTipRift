@@ -14,7 +14,7 @@ local config = {
 }
 
 function updateBar(widget)
-	if not StarTip.core.environment.UnitName("mouseover") then return end
+	if not StarTip.core.environment.UnitName(StarTip.unit) then return end
 	
 	local bar = widget.bar
 	
@@ -77,7 +77,7 @@ end
 
 function startBars()
 	for k, v in ipairs(widgets) do
-		v:Start("mouseover")
+		v:Start(StarTip.unit)
 	end
 end
 
