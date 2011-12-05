@@ -92,7 +92,6 @@ return RelationColor(unit)
 	dontRtrim = true,
         enabled = true
     },
-
     [5] = {
         id = "target",
         name = "Target",
@@ -204,7 +203,7 @@ profile.animation = {
 	animationInit = [[
 t = 0
 ]],
-	animationFrame = [[
+	animationBegin = [[
 t = t - 5
 v = 0
 ]],

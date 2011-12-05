@@ -15,7 +15,7 @@ local defaults = {
 		animationInit = [[
 t = 0
 ]],
-		animationFrame = [[
+		animationBegin = [[
 t = t - 5
 v = 0
 ]],
@@ -27,7 +27,7 @@ d=(v*0.3); r=t+i*PI*0.02; x=cos(r)*d; y=sin(r)*d
 
 local animation
 function mod:RunFrame()
-	Evaluator.ExecuteCode(mod.environment, "StarTip.Position.animationFrame", animation.animationFrame)
+	Evaluator.ExecuteCode(mod.environment, "StarTip.Position.animationBegin", animation.animationBegin)
 end
 
 function mod:RunInit()
@@ -61,6 +61,6 @@ function mod:Establish(data)
 	animation = data.animation
 	animation.animationSpeed = animation.animationSpeed or self.db.profile.animationSpeed
 	animation.animationInit = animation.animationInit or self.db.profile.animationInit
-	animation.animationFrame = animation.animationFrame or self.db.profile.animationFrame
+	animation.animationBegin = animation.animationBegin or self.db.profile.animationBegin
 	animation.animationPoint = animation.animationPoint or self.db.profile.animationPoint
 end
