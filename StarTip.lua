@@ -572,6 +572,15 @@ table.insert(Command.Slash.Register("startip"), {function (commands)
 	elseif commands:match("^toggleanimation") then
 		local mod = StarTip:GetModule("Animation")
 		mod.db.profile.animationsOn = not not not mod.db.profile.animationsOn
+	elseif commands:match("^dumpenv") then
+		local list = {}
+		for k, v in pairs(StarTip.core.environment) do
+			table.insert(list, k)
+		end
+		table.sort(list)
+		for i, v in ipairs(list) do
+			print_raw(v)
+		end
 	else
 		
 		print("Commands are 'profile', 'config' and 'cpu', 'togglemessage', 'toggleanimation'.")
