@@ -332,6 +332,7 @@ function StarTip:EstablishAnimation(data)
 	if type(data) ~= "table" then return end
 	local mod = self:GetModule("Animation")
 	if mod then mod:Establish(data) end
+	StarTip.animation = mod
 end
 
 function StarTip:GetModule(name1) 
@@ -505,7 +506,7 @@ local function startup()
 	
 end
 
-table.insert(Event.Addon.Startup.End, {startup, "StarTip", "Startup End"})
+--table.insert(Event.Addon.Startup.End, {startup, "StarTip", "Startup End"})
 
 do
 	local tableloaded
@@ -537,12 +538,12 @@ do
 					print("To toggle showing this message: /startip togglemessage")
 					print("--------------------------------------------------")
 				end
-				StarTip:Finalize(StarTip.db.profile.addon)
 
-				StarTip.animation = StarTip:GetModule("Animation")
-				StarTip.animation:RunInit()
 				StarTip.unit = "mouseover"
 
+				startup()
+
+				StarTip:Finalize(StarTip.db.profile.addon)
 			end
 		end
 	end

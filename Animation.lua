@@ -30,8 +30,11 @@ function mod:RunFrame()
 	Evaluator.ExecuteCode(mod.environment, "StarTip.Position.animationBegin", animation.animationBegin)
 end
 
-function mod:RunInit()
+function mod:OnStartup()
 	self.db = StarTip.db:RegisterNamespace("Animation", defaults)
+end
+
+function mod:RunInit()
 	animation = self.db.profile
 	Evaluator.ExecuteCode(self.environment, "StarTip.Position.animationIni", animation.animationInit)
 end
@@ -55,12 +58,11 @@ function mod:SetUnit()
 	self:RunFrame()
 end
 
-function mod:Establish(data)
-	if not data.animation then return end
-
-	animation = data.animation
-	animation.animationSpeed = animation.animationSpeed or self.db.profile.animationSpeed
-	animation.animationInit = animation.animationInit or self.db.profile.animationInit
-	animation.animationBegin = animation.animationBegin or self.db.profile.animationBegin
-	animation.animationPoint = animation.animationPoint or self.db.profile.animationPoint
+function mod:Establish(animation)
+	if not animation then return end
+	self.db.profile.animationSpeed = animation.animationSpeed
+	self.db.profile.animationInit = animation.animationInit
+	self.db.profile.animationBegin = animation.animationBegin
+	self.db.profile.animationPoint = animation.animationPoint
+	self:RunInit()
 end
