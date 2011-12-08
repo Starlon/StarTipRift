@@ -206,11 +206,11 @@ tooltipMain.Reshape = function(self)
 		local left = line[1];
 		local right = line[2];
 		--left:ResizeToText()
-		height = height + left:GetFullHeight()
-		local w = left:GetFullWidth()
+		height = height + left:GetHeight()
+		local w = left:GetWidth()
 		if right then 
 			--right:ResizeToText()
-			w = w + right:GetFullWidth()
+			w = w + right:GetWidth()
 		end
 		if w > width then 
 			width = w
