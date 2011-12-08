@@ -145,7 +145,7 @@ end
 
 local function delCell(cell)
 	cell:SetText("")
-	cell:ResizeToText()
+	--cell:ResizeToText()
 	cell:ClearAll()
 	cell:SetFontColor(1, 1, 1, 1)
 	tinsert(pool, 1, cell)
@@ -163,7 +163,7 @@ tooltipMain.AddLine = function(self, txt)
 	end
 	tinsert(self.lines, new(cell))
 	cell:SetText(txt)
-	cell:ResizeToText()
+	--cell:ResizeToText()
 	return cell
 end
 
@@ -183,8 +183,8 @@ tooltipMain.AddDoubleLine = function(self, txt1, txt2)
 	tinsert(self.lines, new(cell1, cell2))
 	cell1:SetText(txt1)
 	cell2:SetText(txt2)	
-	cell1:ResizeToText()
-	cell2:ResizeToText()
+	--cell1:ResizeToText()
+	--cell2:ResizeToText()
 	return cell1, cell2
 end
 
@@ -205,11 +205,11 @@ tooltipMain.Reshape = function(self)
 	for k, line in ipairs(self.lines) do
 		local left = line[1];
 		local right = line[2];
-		left:ResizeToText()
+		--left:ResizeToText()
 		height = height + left:GetFullHeight()
 		local w = left:GetFullWidth()
 		if right then 
-			right:ResizeToText()
+			--right:ResizeToText()
 			w = w + right:GetFullWidth()
 		end
 		if w > width then 
@@ -396,7 +396,7 @@ configDialog:SetVisible(false)
 
 local close = UI.CreateFrame("RiftButton", "Exit Button", configDialog)
 close:SetPoint("TOPLEFT", configDialog, "TOPLEFT", 20, 50)
-close:ResizeToDefault()
+--close:ResizeToDefault()
 close:SetText("Close")
 close.Event.LeftPress = function()
 	configDialog:SetVisible(false)
@@ -404,16 +404,16 @@ end
 
 local mouseLabel = UI.CreateFrame("Text", "Mouse label", configDialog)
 mouseLabel:SetText("Position with Mouse")
-mouseLabel:ResizeToText()
+--mouseLabel:ResizeToText()
 mouseLabel:SetPoint("TOPLEFT", close, "BOTTOMLEFT", 0, 15)
 
 local mouse = UI.CreateFrame("RiftCheckbox", "Move mouse", configDialog)
-mouse:ResizeToDefault()
+--mouse:ResizeToDefault()
 mouse:SetPoint("TOPLEFT", mouseLabel, "TOPRIGHT", 10, 0)
 
 local startPositionMouse = UI.CreateFrame("RiftButton", "Start position mouse", configDialog)
 startPositionMouse:SetText("Position Tooltip")
-startPositionMouse:ResizeToDefault()
+--startPositionMouse:ResizeToDefault()
 startPositionMouse:SetPoint("TOPLEFT", mouse, "TOPRIGHT", 10, -10)
 
 local closePositionMouse = UI.CreateFrame("RiftButton", "Move mouse close button", context)
@@ -431,7 +431,7 @@ moveMouseFrame:SetMouseMasking("full")
 local moveMouseLabel = UI.CreateFrame("Text", "Position tooltip here label", moveMouseFrame)
 moveMouseLabel:SetPoint("CENTER", moveMouseFrame, "CENTER")
 moveMouseLabel:SetText("Move me")
-moveMouseLabel:ResizeToText()
+--moveMouseLabel:ResizeToText()
 
 local repositionNow
 local moveTbl = {function()
