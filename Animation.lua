@@ -13,6 +13,7 @@ local defaults = {
 		animationsOn = false,
 		animationSpeed = 1000,
 		animationInit = [[
+gravity = true
 t = 0
 ]],
 		animationBegin = [[
@@ -45,11 +46,22 @@ function mod:RunPoint(x, y)
 	if mod.db.profile.animationsOn then
 		mod.environment.i = (mod.environment.i or 0) + 1
 		mod.environment.v = (mod.environment.v or 0) +  random()
+		mod.environment.x = x
+		mod.environment.y = y
+		mod.environment.width = StarTip.tooltipMain.frame:GetWidth()
+		mod.environment.height = StarTip.tooltipMain.frame:GetHeight()
+		mod.unit = StarTip.unit
+		mod.self = mod.self or {}
 		Evaluator.ExecuteCode(mod.environment, "Position.animationPoint", animation.animationPoint)
 
 		local xx, yy = mod.environment.x or 0, mod.environment.y or 0
-	        x = x + floor((((xx or 0) + 1.0) * UIParent:GetWidth() / animation.animationSpeed))
-        	y = y + floor((((yy or 0) + 1.0) * UIParent:GetHeight() / animation.animationSpeed))
+		if mod.environment.gravity then
+		        x = x + floor((((xx or 0) + 1.0) * UIParent:GetWidth() / animation.animationSpeed))
+        		y = y + floor((((yy or 0) + 1.0) * UIParent:GetHeight() / animation.animationSpeed))
+		else
+			x = xx
+			y = yy
+		end
 	end
 	return x, y
 end
