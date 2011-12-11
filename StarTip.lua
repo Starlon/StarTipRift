@@ -284,12 +284,12 @@ function StarTip:Finalize(addon)
 	local data = addons[addon]
 	if not data then return false end
 	loadedAddon = addon
-	if data.lines then self:EstablishLines(data.lines) end
-	if data.bars then self:EstablishBars(data.bars) end
-	if data.borders then self:EstablishBorders(data.borders) end
-	if data.background then self:EstablishBackground(data.background) end
-	if data.animation then self:EstablishAnimation(data.animation) end
-	if data.histograms then self:EstablishHistograms(data.histograms) end
+	self:EstablishLines(data.lines)
+	self:EstablishBars(data.bars)
+	self:EstablishBorders(data.borders)
+	self:EstablishBackground(data.background)
+	self:EstablishAnimation(data.animation)
+	---self:EstablishHistograms(data.histograms)
 
 	return true
 end
@@ -329,10 +329,8 @@ function StarTip:EstablishBackground(data)
 end
 
 function StarTip:EstablishAnimation(data)
-	if type(data) ~= "table" then return end
 	local mod = self:GetModule("Animation")
 	if mod then mod:Establish(data) end
-	StarTip.animation = mod
 end
 
 function StarTip:GetModule(name1) 
@@ -544,6 +542,9 @@ do
 				startup()
 
 				StarTip:Finalize(StarTip.db.profile.addon)
+				
+				local mod = StarTip:GetModule("Animation")
+				StarTip.animation = mod
 			end
 		end
 	end

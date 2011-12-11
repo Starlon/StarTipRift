@@ -201,6 +201,7 @@ profile.animation = {
 	animationsOn = false,
 	animationSpeed = 1000,
 	animationInit = [[
+gravity = true
 t = 0
 ]],
 	animationBegin = [[
