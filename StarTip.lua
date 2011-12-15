@@ -64,6 +64,7 @@ return .5, .7, GetTime()
 ]],
 	update = 300,
 	repeating = true,
+	clamping = true
 }
 
 local bordersWidget
@@ -343,7 +344,7 @@ end
 
 local abs = math.abs
 local function update()
-	if not tooltipMain:Shown() then return end
+	if not tooltipMain:Shown() or not config.mouse then return end
 	local mouse = Inspect.Mouse()
 	local width = frame:GetWidth()
 	local height = frame:GetHeight()
@@ -351,18 +352,20 @@ local function update()
 	x, y = StarTip.animation:RunPoint(x, y)	
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
-	local top = frame:GetTop() - 12
-	local bottom = frame:GetBottom() + 12
-	local left = frame:GetLeft() - 12
-	local right = frame:GetRight() + 12
-	local uiw = UIParent:GetWidth()
-	local uih = UIParent:GetHeight()
-	if top < 0 then y = y + abs(top) end
-	if left < 0 then x = x + abs(left) end
-	if bottom > uih + height then y = uih - height end
-	if right > uiw + width then x = uiw - width; end
-	frame:ClearAll()
-	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
+	if StarTip.db.profile.clamping then
+		local top = frame:GetTop() - 12
+		local bottom = frame:GetBottom() + 12
+		local left = frame:GetLeft() - 12
+		local right = frame:GetRight() + 12
+		local uiw = UIParent:GetWidth()
+		local uih = UIParent:GetHeight()
+		if top < 0 then y = y + abs(top) end
+		if left < 0 then x = x + abs(left) end
+		if bottom > uih + height then y = uih - height end
+		if right > uiw + width then x = uiw - width; end
+		frame:ClearAll()
+		frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
+	end
 	tooltipMain:Reshape()
 end
 
@@ -476,16 +479,18 @@ mouse.Event.CheckboxChange = function()
 	if mouse:GetChecked() then
 		config.mouse = true
 		startPositionMouse:SetVisible(false)
-		table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
+		--table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
 	else
 		config.mouse = false
 		startPositionMouse:SetVisible(true)
+--[[
 		for i = #Event.System.Update.Begin, 1, -1 do
 			local v = Event.System.Update.Begin[i][1]
 			if v == update then
 				table.remove(Event.System.Update.Begin, i)
 			end
 		end
+]]
 	end
 end
 
@@ -519,9 +524,8 @@ do
 	
 				if not config then return end
 				
-				if config.mouse then
-					table.insert(Event.Mouse.Move, {update, "StarTip", "Mouse Move"})
-				else
+
+				if not config.mouse then
 					frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
 					tooltipMain:Reshape()
 				end	
@@ -545,6 +549,13 @@ do
 				
 				local mod = StarTip:GetModule("Animation")
 				StarTip.animation = mod
+
+				--if mod.animation.animationsOn then
+					table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
+				--else 
+
+				--	table.insert(Event.Mouse.Move, {update, "StarTip", "Mouse Move"})
+				--end
 			end
 		end
 	end

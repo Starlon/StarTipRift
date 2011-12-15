@@ -41,7 +41,7 @@ if not UnitName(unit..".target") then return 1, 1, 1, 1 end
 return RelationColor(unit..'.target')
 ]],
 		rightUpdating = true,
-		update = 500,
+		update = 1000,
 		--alignRight = WidgetText.ALIGN_RIGHT,
 		enabled = true,
 	},
@@ -115,9 +115,9 @@ if not UnitHealth(unit) then return end
 return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))	
 ]],
 		rightUpdating = true,
-		update = 200,
+		update = 500,
 		cols = 15,
-		enabled = true
+		enabled = true,
 	},
 	[10] = {
 		id = "mana",
@@ -132,9 +132,9 @@ if not UnitMana(unit) then return end
 return GradientMana(UnitMana(unit) / UnitManaMax(unit))
 ]],
 		rightUpdating = true,
-		update = 200,
+		update = 500,
 		cols = 15,
-		enabled = true
+		enabled = true,
 	},
 	[11] = {
 		id = "power",
@@ -148,9 +148,9 @@ if not UnitPower(unit) then return end
 return GradientMana(UnitPower(unit) / 100)
 ]],
 		rightUpdating = true,
-		update = 200,
+		update = 500,
 		cols = 15,
-		enabled = true
+		enabled = true,
 	},
 	[12] = {
 		id = "energy",
@@ -164,9 +164,9 @@ if not UnitEnergy(unit) then return end
 return GradientMana(UnitEnergy(unit) / UnitEnergyMax(unit))
 ]],
 		rightUpdating = true,
-		update = 200,
+		update = 500,
 		cols = 15,
-		enabled = true
+		enabled = true,
 	},	
 	[13] = {
 		id = "guaranteedloot",
@@ -227,7 +227,7 @@ return UnitTagText(unit)
 		right = "return UnitDPS(unit) or '---'",
 		enabled = false,
 		rightUpdating = true,
-		update = 200
+		update = 500
 	},
 	[21] = {
 		id = "simplemeter",
@@ -236,7 +236,7 @@ return UnitTagText(unit)
 return SimpleMeter(unit, "dps", "all")
 ]],
 		leftUpdating = true,
-		update = 200,
+		update = 500,
 		enabled = true
 	}
 
@@ -264,7 +264,7 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
 		height = 3,
 		length = 0,
 		enabled = true,
-		update = 1,
+		update = 300,
 		layer = 1, 
 		level = 100,
 		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -3}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -3}}
@@ -294,7 +294,7 @@ return Gradient(mana / max, unit)
 		height = 3,
 		length = 0,
 		enabled = true,
-		update = 1,
+		update = 300,
 		layer = 1, 
 		level = 100,
 		points = {{"TOPLEFT", "BOTTOMLEFT", 0, 3}, {"TOPRIGHT", "BOTTOMRIGHT", 0, 3}}
@@ -315,7 +315,7 @@ return perc
 		length = 0,
 		alpha = 0,
 		enabled = true,
-		update = 1,
+		update = 300,
 		layer = 1,
 		level = 100,
 		points = {{"BOTTOMLEFT", "TOPLEFT", 0, -10-3}, {"BOTTOMRIGHT", "TOPRIGHT", 0, -10-3}}

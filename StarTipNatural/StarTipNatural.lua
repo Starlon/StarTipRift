@@ -142,7 +142,7 @@ left = [[
 return SimpleMeter(unit, "dps", "all")
 ]],
 	leftUpdating = true,
-	update = 300,
+	update = 500,
 	enabled = true
     },
     [9] = {
@@ -174,7 +174,7 @@ return GradientHealth(UnitHealth(unit) / UnitHealthMax(unit))
         height = 6,
         length = 0,
         enabled = true,
-        update = 1,
+        update = 300,
         layer = 1, 
         level = 100,
         points = {{"TOPLEFT", "BOTTOMLEFT", 15, -15}, {"TOPRIGHT", "BOTTOMRIGHT", -15, -15}}
