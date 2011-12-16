@@ -20,7 +20,7 @@ if name then
 end
 ]],
         colorLeft = [[
-return RelationColor(unit)
+return UnitRelationColor(unit)
 ]],
         enabled = true,
 		update = 1000,
@@ -38,7 +38,7 @@ return  name and (name .. pvp) or "None"
 ]],
 		colorRight = [[
 if not UnitName(unit..".target") then return 1, 1, 1, 1 end
-return RelationColor(unit..'.target')
+return UnitRelationColor(unit..'.target')
 ]],
 		rightUpdating = true,
 		update = 1000,
@@ -329,7 +329,7 @@ profile.borders = {
 if UnitCalling(unit) then 
 	return ClassColor(unit)
 end
-return RelationColor(unit)
+return UnitRelationColor(unit)
 ]],
 	update = 300,
 	repeating = true
