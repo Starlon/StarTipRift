@@ -72,5 +72,4 @@ function mod:Establish(anim)
 	self.animation.animationBegin = anim and anim.animationBegin or self.animation.animationBegin
 	self.animation.animationPoint = anim and anim.animationPoint or self.animation.animationPoint
 	self:RunInit()
-print(self.animation.animationsOn)
 end
