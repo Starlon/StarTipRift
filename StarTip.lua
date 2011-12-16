@@ -64,7 +64,6 @@ return .5, .7, GetTime()
 ]],
 	update = 300,
 	repeating = true,
-	clamping = true
 }
 
 local bordersWidget
@@ -80,7 +79,8 @@ local defaults = {
 		mouse = true,
 		x = 10,
 		y = 10,
-		addon = "Default"
+		addon = "Default",
+		clamping = true
 	}
 }
 local config
@@ -350,22 +350,25 @@ local function update()
 	local height = frame:GetHeight()
 	local x, y = mouse.x - width / 2, mouse.y - height
 	x, y = StarTip.animation:RunPoint(x, y)	
+	--frame:ClearAll()
+	--frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
+	--[[local top = frame:GetTop() - 12
+	local bottom = frame:GetBottom() + 12
+	local left = frame:GetLeft() - 12
+	local right = frame:GetRight() + 12
+	]]
+	local top = mouse.y - height - 12
+	local bottom = mouse.y + 12
+	local left = mouse.x - width / 2 - 12
+	local right = mouse.x + width / 2 + 12
+	local uiw = UIParent:GetWidth()
+	local uih = UIParent:GetHeight()
+	if top < 0 then y = y + abs(top) end
+	if left < 0 then x = x + abs(left) end
+	if bottom > uih + height then y = uih - height end
+	if right > uiw + width then x = uiw - width; end
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
-	if StarTip.db.profile.clamping then
-		local top = frame:GetTop() - 12
-		local bottom = frame:GetBottom() + 12
-		local left = frame:GetLeft() - 12
-		local right = frame:GetRight() + 12
-		local uiw = UIParent:GetWidth()
-		local uih = UIParent:GetHeight()
-		if top < 0 then y = y + abs(top) end
-		if left < 0 then x = x + abs(left) end
-		if bottom > uih + height then y = uih - height end
-		if right > uiw + width then x = uiw - width; end
-		frame:ClearAll()
-		frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
-	end
 	tooltipMain:Reshape()
 end
 
