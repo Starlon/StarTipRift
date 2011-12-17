@@ -348,25 +348,17 @@ local function update()
 	local mouse = Inspect.Mouse()
 	local width = frame:GetWidth()
 	local height = frame:GetHeight()
-	local x, y = mouse.x - width / 2, mouse.y - height
-	x, y = StarTip.animation:RunPoint(x, y)	
-	--frame:ClearAll()
-	--frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
-	--[[local top = frame:GetTop() - 12
-	local bottom = frame:GetBottom() + 12
-	local left = frame:GetLeft() - 12
-	local right = frame:GetRight() + 12
-	]]
-	local top = mouse.y - height - 12
-	local bottom = mouse.y + 12
-	local left = mouse.x - width / 2 - 12
-	local right = mouse.x + width / 2 + 12
+	local x, y = StarTip.animation:RunPoint(mouse.x - width / 2, mouse.y - height)
+	local top = y - 12
+	local bottom = y + 12 + height
+	local left = x - 12
+	local right = x + 12 + width
 	local uiw = UIParent:GetWidth()
 	local uih = UIParent:GetHeight()
-	if top < 0 then y = y + abs(top) end
-	if left < 0 then x = x + abs(left) end
-	if bottom > uih + height then y = uih - height end
-	if right > uiw + width then x = uiw - width; end
+	if top < 0 then y = y + abs(top) + 12 end
+	if left < 0 then x = x + abs(left) - 12 end
+	if bottom > uih then y = uih - height + 12 end
+	if right > uiw then x = uiw - width - 12 end
 	frame:ClearAll()
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
 	tooltipMain:Reshape()
