@@ -198,7 +198,7 @@ return r, g, b, .5
 
 
 profile.animation = {
-	animationsOn = false,
+	animationsOn = true,
 	animationSpeed = 1000,
 	animationInit = [[
 gravity = true

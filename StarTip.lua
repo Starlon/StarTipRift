@@ -79,7 +79,7 @@ local defaults = {
 		mouse = true,
 		x = 10,
 		y = 10,
-		addon = "Default",
+		addon = "Natural",
 		clamping = true
 	}
 }
