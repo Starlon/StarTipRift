@@ -2,16 +2,17 @@ local addon, ns = ...
 local StarTip = ns.StarTip
 local mod = ns.StarTip:NewModule("Background")
 
+local bg = "return BackgroundColor(unit)"
 local backgrounds = {
-	guild = "return BackgroundColor(unit)",
-	hostilePC = "return BackgroundColor(unit)",
-	hostileNPC = "return BackgroundColor(unit)",
-	neutralNPC = "return BackgroundColor(unit)",
-	friendlyPC = "return BackgroundColor(unit)",
-	friendlyNPC = "return BackgroundColor(unit)",
-	other = "return BackgroundColor(unit)",
-	dead = "return BackgroundColor(unit)",
-	tapped = "return BackgroundColor(unit)"
+	guild = bg,
+	hostilePC = bg,
+	hostileNPC = bg,
+	neutralNPC = bg,
+	friendlyPC = bg,
+	friendlyNPC = bg,
+	other = bg,
+	dead = bg,
+	tapped = bg
 }
 
 local update = function(details)
