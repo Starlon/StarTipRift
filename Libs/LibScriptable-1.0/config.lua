@@ -41,14 +41,14 @@ _G.LCD4Rift = {}
 _G.LCD4Rift.config = {
     ["display_startip"] = {
 		["addon"] = "LCD4Rift",
-		["enabled"] = true,
+		["enabled"] = false,
 		["driver"] = "qtip",
 		["layers"] = 2,
 		["background"] = "d9ccf16f",
-		["row"] = 500,
-		["col"] = 0,
-		["rows"] = 6,
-		["cols"] = 30,
+        ["row"] = 0,
+        ["col"] = 0,
+		["rows"] = 64,
+		["cols"] = 256,
 		["update"] = 0,
 		["timeout"] = 2000,
 		["transition_speed"] = 50,
@@ -59,7 +59,7 @@ _G.LCD4Rift.config = {
     },
     ["display_character"] = {
 		["addon"] = "LCD4Rift",
-		["enabled"] = false,
+		["enabled"] = true,
 		["driver"] = "character",
 		["layers"] = 1,
 		["background"] = "d9ccf16f",
@@ -70,7 +70,7 @@ _G.LCD4Rift.config = {
 		["cols"] = 20,
 		["update"] = 0,
 		--["widgets"] = {"widget_key_up", "widget_key_down", "widget_resources_timer"},
-		["layouts"] = {"layout_tiny"},
+		["layouts"] = {"layout_LCD4Rift"},
 		["points"] = {{"CENTER", "UIParent", "CENTER"}},
 		["parent"] = "UIParent",
 		["strata"] = 1
@@ -183,14 +183,45 @@ Update()
 		["layout-timeout"] = 0
     },
 	["layout_LCD4Rift"] = {
-		[1] = {
-			[1] = { -- row
-				[1] = "widget_name_label", -- column
+		[1] = { -- layer, defined in driver description.
+			[1] = { -- row 
+				[1] = "return 'Name:'", -- column
 				[10] = "widget_name"
 			},
+            [2] = {
+                [1] = "return 'Mana:'",
+                [10] = "widget_mana",
+            },
+            [3] = {
+                [1] = "return 'Health:'",
+                [10] = "widget_health"
+            },
+			[4] = {
+				[1] = "widget_icon_blob",
+				[2] = "widget_icon_ekg",
+				[3] = "widget_icon_timer",
+				[4] = "widget_icon_heartbeat",
+				[5] = "widget_icon_karo",
+				[6] = "widget_icon_rain",
+				[7] = "widget_icon_squirrel",
+				[8] = "widget_icon_heart",
+				[9] = "widget_icon_wave",
+				[10] = "widget_icon_blob",
+				[11] = "widget_icon_ekg",
+				[12] = "widget_icon_timer",
+				[13] = "widget_icon_heartbeat",
+				[14] = "widget_icon_karo",
+				[15] = "widget_icon_rain",
+				[16] = "widget_icon_squirrel",
+				[17] = "widget_icon_heart",
+				[18] = "widget_icon_wave",				
+				[19] = "widget_icon_blob",
+				[20] = "widget_icon_ekg",
+			}
 		},
 		["transition"] = TRANSITION_TENTACLE,
     },
+--[[
 	["layout_histogram_cpu"] = {
 		[2] = {
 			[1] = {
@@ -219,6 +250,7 @@ Update()
 		["transition"] = TRANSITION_CHECKERBOARD,
 		["timeout"] = 2000
 	},
+--]]
 	["widget_text_health"] = {
 		type = "text",
 		value = 'return "Health: " .. (UnitHealth("player") / UnitHealthMax("player") * 100) .. "%"',

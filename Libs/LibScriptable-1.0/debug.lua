@@ -19,8 +19,8 @@ table.insert(Command.Slash.Register("test"), {function (params)
 end, "LibScriptable_1_0", "Test slash"})
 
 table.insert(Command.Slash.Register("lcd4rift"), {function (commandLineParameters)
-	local display = LibDriverCharacter:New(environment, environment, "display_character", _G.LCD4Rift.config, 2)
-	display:Show()
+	--local display = LibDriverCharacter:New(environment, environment, "display_character", _G.LCD4Rift.config, 2)
+	--display:Show()
 end, "LibScriptable_1_0", "LCD4Rift slash"})
 
 local avstimer
