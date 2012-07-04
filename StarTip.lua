@@ -554,7 +554,7 @@ do
 			end
 		end
 	end
-	table.insert(Event.Unit.Available, {playerLoaded, "StarTip", "StarTip player loaded"})
+	table.insert(Event.Unit.Availability.Full, {playerLoaded, "StarTip", "StarTip player loaded"})
 
 end
 
