@@ -303,12 +303,13 @@ ScriptEnv.GradientMana = GradientMana
 local grad = {mage = {43 / 255, 120 / 255, 196 / 255}, 
 	cleric = {43 / 255, 120 / 255, 196 / 255}, 
 	rogue = {204 / 255, 22 / 255, 217 / 255}, 
-	warrior = {237 / 255, 233 / 255, 111 / 255}
+	warrior = {237 / 255, 233 / 255, 111 / 255},
+    default = {43 / 255, 120 / 255, 196 / 255}
 }
 
 local function Gradient(perc, unit)
 	local details = Inspect.Unit.Detail(unit or "player")
-	local col = grad[details.calling]
+	local col = grad[details.calling] or grad.default
 	local h, s, v = RGB2HSV(col[1], col[2], col[3])
 	s = perc
 	local r, g, b = HSV2RGB(h, s, v)
