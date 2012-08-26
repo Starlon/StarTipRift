@@ -30,27 +30,27 @@ local addons = {}
 local queue = {}
 
 table.insert(Event.System.Error, {function(err)
-	if err.addon == "StarTip" then
-		local mod = StarTip:GetModule("UnitTooltip")
-		for k, v in pairs(mod.lines) do
-			local left = v.leftObj
-			local right = v.rightObj
-			if left and err.error:match(left.config.name) then
-				table.remove(mod.lines, k)
-				print("Disabling line: " .. left.config.name)
-				break
-			end
-		end
-		
-	end
+    if err.addon == "StarTip" then
+        local mod = StarTip:GetModule("UnitTooltip")
+        for k, v in pairs(mod.lines) do
+            local left = v.leftObj
+            local right = v.rightObj
+            if left and err.error:match(left.config.name) then
+                table.remove(mod.lines, k)
+                print("Disabling line: " .. left.config.name)
+                break
+            end
+        end
+        
+    end
 end, "StarTip", "Error Handler"})
 
 
 if FooBar then
-	local mod = FooBarModule:new(FooBar.getFoobar(), "StarTipFooBar")
-	mod:setText("StarTip")
-	mod:registerEvent("LeftClick", function() StarTip:OpenConfig() end)
-	StarTip.foobar = mod
+    local mod = FooBarModule:new(FooBar.getFoobar(), "StarTipFooBar")
+    mod:setText("StarTip")
+    mod:registerEvent("LeftClick", function() StarTip:OpenConfig() end)
+    StarTip.foobar = mod
 end
 
 local environment = {}
@@ -58,30 +58,30 @@ local core = LibCore:New(environment, "StarTip", 2)
 StarTip.core = core
 
 local borders = {
-	expression = [[
+    expression = [[
 GetTime = GetTime or Inspect.Time.Frame
 return .5, .7, GetTime()
 ]],
-	update = 300,
-	repeating = true,
+    update = 300,
+    repeating = true,
 }
 
 local bordersWidget
 bordersWidget = WidgetColor:New(core, "Borders", borders, StarTip.errorLevel, function()
-	left:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
-	right:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
-	top:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
-	bottom:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
+    left:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
+    right:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
+    top:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
+    bottom:SetBackgroundColor(bordersWidget.r, bordersWidget.g, bordersWidget.b, bordersWidget.a)
 end)
 
 local defaults = {
-	profile = {
-		mouse = true,
-		x = 10,
-		y = 10,
-		addon = "Natural",
-		clamping = true
-	}
+    profile = {
+        mouse = true,
+        x = 10,
+        y = 10,
+        addon = "Natural",
+        clamping = true
+    }
 }
 local config
 
@@ -120,266 +120,266 @@ end
 
 local new, del
 do
-	local pool = {}
-	function new(...)
-		local tbl = tremove(pool) or {}
-		for i = 1, select("#", ...) do
-			tbl[i] = select(i, ...)
-		end
-		return tbl
-	end
-	
-	function del(tbl)
-		assert(tbl)
-		tinsert(pool, tbl)
-		for i = 1, #tbl do
-			tremove(tbl)
-		end
-	end
+    local pool = {}
+    function new(...)
+        local tbl = tremove(pool) or {}
+        for i = 1, select("#", ...) do
+            tbl[i] = select(i, ...)
+        end
+        return tbl
+    end
+    
+    function del(tbl)
+        assert(tbl)
+        tinsert(pool, tbl)
+        for i = 1, #tbl do
+            tremove(tbl)
+        end
+    end
 end
 local pool = {}
 local function newCell(size)
-	local cell = tremove(pool) or UI.CreateFrame("Text", "StarTipText", frame)
-	cell:SetFontSize(size or 12)
-	return cell
+    local cell = tremove(pool) or UI.CreateFrame("Text", "StarTipText", frame)
+    cell:SetFontSize(size or 12)
+    return cell
 end
 
 local function delCell(cell)
-	cell:SetText("")
-	--cell:ResizeToText()
-	cell:ClearAll()
-	cell:SetFontColor(1, 1, 1, 1)
-	tinsert(pool, 1, cell)
+    cell:SetText("")
+    --cell:ResizeToText()
+    cell:ClearAll()
+    cell:SetFontColor(1, 1, 1, 1)
+    tinsert(pool, 1, cell)
 end
 
 tooltipMain.AddLine = function(self, txt)
-	local lineNum = self:NumLines()
-	local cell = newCell(12)
-	if lineNum == 0 then
-		cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, 0)
-		cell:SetFontSize(15)
-	else
-		local h = self.lines[lineNum][1]:GetHeight()
-		cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, h * lineNum)
-	end
-	tinsert(self.lines, new(cell))
-	cell:SetText(txt)
-	--cell:ResizeToText()
-	return cell
+    local lineNum = self:NumLines()
+    local cell = newCell(12)
+    if lineNum == 0 then
+        cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, 0)
+        cell:SetFontSize(15)
+    else
+        local h = self.lines[lineNum][1]:GetHeight()
+        cell:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, h * lineNum)
+    end
+    tinsert(self.lines, new(cell))
+    cell:SetText(txt)
+    --cell:ResizeToText()
+    return cell
 end
 
 tooltipMain.AddDoubleLine = function(self, txt1, txt2)
-	local lineNum = self:NumLines()
-	local line = self.lines[lineNum]
-	local cell1 = newCell(12)
-	local cell2 = newCell(12)
-	if lineNum == 0 then
-		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, 0)
-		cell1:SetFontSize(15)
-	else
-		local h = line[1]:GetHeight()
-		cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, h * lineNum)
-	end
-	cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
-	tinsert(self.lines, new(cell1, cell2))
-	cell1:SetText(txt1)
-	cell2:SetText(txt2)	
-	--cell1:ResizeToText()
-	--cell2:ResizeToText()
-	return cell1, cell2
+    local lineNum = self:NumLines()
+    local line = self.lines[lineNum]
+    local cell1 = newCell(12)
+    local cell2 = newCell(12)
+    if lineNum == 0 then
+        cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, 0)
+        cell1:SetFontSize(15)
+    else
+        local h = line[1]:GetHeight()
+        cell1:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, h * lineNum)
+    end
+    cell2:SetPoint("TOPLEFT", cell1, "TOPRIGHT")
+    tinsert(self.lines, new(cell1, cell2))
+    cell1:SetText(txt1)
+    cell2:SetText(txt2) 
+    --cell1:ResizeToText()
+    --cell2:ResizeToText()
+    return cell1, cell2
 end
 
 tooltipMain.Clear = function(self)
-	for k, line in ipairs(self.lines) do
-		delCell(line[1])
-		if line[2] then delCell(line[2]) end
-	end
-	for i = 1, #self.lines do
-		local line = table.remove(self.lines)
-		del(line)
-	end
+    for k, line in ipairs(self.lines) do
+        delCell(line[1])
+        if line[2] then delCell(line[2]) end
+    end
+    for i = 1, #self.lines do
+        local line = table.remove(self.lines)
+        del(line)
+    end
 end
 
 
 tooltipMain.Reshape = function(self)
-	local height, width = 0, 0
-	for k, line in ipairs(self.lines) do
-		local left = line[1];
-		local right = line[2];
-		--left:ResizeToText()
-		height = height + left:GetHeight()
-		local w = left:GetWidth()
-		if right then 
-			--right:ResizeToText()
-			w = w + right:GetWidth()
-		end
-		if w > width then 
-			width = w
-		end
-	end
-	frame:SetWidth(width + 3)
-	frame:SetHeight(height)
+    local height, width = 0, 0
+    for k, line in ipairs(self.lines) do
+        local left = line[1];
+        local right = line[2];
+        --left:ResizeToText()
+        height = height + left:GetHeight()
+        local w = left:GetWidth()
+        if right then 
+            --right:ResizeToText()
+            w = w + right:GetWidth()
+        end
+        if w > width then 
+            width = w
+        end
+    end
+    frame:SetWidth(width + 3)
+    frame:SetHeight(height)
 
-	top:ClearAll()
-	top:SetPoint("BOTTOMLEFT", frame, "TOPLEFT")
-	top:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT")
-	top:SetHeight(borderSize)
+    top:ClearAll()
+    top:SetPoint("BOTTOMLEFT", frame, "TOPLEFT")
+    top:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT")
+    top:SetHeight(borderSize)
 
 
-	bottom:ClearAll()
-	bottom:SetPoint("TOPLEFT", frame, "BOTTOMLEFT")
-	bottom:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT")
-	bottom:SetHeight(borderSize)
-	
-	left:ClearAll()
-	left:SetPoint("TOPLEFT", frame, "TOPRIGHT", -borderSize, 0)
-	left:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", borderSize, 0)
-	left:SetWidth(borderSize)
+    bottom:ClearAll()
+    bottom:SetPoint("TOPLEFT", frame, "BOTTOMLEFT")
+    bottom:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT")
+    bottom:SetHeight(borderSize)
+    
+    left:ClearAll()
+    left:SetPoint("TOPLEFT", frame, "TOPRIGHT", -borderSize, 0)
+    left:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", borderSize, 0)
+    left:SetWidth(borderSize)
 
-	right:ClearAll()
-	right:SetPoint("TOPRIGHT", frame, "TOPLEFT", -borderSize, 0)
-	right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", borderSize, 0)
-	right:SetWidth(borderSize)
+    right:ClearAll()
+    right:SetPoint("TOPRIGHT", frame, "TOPLEFT", -borderSize, 0)
+    right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", borderSize, 0)
+    right:SetWidth(borderSize)
 end
 
 
 tooltipMain.NumLines = function(self)
-	return #self.lines
+    return #self.lines
 end
 
 tooltipMain.Show = function(self)
-	frame.flash:Stop()
-	if frame.alpha then frame:SetAlpha(frame.alpha) end
-	frame:SetVisible(true)
+    frame.flash:Stop()
+    if frame.alpha then frame:SetAlpha(frame.alpha) end
+    frame:SetVisible(true)
 end
 
 local function realHide() 
-	frame:SetVisible(false)
-	frame:SetAlpha(frame.alpha)
+    frame:SetVisible(false)
+    frame:SetAlpha(frame.alpha)
 end
 
 tooltipMain.FadeOut = function(self)
-	frame.alpha = frame:GetAlpha()
-	frame.flash:Fade(1, frame.alpha, 0, realHide)
+    frame.alpha = frame:GetAlpha()
+    frame.flash:Fade(1, frame.alpha, 0, realHide)
 end
 
 tooltipMain.Hide = function(self)
-	frame:SetVisible(false)
+    frame:SetVisible(false)
 end
 
 tooltipMain.Shown = function(self)
-	return frame:GetVisible()
+    return frame:GetVisible()
 end
 
 function StarTip:Ready(addon)
-	return type(StarTip.db) == "table"
+    return type(StarTip.db) == "table"
 end
 
 function StarTip:InitializeProfile(addon, data)
-	addons[addon] = addons[addon] or data
+    addons[addon] = addons[addon] or data
 end
 StarTip.InitializeAddon = InitializeProfile
 
-local loadedAddon
+local loadedAddon = "Default"
 function StarTip:Finalize(addon)
-	local data = addons[addon]
-	if not data then return false end
-	loadedAddon = addon
-	self:EstablishLines(data.lines)
-	self:EstablishBars(data.bars)
-	self:EstablishBorders(data.borders)
-	self:EstablishBackground(data.background)
-	self:EstablishAnimation(data.animation)
-	---self:EstablishHistograms(data.histograms)
+    local data = addons[addon]
+    if not data then return false end
+    StarTip.db.profile.addon = addon
+    self:EstablishLines(data.lines)
+    self:EstablishBars(data.bars)
+    self:EstablishBorders(data.borders)
+    self:EstablishBackground(data.background)
+    self:EstablishAnimation(data.animation)
+    ---self:EstablishHistograms(data.histograms)
 
-	return true
+    return true
 end
 
 function StarTip:EstablishLines(data)
-	if type(data) ~= "table" then return end
-	local mod = self:GetModule("UnitTooltip")
-	for k, v in pairs(mod.widgets) do
-		if v.cell then v.cell:SetVisible(false) end
-		v:Del()
-	end
-	mod:Establish(data)
+    if type(data) ~= "table" then return end
+    local mod = self:GetModule("UnitTooltip")
+    for k, v in pairs(mod.widgets) do
+        if v.cell then v.cell:SetVisible(false) end
+        v:Del()
+    end
+    mod:Establish(data)
 end
 
 function StarTip:EstablishBars(data)
-	if type(data) ~= "table" then return end
-	local mod = self:GetModule("Bars")
-	for k, v in pairs(mod.bars) do
-		if v.bar then v.bar:SetVisible(false) end
-		--v:Del()
-	end
+    if type(data) ~= "table" then return end
+    local mod = self:GetModule("Bars")
+    for k, v in pairs(mod.bars) do
+        if v.bar then v.bar:SetVisible(false) end
+        --v:Del()
+    end
 
-	mod:Establish(data)
+    mod:Establish(data)
 end
 
 function StarTip:EstablishBorders(data)
-	if type(data) ~= "table" then return end
-	bordersWidget = WidgetColor:New(core, "Borders", data, StarTip.errorLevel, bordersWidget.draw)
+    if type(data) ~= "table" then return end
+    bordersWidget = WidgetColor:New(core, "Borders", data, StarTip.errorLevel, bordersWidget.draw)
 
-	borderSize = data.borderSize or borderSize
+    borderSize = data.borderSize or borderSize
 end
 
 function StarTip:EstablishBackground(data)
-	if type(data) ~= "table" then return end
-	local mod = self:GetModule("Background")
-	if mod then mod:Establish(data) end
+    if type(data) ~= "table" then return end
+    local mod = self:GetModule("Background")
+    if mod then mod:Establish(data) end
 end
 
 function StarTip:EstablishAnimation(data)
-	local mod = self:GetModule("Animation")
-	if mod then mod:Establish(data) end
+    local mod = self:GetModule("Animation")
+    if mod then mod:Establish(data) end
 end
 
 function StarTip:GetModule(name1) 
-	for name2, mod in StarTip:IterateModules() do
-		if name1 == name2 then
-			return mod
-		end
-	end
+    for name2, mod in StarTip:IterateModules() do
+        if name1 == name2 then
+            return mod
+        end
+    end
 end
 
 local abs = math.abs
 local function update()
-	if not tooltipMain:Shown() or not config.mouse then return end
-	local mouse = Inspect.Mouse()
-	local width = frame:GetWidth()
-	local height = frame:GetHeight()
-	local x, y = StarTip.animation:RunPoint(mouse.x - width / 2, mouse.y - height)
-	local top = y - 12
-	local bottom = y + 12 + height
-	local left = x - 12
-	local right = x + 12 + width
-	local uiw = UIParent:GetWidth()
-	local uih = UIParent:GetHeight()
-	if top < 0 then y = y + abs(top) + 12 end
-	if left < 0 then x = x + abs(left) - 12 end
-	if bottom > uih then y = uih - height + 12 end
-	if right > uiw then x = uiw - width - 12 end
-	frame:ClearAll()
-	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
-	tooltipMain:Reshape()
+    if not tooltipMain:Shown() or not config.mouse then return end
+    local mouse = Inspect.Mouse()
+    local width = frame:GetWidth()
+    local height = frame:GetHeight()
+    local x, y = StarTip.animation:RunPoint(mouse.x - width / 2, mouse.y - height)
+    local top = y - 12
+    local bottom = y + 12 + height
+    local left = x - 12
+    local right = x + 12 + width
+    local uiw = UIParent:GetWidth()
+    local uih = UIParent:GetHeight()
+    if top < 0 then y = y + abs(top) + 12 end
+    if left < 0 then x = x + abs(left) - 12 end
+    if bottom > uih then y = uih - height + 12 end
+    if right > uiw then x = uiw - width - 12 end
+    frame:ClearAll()
+    frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
+    tooltipMain:Reshape()
 end
 
 
 local function unitChanged(id)
-	if id then
-		local details = Inspect.Unit.Detail(id)
-		for k, mod in StarTip:IterateModules() do
-			if mod.SetUnit and details then mod:SetUnit(details, StarTip.unit) end
-		end
-		tooltipMain:Show()
-		bordersWidget:Start()
-	else
-		tooltipMain:FadeOut()
-		for k, mod in StarTip:IterateModules() do
-			if mod.OnHide then mod:OnHide() end
-		end
-		bordersWidget:Stop()
-	end
+    if id then
+        local details = Inspect.Unit.Detail(id)
+        for k, mod in StarTip:IterateModules() do
+            if mod.SetUnit and details then mod:SetUnit(details, StarTip.unit) end
+        end
+        tooltipMain:Show()
+        bordersWidget:Start()
+    else
+        tooltipMain:FadeOut()
+        for k, mod in StarTip:IterateModules() do
+            if mod.OnHide then mod:OnHide() end
+        end
+        bordersWidget:Stop()
+    end
 end
 
 table.insert(Library.LibUnitChange.Register("mouseover"), {unitChanged, "StarTip", "Mouseover"})
@@ -395,7 +395,7 @@ close:SetPoint("TOPLEFT", configDialog, "TOPLEFT", 20, 50)
 --close:ResizeToDefault()
 close:SetText("Close")
 close.Event.LeftPress = function()
-	configDialog:SetVisible(false)
+    configDialog:SetVisible(false)
 end
 
 local mouseLabel = UI.CreateFrame("Text", "Mouse label", configDialog)
@@ -431,182 +431,187 @@ moveMouseLabel:SetText("Move me")
 
 local repositionNow
 local moveTbl = {function()
-	local mouse = Inspect.Mouse()
-	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - 40 , mouse.y - 80)
+    local mouse = Inspect.Mouse()
+    moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", mouse.x - 40 , mouse.y - 80)
 end, "StarTip", "Move reposition frame"}
 
 moveMouseFrame.Event.LeftDown = function()
-	if not repositionNow then
-		table.insert(Event.System.Update.Begin, moveTbl)
-		repositionNow = true
-	end
+    if not repositionNow then
+        table.insert(Event.System.Update.Begin, moveTbl)
+        repositionNow = true
+    end
 end
 
 moveMouseFrame.Event.LeftUp = function()
-	if repositionNow then
-		for i = #Event.System.Update.Begin, 1, -1 do
-			local v = Event.System.Update.Begin[i]
-			if v == moveTbl then			
-				table.remove(Event.System.Update.Begin, i)
-			end
-		end
-		local left = moveMouseFrame:GetLeft()
-		local top = moveMouseFrame:GetTop()
-		config.x = left
-		config.y = top
-		tooltipMain.frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", left, top)
-		repositionNow = false
-	end
+    if repositionNow then
+        for i = #Event.System.Update.Begin, 1, -1 do
+            local v = Event.System.Update.Begin[i]
+            if v == moveTbl then            
+                table.remove(Event.System.Update.Begin, i)
+            end
+        end
+        local left = moveMouseFrame:GetLeft()
+        local top = moveMouseFrame:GetTop()
+        config.x = left
+        config.y = top
+        tooltipMain.frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", left, top)
+        repositionNow = false
+    end
 end
 
 startPositionMouse.Event.LeftPress = function()
-	closePositionMouse:SetVisible(true)
-	moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or (UIParent:GetWidth() / 2 - 40), config.y or (UIParent:GetHeight() / 2 - 50))
-	configDialog:SetVisible(false)
+    closePositionMouse:SetVisible(true)
+    moveMouseFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or (UIParent:GetWidth() / 2 - 40), config.y or (UIParent:GetHeight() / 2 - 50))
+    configDialog:SetVisible(false)
 end
 
 closePositionMouse.Event.LeftPress = function()
-	closePositionMouse:SetVisible(false)
-	configDialog:SetVisible(true)
+    closePositionMouse:SetVisible(false)
+    configDialog:SetVisible(true)
 end
 
 mouse.Event.CheckboxChange = function()
-	if mouse:GetChecked() then
-		config.mouse = true
-		startPositionMouse:SetVisible(false)
-		--table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
-	else
-		config.mouse = false
-		startPositionMouse:SetVisible(true)
+    if mouse:GetChecked() then
+        config.mouse = true
+        startPositionMouse:SetVisible(false)
+        --table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
+    else
+        config.mouse = false
+        startPositionMouse:SetVisible(true)
 --[[
-		for i = #Event.System.Update.Begin, 1, -1 do
-			local v = Event.System.Update.Begin[i][1]
-			if v == update then
-				table.remove(Event.System.Update.Begin, i)
-			end
-		end
+        for i = #Event.System.Update.Begin, 1, -1 do
+            local v = Event.System.Update.Begin[i][1]
+            if v == update then
+                table.remove(Event.System.Update.Begin, i)
+            end
+        end
 ]]
-	end
+    end
 end
 
 function StarTip:OpenConfig()
-	configDialog:SetVisible(true)
+    configDialog:SetVisible(true)
 end
 
 -- Startup
 
 local function startup()
-	for k, mod in StarTip:IterateModules() do
-		if mod.OnStartup then
-			mod:OnStartup()
-		end
-	end
-	
+    for k, mod in StarTip:IterateModules() do
+        if mod.OnStartup then
+            mod:OnStartup()
+        end
+    end
+    
 end
 
 --table.insert(Event.Addon.Startup.End, {startup, "StarTip", "Startup End"})
 
 do
-	local tableloaded
-	local function playerLoaded(units)
-		if tableLoaded then return end
-		tableLoaded = true
-		for k, v in pairs(units) do
-			if v == "player" then
-				StarTip_SavedVariables = StarTip_SavedVariables or {}
-				StarTip.db = StarTip:InitializeDB(StarTip_SavedVariables, defaults)
-				config = StarTip.db and StarTip.db.profile
-	
-				if not config then return end
-				
+    local tableloaded
+    local function playerLoaded(units)
+        if tableLoaded then return end
+        tableLoaded = true
+        for k, v in pairs(units) do
+            if v == "player" then
+                StarTip_SavedVariables = StarTip_SavedVariables or {}
+                StarTip.db = StarTip:InitializeDB(StarTip_SavedVariables, defaults)
+                config = StarTip.db and StarTip.db.profile
+    
+                if not config then return end
+                
 
-				if not config.mouse then
-					frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
-					tooltipMain:Reshape()
-				end	
-				mouse:SetChecked(config.mouse)
-				startPositionMouse:SetVisible(not config.mouse)			
-				if StarTip.db.profile.addon == "StarTip Natural" then StarTip.db.profile.addon = "Natural" end
-				if not StarTip.db.profile.messageToggleOff then
-					print("----- StarTip - Tooltips from the Outer Rift -----")
-					print("Loading Profile... " .. StarTip.db.profile.addon)
-					print("To change profile, type: /startip profile <profile name>")
-					print("Example: /startip profile Natural")
-					print("To toggle showing this message: /startip togglemessage")
-					print("--------------------------------------------------")
-				end
+                if not config.mouse then
+                    frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.x or 10, config.y or 10)
+                    tooltipMain:Reshape()
+                end 
+                mouse:SetChecked(config.mouse)
+                startPositionMouse:SetVisible(not config.mouse)         
+                if StarTip.db.profile.addon == "StarTip Natural" then StarTip.db.profile.addon = "Natural" end
+                if not StarTip.db.profile.messageToggleOff then
+                    print("----- StarTip - Tooltips from the Outer Rift -----")
+                    print("Loading Profile... " .. StarTip.db.profile.addon)
+                    print("To change profile, type: /startip profile <profile name>")
+                    print("Example: /startip profile Natural")
+                    print("To toggle showing this message: /startip togglemessage")
+                    
+                    StarTip:ShowInfo();
+                    print("--------------------------------------------------")
+                end
 
-				StarTip.unit = "mouseover"
+                StarTip.unit = "mouseover"
 
-				startup()
+                startup()
 
-				StarTip:Finalize(StarTip.db.profile.addon)
-				
-				local mod = StarTip:GetModule("Animation")
-				StarTip.animation = mod
+                StarTip:Finalize(StarTip.db.profile.addon)
+                
+                local mod = StarTip:GetModule("Animation")
+                StarTip.animation = mod
 
-				--if mod.animation.animationsOn then
-					table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
-				--else 
+                --if mod.animation.animationsOn then
+                    table.insert(Event.System.Update.Begin, {update, "StarTip", "Position Tooltip to Mouse"})
+                --else 
 
-				--	table.insert(Event.Mouse.Move, {update, "StarTip", "Mouse Move"})
-				--end
-			end
-		end
-	end
-	table.insert(Event.Unit.Availability.Full, {playerLoaded, "StarTip", "StarTip player loaded"})
+                --  table.insert(Event.Mouse.Move, {update, "StarTip", "Mouse Move"})
+                --end
+            end
+        end
+    end
+    table.insert(Event.Unit.Availability.Full, {playerLoaded, "StarTip", "StarTip player loaded"})
 
 end
 
 
-table.insert(Command.Slash.Register("startip"), {function (commands)	
-	if commands == "cpu" then
-		StarTip:CPU()
-	elseif commands:match("^config") then
-		StarTip:OpenConfig()
-	elseif commands:match("^reset") then
-		StarTip.db:ResetDB()
-	elseif commands:match("^profile ") then
-		local len1 = string.len(commands)
-		local len2 = string.len("profile ") + 1
-		local cmd = string.sub(commands, len2, len1)
-		if StarTip:Finalize(cmd) then
-			StarTip.db.profile.addon = cmd
-		end
-		print("You just loaded a profile. You'll likely need to reload the UI. Type: /reloadui")
-	elseif commands:match("^togglemessage") then
-		StarTip.db.profile.messageToggleOff = not StarTip.db.profile.messageToggleOff
-		print("Message is not " .. (StarTip.db.profile.messageToggleOff and "off" or "on"))
-	elseif commands:match("^toggleanimation") then
-		local mod = StarTip:GetModule("Animation")
-		mod.db.profile.animationsOn = not not not mod.db.profile.animationsOn
-	elseif commands:match("^dumpenv") then
-		local list = {}
-		for k, v in pairs(StarTip.core.environment) do
-			table.insert(list, k)
-		end
-		table.sort(list)
-		for i, v in ipairs(list) do
-			print_raw(v)
-		end
-	else
-		
-		print("Commands are 'profile', 'config' and 'cpu', 'togglemessage', 'toggleanimation'.")
-		print("Loaded profile: " .. loadedAddon)
-		print("Available Profiles:")
-		for addon in pairs(addons) do
-			print(">", addon)
-		end
-	end
+table.insert(Command.Slash.Register("startip"), {function (commands)    
+    if commands == "cpu" then
+        StarTip:CPU()
+    elseif commands:match("^config") then
+        StarTip:OpenConfig()
+    elseif commands:match("^reset") then
+        StarTip.db:ResetDB()
+    elseif commands:match("^profile ") then
+        local len1 = string.len(commands)
+        local len2 = string.len("profile ") + 1
+        local cmd = string.sub(commands, len2, len1)
+        if StarTip:Finalize(cmd) then
+            StarTip.db.profile.addon = cmd
+        end
+        print("You just loaded a profile. You'll likely need to reload the UI. Type: /reloadui")
+    elseif commands:match("^togglemessage") then
+        StarTip.db.profile.messageToggleOff = not StarTip.db.profile.messageToggleOff
+        print("Message is not " .. (StarTip.db.profile.messageToggleOff and "off" or "on"))
+    elseif commands:match("^toggleanimation") then
+        local mod = StarTip:GetModule("Animation")
+        mod.db.profile.animationsOn = not not not mod.db.profile.animationsOn
+    elseif commands:match("^dumpenv") then
+        local list = {}
+        for k, v in pairs(StarTip.core.environment) do
+            table.insert(list, k)
+        end
+        table.sort(list)
+        for i, v in ipairs(list) do
+            print_raw(v)
+        end
+    else
+        
+        StarTip:ShowInfo()
+    end
 end, "StarTip", "Slash command"})
 
 function StarTip:CPU()
-	local cpu = Inspect.Addon.Cpu()
-	if cpu.StarTip then
-		print("-------- StarTip CPU Usage --------")
-		for k, v in pairs(cpu.StarTip) do
-			print(k, ":", v)
-		end
-	end
+    local cpu = Inspect.Addon.Cpu()
+    if cpu.StarTip then
+        print("-------- StarTip CPU Usage --------")
+        for k, v in pairs(cpu.StarTip) do
+            print(k, ":", v)
+        end
+    end
 end
 
+function StarTip:ShowInfo()
+    print("Commands are 'profile', 'config' and 'cpu', 'togglemessage', 'toggleanimation'.")
+    print("Loaded profile: " .. loadedAddon)
+    print("Available Profiles:")
+    for addon in pairs(addons) do
+        print(">", addon)
+    end
+end

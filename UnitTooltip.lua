@@ -133,14 +133,6 @@ function mod:CreateLines()
             local lineNum = 0
             StarTip.tooltipMain:Clear()
             for i, v in ipairs(self) do
-		--[[
-                if v.leftObj then
-			v.leftObj.buffer = nil
-                end
-                if v.rightObj then
-			v.rightObj.buffer = nil
-                end
-		]]
                 local left, right = '', ''
                 StarTip.core.environment.unit = StarTip.unit
                 if v.right then
@@ -185,7 +177,7 @@ function mod:CreateLines()
                 end
             end
     end})
-    mod.lines = lines
+    self.lines = lines
 end
 
 function mod:Establish(data)
