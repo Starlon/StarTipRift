@@ -75,7 +75,7 @@ local tags = UnitTagText(unit)
 local details = Inspect.Unit.Detail(unit)
 local txt = class
 if tags then
-	txt = (txt or "") .. tags
+    txt = (txt or "") .. tags
 end
 if details and details.health == 0 then
     txt = (txt or "") .. "<Corpse>"
@@ -89,7 +89,7 @@ if details and details.calling then
 end
 return RelationColor(unit)
 ]],
-	dontRtrim = true,
+    dontRtrim = true,
         enabled = true
     },
     [5] = {
@@ -137,13 +137,13 @@ return size and "Public  Group: " .. size .. members
 
    [8] = {
         id = "simplemeter",
-	name = "Simple Meter DPS + DPS since mouseover",
+    name = "Simple Meter DPS + DPS since mouseover",
 left = [[
 return SimpleMeter(unit, "dps", "all")
 ]],
-	leftUpdating = true,
-	update = 500,
-	enabled = true
+    leftUpdating = true,
+    update = 500,
+    enabled = true
     },
     [9] = {
         id = "space",
@@ -198,17 +198,17 @@ return r, g, b, .5
 
 
 profile.animation = {
-	animationsOn = true,
-	animationSpeed = 1000,
-	animationInit = [[
+    animationsOn = true,
+    animationSpeed = 1000,
+    animationInit = [[
 gravity = true
 t = 0
 ]],
-	animationBegin = [[
+    animationBegin = [[
 t = t - 5
 v = 0
 ]],
-	animationPoint = [[
+    animationPoint = [[
 d=(v*0.3); r=t+i*PI*0.02; x=cos(r)*d; y=sin(r)*d
 ]]
 }

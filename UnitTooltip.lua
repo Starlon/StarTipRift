@@ -9,19 +9,19 @@ local tremove = table.remove
 
 local lines = {}
 local config = {
-	onMouseover = {
-		code = [[
-			ResetDPS(unit)
-		]]
+    onMouseover = {
+        code = [[
+            ResetDPS(unit)
+        ]]
 
-	},
-	lines = {
-		[1] = {
-			name = "Warning",
-			left = "return 'StarTip has no profile loaded. To see a list, type: `/startip` To load a profile type: `/startip profile Default`'",
-			enabled = true
-		}
-	}
+    },
+    lines = {
+        [1] = {
+            name = "Warning",
+            left = "return 'StarTip has no profile loaded. To see a list, type: `/startip` To load a profile type: `/startip profile Default`'",
+            enabled = true
+        }
+    }
 }
 
 local function copy(src, dst)
@@ -38,35 +38,35 @@ end
 
 
 local function wipe(tbl)
-	for i = 1, #tbl do
-		tremove(tbl)
-	end
+    for i = 1, #tbl do
+        tremove(tbl)
+    end
 end
 
 local widgetUpdate
 do
     local widgetsToDraw = {}
     function widgetUpdate(widget)
-		tinsert(widgetsToDraw, widget)
-		draw(true)
+        tinsert(widgetsToDraw, widget)
+        draw(true)
     end
     function draw()
         for i, widget in ipairs(widgetsToDraw) do
-			if widget.cell and widget.buffer ~= "" then
-				widget.cell:SetFontSize(widget.config.fontSize or 12)
-				widget.cell:SetText(widget.buffer or "Error")
-				--widget.cell:ResizeToText()
-			end
+            if widget.cell and widget.buffer ~= "" then
+                widget.cell:SetFontSize(widget.config.fontSize or 12)
+                widget.cell:SetText(widget.buffer or "Error")
+                --widget.cell:ResizeToText()
+            end
 
-			if widget.color.is_valid and widget.buffer ~= "" then
-				widget.color:Eval()
-				local r, g, b, a = widget.color:P2N()
-				widget.cell:SetFontColor(r or 0, g or 0, b or 0, a or 1)
-			end
-		end
+            if widget.color.is_valid and widget.buffer ~= "" then
+                widget.color:Eval()
+                local r, g, b, a = widget.color:P2N()
+                widget.cell:SetFontColor(r or 0, g or 0, b or 0, a or 1)
+            end
+        end
 
-		wipe(widgetsToDraw)
-		StarTip.tooltipMain:Reshape()
+        wipe(widgetsToDraw)
+        StarTip.tooltipMain:Reshape()
     end
 end
 
@@ -83,11 +83,11 @@ function mod:StopLines()
 end
 
 function mod:ClearLines()
-	self:StopLines()
-	StarTip.tooltipMain:Clear()
-	for k, v in ipairs(lines) do
-		--if v.Del then v:Del() end
-	end
+    self:StopLines()
+    StarTip.tooltipMain:Clear()
+    for k, v in ipairs(lines) do
+        --if v.Del then v:Del() end
+    end
 end
 
 local tbl
@@ -101,8 +101,8 @@ function mod:CreateLines()
             j = j + 1
             llines[j] = copy(v)
             llines[j].config = copy(v)
-			
-			v.align = v.alignLeft
+            
+            v.align = v.alignLeft
             v.value = v.left
             v.outlined = v.leftOutlined
             v.color = v.colorLeft
@@ -113,7 +113,7 @@ function mod:CreateLines()
             if v.left and v.leftUpdating then v.update = update end
             llines[j].leftObj = v.left and WidgetText:New(StarTip.core, "StarTip.UnitTooltip:" .. v.name .. ":left:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
 
-			v.align = v.alignRight
+            v.align = v.alignRight
             v.value = v.right
             v.outlined = v.rightOutlined
             v.update = 0
@@ -122,7 +122,7 @@ function mod:CreateLines()
             v.maxWidth = v.maxWidthR
             v.minWidth = v.minWidthR
             llines[j].rightObj = v.right and WidgetText:New(StarTip.core, "StarTip.UnitTooltip:" .. v.name .. ":right:", copy(v), 0, 0, v.layer or 0, StarTip.errorLevel, widgetUpdate)
-			
+            
 
             if llines[j].rightObj then table.insert(mod.widgets, llines[j].rightObj) end
             if llines[j].leftObj then table.insert(mod.widgets, llines[j].rightObj) end
@@ -159,18 +159,18 @@ function mod:CreateLines()
                     lineNum = lineNum + 1
                     if v.right and v.right ~= "" then
                         local cell1, cell2 = StarTip.tooltipMain:AddDoubleLine('', '')
-			v.leftObj.cell = cell1
-			v.rightObj.cell = cell2
+            v.leftObj.cell = cell1
+            v.rightObj.cell = cell2
                     else
                         local cell = StarTip.tooltipMain:AddLine('')
-			v.leftObj.cell = cell
+            v.leftObj.cell = cell
                     end
                     if v.rightObj then
-			v.rightObj.buffer = false
+            v.rightObj.buffer = false
                         v.rightObj:Start(StarTip.unit)
                     end
                     if v.leftObj then
-			v.leftObj.buffer = false
+            v.leftObj.buffer = false
                         v.leftObj:Start(StarTip.unit)
                     end
                     v.lineNum = lineNum
@@ -181,28 +181,28 @@ function mod:CreateLines()
 end
 
 function mod:Establish(data)
-	if type(data) ~= "table" then return end
-	config.lines = {}
-	for i, v in pairs(data) do
-		config.lines[i] = v
-	end
-	self:CreateLines()
-	
+    if type(data) ~= "table" then return end
+    config.lines = {}
+    for i, v in pairs(data) do
+        config.lines[i] = v
+    end
+    self:CreateLines()
+    
 end
 
 function mod:OnStartup()
-	lines = {}
-	mod.widgets = {}
-	self:CreateLines()
+    lines = {}
+    mod.widgets = {}
+    self:CreateLines()
 end
 
 function mod:OnHide()
-	self:StopLines()
+    self:StopLines()
 end
 
 function mod:SetUnit()
-	if not StarTip.core.environment.UnitName(StarTip.unit) then return end
-	Evaluator.Evaluate(StarTip.core.environment, "onMouseover", config.onMouseover.cde, StarTip.unit)
-	self:StopLines()
-	lines()
+    if not StarTip.core.environment.UnitName(StarTip.unit) then return end
+    Evaluator.Evaluate(StarTip.core.environment, "onMouseover", config.onMouseover.cde, StarTip.unit)
+    self:StopLines()
+    lines()
 end
